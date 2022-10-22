@@ -37,34 +37,4 @@
         background-color: $green;
         margin-bottom: $spacing/2;
     }
-
-    .inputs {
-        padding-bottom: $spacing;
-      
-        h1 {
-          padding-top: $spacing/2;
-          padding-bottom: $spacing/4;
-        }
-      
-        .text-field {
-          width: 80%;
-          margin: 1rem;
-        }
-      
-        .btn {
-          width: 30%;
-          background-color: $green;
-          color: white;
-        }
-      
-        .btn:hover {
-          background-color: $primary-color;
-          color: black
-        }
-
-        .input-noti{
-            display: block;
-            color: red;
-        }
-      }
 }
