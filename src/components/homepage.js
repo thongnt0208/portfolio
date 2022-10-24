@@ -15,7 +15,7 @@ export default function HomePage() {
     return (
         <div className='homepage-box'>
             <div className='background-img'>
-                <img src='../assets/background.gif' alt='background'></img>
+                <img src='https://github.com/thongnt0208/portfolio/blob/main/public/assets/background.gif?raw=true' alt='background'></img>
             </div>
             <Box className='box-container'
                 sx={{
@@ -48,7 +48,7 @@ export default function HomePage() {
 
                     </Grid>
                     <Grid container xs={12} md={6} className='container avatar-container'>
-                        <img src='../assets/avatar.jpg' alt='avatar'></img>
+                        <img src='https://github.com/thongnt0208/portfolio/blob/main/public/assets/avatar.jpg?raw=true' alt='avatar'></img>
                     </Grid>
                 </Paper>
             </Box>
