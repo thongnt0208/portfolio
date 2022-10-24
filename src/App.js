@@ -8,11 +8,11 @@ import Projects from './components/projects';
 function App() {
   return (
     <div className='App'>
-      <HashRouter basename={process.env.PUBLIC_URL}>
+      <Routes basename={process.env.PUBLIC_URL}>
         <Route path='/' element={<HomePage></HomePage>}></Route>
         <Route path='/Contact' element={<Contact></Contact>}></Route>
         <Route path='/Projects' element={<Projects></Projects>}></Route>
-      </HashRouter>
+      </Routes>
 
     </div>
   );
