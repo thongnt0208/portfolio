@@ -126,27 +126,39 @@
   -o-transition: opacity 1.5s;
   transition: opacity 1.5s;
 }
+
 .loaded .fadein {
   opacity: 1;
 }
+
 .contact-container {
   position: relative;
   top: 4rem;
   margin: 0 auto;
   max-width: 1080px;
 }
+
 .contact-container a {
   display: inline-block;
   width: 300px;
   text-decoration: none;
   color: white;
 }
+
 .contact-container a .card {
   margin: 1rem;
   padding: 1rem;
 }
+
 .contact-container .back-button {
   width: 100px;
   background-color: #4caf50;
+  margin-bottom: 2rem;
+}
+
+#button {
+  width: 100px;
+  background-color: #4caf50;
+  color: white;
   margin-bottom: 2rem;
 }
