@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Thong's Portfolio Landing Page</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico" />
     <link rel="stylesheet" href="assets/css/style.css" />
     <link rel="stylesheet" href="assets/css/fontawesome.css" />
     <link
@@ -13,6 +13,15 @@
       href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"
     />
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
@@ -562,8 +571,9 @@
                   <input
                     type="text"
                     placeholder="Name or Company's Name"
-                    id="inputFirstName"
+                    id="name"
                     class="shadow form-control form-control-lg"
+                    required
                   />
                 </div>
                 <div class="col-lg-12 mb-3">
@@ -572,6 +582,7 @@
                     placeholder="Email Address"
                     id="inputEmail"
                     class="shadow form-control form-control-lg"
+                    required
                   />
                 </div>
                 <div class="col-lg-12 mb-3">
@@ -581,11 +592,22 @@
                     id="message"
                     rows="8"
                     class="shadow form-control form-control-lg"
+                    required
                   ></textarea>
                 </div>
                 <div class="text-center d-grid mt-1">
-                  <button type="button" class="btn btn-primary rounded-pill pt-3 pb-3">
-                    submit
+                  <button
+                    type="button"
+                    class="btn btn-primary rounded-pill pt-3 pb-3"
+                    id="submit-btn"
+                  >
+                    <span
+                      class="spinner-border spinner-border-sm d-none"
+                      id="submit-spinner"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
+                    Send
                     <i class="fas fa-paper-plane"></i>
                   </button>
                 </div>
@@ -771,5 +793,8 @@
       });
     </script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="./emailJsService.js"></script>
   </body>
 </html>
