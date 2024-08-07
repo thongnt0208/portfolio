@@ -1,0 +1,25 @@
+[
+  {
+    "id": "artworkia",
+    "title": "Artwork Sharing Platform - Capstone Project",
+    "logo": "/assets/images/projects/artworkia-00.png",
+    "type": "Web",
+    "links": {
+      "deploy": "https://artworkia-4f397.web.app/",
+      "git": "https://github.com/thongnt0208/artworks-sharing-platform",
+      "video": "https://youtu.be/PCnJvgsxvwc?si=Ux6zgjnDqnzdIhUm"
+    },
+    "beginDate": "14 Oct 2023",
+    "launchDate": "05 May 2024",
+    "images": [
+      "/assets/images/projects/artworkia-01-home.png",
+      "/assets/images/projects/artworkia-02-post.png",
+      "/assets/images/projects/artworkia-03-profile.png"
+    ],
+    "descriptions": [
+      "A social web application platform for digital artworks. Serves as an intermediary connecting creators and audiences who appreciate their artworks. Facilitates creators and audiences in selling and buying assets related to the artworks. Enables creators to offer creative content services upon request.",
+      "A social web application platform for digital artworks. Serves as an intermediary connecting creators and audiences who appreciate their artworks. Facilitates creators and audiences in selling and buying assets related to the artworks. Enables creators to offer creative content services upon request.",
+      "A social web application platform for digital artworks. Serves as an intermediary connecting creators and audiences who appreciate their artworks. Facilitates creators and audiences in selling and buying assets related to the artworks. Enables creators to offer creative content services upon request."
+    ]
+  }
+]

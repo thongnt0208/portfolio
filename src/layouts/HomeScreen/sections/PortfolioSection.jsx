@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import portfolioInfo from './portfolioInfo.json'
+import { useNavigate } from 'react-router-dom';
 
 
 
 function PortfolioSection() {
   const [portfolioImages, setPortfolioImages] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const loadImages = async () => {
       const imagesPromises = [];
@@ -30,8 +32,6 @@ function PortfolioSection() {
     loadImages();
   }, []);
 
-  console.log("portfolioInfo", portfolioInfo);
-  console.log("portfolioImages", portfolioImages);
   return (
     <section id="portfolio" className="portfolio" data-aos="fade-down" data-aos-delay="100">
       <div className="container">
@@ -69,7 +69,7 @@ function PortfolioSection() {
               <div className="col-lg-4 col-md-6" key={index}>
                 <button
                   className="portfolio-box shadow border-0 p-0"
-                  onClick={() => window.open(portfolio.link, '_blank')}
+                  onClick={() => navigate(`/projects/${portfolio.id}`)}
                 >
                   <img src={portfolioImages[index]} alt={`portfolio ${index + 1} image`} title={`portfolio ${index + 1} picture`} className="img-fluid" />
                   <div className="portfolio-info">

@@ -1,53 +1,62 @@
 [
     {
+      "id": "artworkia",
       "title": "Capstone Project",
       "description": "Social Media Web",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform",
       "image": "images/portfolio/portfolio-1.png"
     },
     {
+      "id": "artworkiaAdmin",
       "title": "Capstone Project",
       "description": "Admin Web",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform-admin",
       "image": "images/portfolio/portfolio-2.png"
     },
     {
+      "id": "lms",
       "title": "angular internship",
       "description": "Learning Material Web",
       "link": "https://gitlab.com/react03_project-lms/lms-project-fsoft-react03",
       "image": "images/portfolio/portfolio-3.png"
     },
     {
+      "id": "groupStudy",
       "title": "Server with ExpressJS",
       "description": "Group Study Web Server",
       "link": "https://github.com/thongnt0208/group-study-web",
       "image": "images/portfolio/portfolio-4.png"
     },
     {
+      "id": "sentuary",
       "title": "Startup Project",
       "description": "E-Commerce web",
       "link": "https://github.com/Senctuary/sentuary-web-front-end",
       "image": "images/portfolio/portfolio-5.png"
     },
     {
+      "id": "bakeryRecipe",
       "title": "java web with servlet",
       "description": "Recipes Social Media",
       "link": "https://github.com/se1613-group4/BakeryRecipe_SWP",
       "image": "images/portfolio/portfolio-6.png"
     },
     {
+      "id": "laundryMiddle",
       "title": "Mobile UI Design",
       "description": "Laundry Middle Platform",
       "link": "https://www.figma.com/community/file/1373587374510998059/laundry-middle-platform-mobile",
       "image": "images/portfolio/portfolio-7.png"
     },
     {
+      "id": "artworkiaUI",
       "title": "Web UI Design",
       "description": "Admin Web",
       "link": "https://www.figma.com/community/file/1373322521638064501/artworkia-complete-ui",
       "image": "images/portfolio/portfolio-8.png"
     },
     {
+      "id": "plantShopUI",
       "title": "Web UI Design",
       "description": "E-Commerce Project",
       "link": "https://www.figma.com/community/file/1373602545759094335/customizable-plants-shopping-platform-web-wireframe",
