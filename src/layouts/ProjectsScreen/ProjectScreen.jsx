@@ -43,7 +43,9 @@ function ProjectScreen() {
                             height='100%'
                             playing={true}
                             muted={true}
-                            loop={true} />
+                            loop={true}
+                            controls={true}
+                            />
                     </div>
 
                     <div className="project-content">

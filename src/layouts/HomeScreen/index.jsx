@@ -1,4 +1,5 @@
 import { Suspense, lazy } from 'react';
+import Loading from '../../components/Loading';
 
 // Lazy load section components
 const IntroSection = lazy(() => import('./sections/IntroSection'));
@@ -9,7 +10,7 @@ const ContactSection = lazy(() => import('./sections/ContactSection'));
 
 export default function HomeScreen() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<Loading />}>
             <IntroSection />
             <CompaniesSection />
             <ServicesSection />

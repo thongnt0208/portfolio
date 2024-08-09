@@ -9,9 +9,15 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="src/scss/components/Loading.scss" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div className="loading-container">
+        <div className="loading-shape"></div>
+        <span>.</span>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

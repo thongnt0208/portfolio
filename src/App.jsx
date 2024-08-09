@@ -6,6 +6,7 @@ import { jarallaxVideo } from "jarallax";
 import 'jarallax/dist/jarallax.min.css';
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom';
 import ScrollToTop from './utils/SrollToTop';
+import Loading from './components/Loading';
 
 
 // Lazy load components
@@ -18,7 +19,7 @@ function App() {
   jarallaxVideo();
   AOS.init();
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<Loading/>}>
 
       <Router>
         <ScrollToTop />

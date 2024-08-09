@@ -1,27 +1,26 @@
 // @use 'custom';
 
-// IMPORT THE COMPONENTS 
-@use 'components/animations';
-@use 'components/buttons';
-@use 'components/mixins';
-@use 'components/typography';
+// IMPORT THE COMPONENTS
+@use "components/animations";
+@use "components/buttons";
+@use "components/mixins";
+@use "components/typography";
 
-
-// IMPORT THE SECTIONS 
-@use 'sections/navbar';
-@use 'sections/intro-section';
-@use 'sections/campanies';
-@use 'sections/services';
-@use 'sections/testimonials';
-@use 'sections/faq';
-@use 'sections/portfolio';
-@use 'sections/get-started';
-@use 'sections/footer';
+// IMPORT THE SECTIONS
+@use "sections/navbar";
+@use "sections/intro-section";
+@use "sections/campanies";
+@use "sections/services";
+@use "sections/testimonials";
+@use "sections/faq";
+@use "sections/portfolio";
+@use "sections/get-started";
+@use "sections/footer";
 
 .campanies {
-    display: none;
+  display: none;
 }
 
 .fw-light {
-    font-size: 1.25rem !important;
+  font-size: 1.25rem !important;
 }
