@@ -13,7 +13,11 @@ export const Ambition: React.FC = () => {
         <div className="lg:col-span-8">
           <Reveal delay={0.4}>
             <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed font-light text-stone-800">
-              "I build high-end digital experiences that balance technical precision with minimalist aesthetics. For over a decade, I've been transforming complex ideas into elegant, user-centric web applications."
+              "I am a highly passionate software engineer but has User View Point and Product Mindset. 
+              <br/>
+              <br/>All the things I do aim to solve entirely users' pains and enhance UX. 
+              <br/>
+              <br/>The more helpful product, the more income for the company."
             </p>
           </Reveal>
         </div>

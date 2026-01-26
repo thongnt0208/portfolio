@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers } from 'lucide-react';
+import { Layers, ArrowRight } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { ExpertiseItem } from '../types';
 
@@ -8,15 +8,17 @@ const expertiseData: ExpertiseItem[] = [
     id: 'tech',
     number: '01 / TECHNICAL',
     title: 'Web Development',
-    description: 'Mastering the modern web stack. From React and Next.js to scalable backend architectures with Node.js and PostgreSQL.',
-    tags: ['React', 'TypeScript', 'Next.js', 'Tailwind']
+    description: 'Mastering the modern web stack. From React and Next.js to scalable backend architectures with Node.js and PostgreSQL. Passionate about creating user-centric and visually appealing websites.',
+    tags: ['React', 'TypeScript', 'Next.js', 'Tailwind', 'Node.js', 'PostgreSQL'],
+    link: 'https://github.com/thongnt0208'
   },
   {
     id: 'visual',
     number: '02 / VISUAL',
     title: 'UX/UI Design',
-    description: 'Deep understanding of user behavior and interface principles. Creating visually appealing, high-end interfaces that convert.',
-    tags: ['Figma', 'Motion', 'Typography', 'Branding']
+    description: 'Deep understanding of user behavior and interface principles. Creating visually appealing, high-end interfaces that convert. Skilled in creating user-friendly interfaces.',
+    tags: ['Figma', 'Motion', 'Typography', 'Branding'],
+    link: 'https://www.figma.com/@thongnt028'
   }
 ];
 
@@ -42,13 +44,22 @@ export const Expertise: React.FC = () => {
                 <p className="opacity-60 leading-relaxed mb-8 max-w-md">
                   {item.description}
                 </p>
-                <ul className="flex flex-wrap gap-4 text-xs tracking-widest uppercase opacity-40 group-hover:opacity-100 transition-opacity">
+                <ul className="flex flex-wrap gap-4 text-xs tracking-widest uppercase opacity-40 group-hover:opacity-100 transition-opacity mb-8">
                   {item.tags.map(tag => (
                     <li key={tag} className="px-3 py-1 border border-stone-900/20 rounded-full">
                       {tag}
                     </li>
                   ))}
                 </ul>
+                {item.link && (
+                  <button
+                    onClick={() => window.open(item.link, '_blank')}
+                    className="rounded-pill border border-stone-900/20 px-6 py-2 rounded-full hover:bg-stone-900 hover:text-white transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-2 font-medium group/btn"
+                  >
+                    Learn more
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
+                )}
               </div>
             </Reveal>
           ))}

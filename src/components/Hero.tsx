@@ -29,8 +29,11 @@ export const Hero: React.FC = () => {
         </Reveal>
 
         <Reveal delay={0.6}>
-          <button className="border border-stone-900/10 px-10 py-4 rounded-full hover:bg-stone-900 hover:text-white transition-all duration-500 text-sm uppercase tracking-widest flex items-center gap-4 mx-auto font-medium group bg-white/50 backdrop-blur-sm">
-            View Portfolio
+          <button 
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            className="border border-stone-900/10 px-10 py-4 rounded-full hover:bg-stone-900 hover:text-white transition-all duration-500 text-sm uppercase tracking-widest flex items-center gap-4 mx-auto font-medium group bg-white/50 backdrop-blur-sm"
+          >
+            View Curriculum Vitae
             <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
           </button>
         </Reveal>

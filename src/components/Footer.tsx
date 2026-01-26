@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer className="py-12 px-8 flex flex-col md:flex-row justify-between items-center gap-6 opacity-40 text-[10px] uppercase tracking-[0.3em] bg-stone-100">
-      <p>© 2024 Thong Nguyen Trung. All rights reserved.</p>
+      <p>© 2026 Thong Nguyen Trung. All rights reserved.</p>
       <p className="hidden md:block">Inspired by Amir Arhami Aesthetic</p>
       <button 
         onClick={scrollToTop}

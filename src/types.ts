@@ -4,7 +4,8 @@ export interface Project {
   category: string;
   year: string;
   image: string;
-  marginTop?: boolean;
+  marginTop: boolean;
+  link?: string;
 }
 
 export interface ExpertiseItem {
@@ -13,4 +14,12 @@ export interface ExpertiseItem {
   title: string;
   description: string;
   tags: string[];
+  link?: string;
+}
+
+export interface PortfolioItem {
+  title: string;
+  description: string;
+  link: string;
+  image: string;
 }
