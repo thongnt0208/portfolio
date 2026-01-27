@@ -24,7 +24,7 @@ const expertiseData: ExpertiseItem[] = [
 
 export const Expertise: React.FC = () => {
   return (
-    <section className="py-32 px-6 bg-stone-100/50">
+    <section id="expertise" className="py-32 px-6 bg-stone-100/50">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-20">
           <Reveal>
