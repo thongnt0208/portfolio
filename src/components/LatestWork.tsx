@@ -35,7 +35,7 @@ export const LatestWork: React.FC = () => {
   }));
 
   return (
-    <section className="py-32 px-6">
+    <section id="latest-work" className="py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-baseline mb-20 gap-8">
           <Reveal>

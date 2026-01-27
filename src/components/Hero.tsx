@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { Reveal } from './Reveal';
+import avatar1 from '../assets/images/avatar/avatar1.jpg';
 
 export const Hero: React.FC = () => {
   return (
@@ -42,7 +43,7 @@ export const Hero: React.FC = () => {
       <Reveal delay={0.8} className="w-full max-w-5xl mt-20">
         <div className="w-full aspect-video rounded-[3rem] overflow-hidden border border-white/50 shadow-2xl shadow-stone-200/50">
           <img 
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7LT9WYCWyyZEtOd04K4ezSbR2TAXUzlgrR5JjYlxOqzdC-PcD3kDBLs07vByRp2WUiO0_ow8ciWYosY7qTbmwkTxb0nob_KUeiSS1mrzHLSMLRiPWREpwISe02FwESCF1dr5h7RyAw6yuuRHjqvlW_ktl1TJukD3gg3C3TXfXcE1K3pHXez-w2p5Q5H2OgLWl4h6ILWSx1dlceXuG1XgFQyU16lIFP5i9SiHpkoFP1bNjwcmPWUhXYZHMRGEnUVjXNCTE2DsGRTLW" 
+            src={avatar1} 
             alt="Abstract Tech Visualization" 
             className="w-full h-full object-cover opacity-90 grayscale hover:grayscale-0 transition-all duration-[1.5s] ease-in-out hover:scale-105"
           />
