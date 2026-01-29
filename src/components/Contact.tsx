@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 declare const emailjs: any;
 declare const Toastify: any;
 
+const CV_URL = 'https://drive.google.com/uc?export=download&id=1NDAORzbytWDPnA-jtv_Avsv6vptplOvk';
+
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -136,7 +138,7 @@ export const Contact: React.FC = () => {
               </p>
               <h3 className="text-2xl font-bold mb-4">Download my CV</h3>
               <button
-                onClick={() => window.open('https://drive.usercontent.google.com/u/0/uc?id=1VUq44oJbjQ2PZaoHgwwJeoOHqLsx7kvb&export=download')}
+                onClick={() => window.open(CV_URL)}
                 className="border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
               >
                 Download
