@@ -5,6 +5,7 @@
       "technologies": ["React", "TypeScript", "Bootstrap" ],
       "roles": ["Frontend Developer", "UI Designer"],
       "year": "2024",
+      "type": "web",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform",
       "image": "images/portfolio/portfolio-1.png"
     },
@@ -14,6 +15,7 @@
       "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
       "roles": ["Frontend Developer", "UI Designer"],
       "year": "2024",
+      "type": "web",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform-admin",
       "image": "images/portfolio/portfolio-2.png"
     },
@@ -23,6 +25,7 @@
       "technologies": ["Angular", "TypeScript", "PrimeNG", "Chart.js" ],
       "roles": ["Frontend Leader", "Developer"],
       "year": "2023",
+      "type": "web",
       "link": "https://gitlab.com/react03_project-lms/lms-project-fsoft-react03",
       "image": "images/portfolio/portfolio-3.png"
     },
@@ -32,6 +35,7 @@
       "technologies": ["Node.js", "Express", "MongoDB", "Socket.io" ],
       "roles": ["Backend Developer", "Database Designer"],
       "year": "2023",
+      "type": "api",
       "link": "https://github.com/thongnt0208/group-study-web",
       "image": "images/portfolio/portfolio-4.png"
     },
@@ -41,6 +45,7 @@
       "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
       "roles": ["Frontend Developer", "UX Researcher", "UI Designer"],
       "year": "2022",
+      "type": "web",
       "link": "https://github.com/Senctuary/sentuary-web-front-end",
       "image": "images/portfolio/portfolio-5.png"
     },
@@ -50,6 +55,7 @@
       "technologies": ["Java", "Servlet", "JSP", "MySQL" ],
       "roles": ["Backend Developer", "Database Designer"],
       "year": "2021",
+      "type": "web",
       "link": "https://github.com/se1613-group4/BakeryRecipe_SWP",
       "image": "images/portfolio/portfolio-6.png"
     },
@@ -59,6 +65,7 @@
       "technologies": ["React Native", "TypeScript", "Expo", "Firebase" ],
       "roles": ["Mobile Developer", "UI Designer"],
       "year": "2023",
+      "type": "design",
       "link": "https://www.figma.com/community/file/1373587374510998059/laundry-middle-platform-mobile",
       "image": "images/portfolio/portfolio-7.png"
     },
@@ -68,6 +75,7 @@
       "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
       "roles": ["Frontend Developer", "UI Designer"],
       "year": "2023",
+      "type": "design",
       "link": "https://www.figma.com/community/file/1373322521638064501/artworkia-complete-ui",
       "image": "images/portfolio/portfolio-8.png"
     },
@@ -77,6 +85,7 @@
       "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
       "roles": ["Frontend Developer", "UI Designer"],
       "year": "2023",
+      "type": "design",
       "link": "https://www.figma.com/community/file/1373602545759094335/customizable-plants-shopping-platform-web-wireframe",
       "image": "images/portfolio/portfolio-9.png"
     }

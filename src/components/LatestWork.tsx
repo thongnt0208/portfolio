@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Reveal } from './Reveal';
-import { PortfolioItem } from '../types';
+import { PortfolioItem, PortfolioType } from '../types';
 import portfolioData from '../data/portfolioInfo.json';
 
 export const LatestWork: React.FC = () => {
@@ -28,13 +29,31 @@ export const LatestWork: React.FC = () => {
     id: String(index + 1),
     title: item.title,
     category: item.description,
-    year: '2024',
+    year: item.year,
+    type: item.type,
     image: portfolioImages[index] || '',
     marginTop: index % 2 === 1,
     link: item.link,
     technologies: item.technologies,
     roles: item.roles,
   }));
+
+  const mappingTypeName = (type: PortfolioType | 'All Projects') => {
+    if (type === 'All Projects') return 'All Projects';
+    switch (type) {
+      case PortfolioType.WEB:
+        return 'Websites';
+      case PortfolioType.API:
+        return 'APIs';
+      case PortfolioType.DESIGN:
+        return 'Designs';
+    }
+  };
+
+  const filteredProjects =
+    filter === 'All Projects'
+      ? portfolioProjects
+      : portfolioProjects.filter((p) => p.type === filter);
 
   return (
     <section id="latest-work" className="py-32 px-6">
@@ -45,16 +64,23 @@ export const LatestWork: React.FC = () => {
           </Reveal>
           
           <Reveal delay={0.3}>
-            <div className="flex gap-6 text-xs uppercase tracking-widest opacity-60">
-              {['All Projects', 'Websites', 'Applications'].map((item) => (
-                <button 
+            <div className="flex gap-6 text-xs uppercase tracking-widest">
+              {['All Projects', ...Object.values(PortfolioType)].map((item) => (
+                <button
                   key={item}
                   onClick={() => setFilter(item)}
-                  className={`hover:opacity-100 border-b-2 transition-all pb-1 ${
-                    filter === item ? 'border-stone-900 opacity-100' : 'border-transparent'
+                  className={`relative py-1 pb-2 transition-opacity duration-200 ${
+                    filter === item ? 'opacity-100' : 'opacity-60 hover:opacity-100'
                   }`}
                 >
-                  {item}
+                  {mappingTypeName(item as PortfolioType | 'All Projects')}
+                  {filter === item && (
+                    <motion.div
+                      layoutId="latest-work-underline"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-stone-900"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </button>
               ))}
             </div>
@@ -62,7 +88,7 @@ export const LatestWork: React.FC = () => {
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 lg:gap-24">
-          {portfolioProjects.map((project) => (
+          {filteredProjects.map((project) => (
             <div key={project.id} className={project.marginTop ? 'md:mt-32' : ''}>
               <Reveal delay={0.2}>
                 <div className="group cursor-pointer" onClick={() => project.link && window.open(project.link, '_blank')}>

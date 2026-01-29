@@ -23,6 +23,13 @@ export interface PortfolioItem {
   technologies: string[];
   roles: string[];
   year: string;
-  link: string;
+  type: PortfolioType;
+  link?: string;
   image: string;
+}
+
+export enum PortfolioType {
+  DESIGN = 'design',
+  WEB = 'web',
+  API = 'api',
 }
