@@ -31,7 +31,9 @@ export const LatestWork: React.FC = () => {
     year: '2024',
     image: portfolioImages[index] || '',
     marginTop: index % 2 === 1,
-    link: item.link
+    link: item.link,
+    technologies: item.technologies,
+    roles: item.roles,
   }));
 
   return (
@@ -80,8 +82,17 @@ export const LatestWork: React.FC = () => {
                   </div>
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="text-2xl font-bold tracking-tight mb-2 text-stone-900">{project.title}</h4>
-                      <p className="text-sm opacity-40 uppercase tracking-widest font-medium">{project.category}</p>
+                      <h4 className="text-2xl font-bold tracking-tight mb-2 text-stone-900">{project.category}</h4>
+                      <p className="text-sm opacity-40 uppercase tracking-widest font-medium">{project.title}</p>
+                      <p className="text-sm opacity-40 tracking-widest font-medium">
+                        <span className="font-bold">- Role: </span>
+                        {project.roles.join(', ')}
+                      </p>
+                      <p className="text-sm opacity-40 tracking-widest font-medium">
+                        <span className="font-bold">- Tech: </span>
+                        {project.technologies.slice(0, 3).join(', ')}
+                        {project.technologies.length > 3 && '...'}
+                      </p>
                     </div>
                   </div>
                 </div>
