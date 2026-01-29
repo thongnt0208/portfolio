@@ -2,54 +2,81 @@
     {
       "title": "Capstone Project",
       "description": "Social Media Web",
+      "technologies": ["React", "TypeScript", "Bootstrap" ],
+      "roles": ["Frontend Developer", "UI Designer"],
+      "year": "2024",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform",
       "image": "images/portfolio/portfolio-1.png"
     },
     {
       "title": "Capstone Project",
       "description": "Admin Web",
+      "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
+      "roles": ["Frontend Developer", "UI Designer"],
+      "year": "2024",
       "link": "https://github.com/thongnt0208/artworks-sharing-platform-admin",
       "image": "images/portfolio/portfolio-2.png"
     },
     {
       "title": "angular internship",
       "description": "Learning Material Web",
+      "technologies": ["Angular", "TypeScript", "PrimeNG", "Chart.js" ],
+      "roles": ["Frontend Leader", "Developer"],
+      "year": "2023",
       "link": "https://gitlab.com/react03_project-lms/lms-project-fsoft-react03",
       "image": "images/portfolio/portfolio-3.png"
     },
     {
       "title": "Server with ExpressJS",
       "description": "Group Study Web Server",
+      "technologies": ["Node.js", "Express", "MongoDB", "Socket.io" ],
+      "roles": ["Backend Developer", "Database Designer"],
+      "year": "2023",
       "link": "https://github.com/thongnt0208/group-study-web",
       "image": "images/portfolio/portfolio-4.png"
     },
     {
       "title": "Startup Project",
-      "description": "E-Commerce web",
+      "description": "E-Commerce Web",
+      "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
+      "roles": ["Frontend Developer", "UX Researcher", "UI Designer"],
+      "year": "2022",
       "link": "https://github.com/Senctuary/sentuary-web-front-end",
       "image": "images/portfolio/portfolio-5.png"
     },
     {
       "title": "java web with servlet",
       "description": "Recipes Social Media",
+      "technologies": ["Java", "Servlet", "JSP", "MySQL" ],
+      "roles": ["Backend Developer", "Database Designer"],
+      "year": "2021",
       "link": "https://github.com/se1613-group4/BakeryRecipe_SWP",
       "image": "images/portfolio/portfolio-6.png"
     },
     {
       "title": "Mobile UI Design",
       "description": "Laundry Middle Platform",
+      "technologies": ["React Native", "TypeScript", "Expo", "Firebase" ],
+      "roles": ["Mobile Developer", "UI Designer"],
+      "year": "2023",
       "link": "https://www.figma.com/community/file/1373587374510998059/laundry-middle-platform-mobile",
       "image": "images/portfolio/portfolio-7.png"
     },
     {
       "title": "Web UI Design",
       "description": "Admin Web",
+      "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
+      "roles": ["Frontend Developer", "UI Designer"],
+      "year": "2023",
       "link": "https://www.figma.com/community/file/1373322521638064501/artworkia-complete-ui",
       "image": "images/portfolio/portfolio-8.png"
     },
     {
       "title": "Web UI Design",
       "description": "E-Commerce Project",
+      "technologies": ["React", "TypeScript", "Bootstrap", "Chart.js" ],
+      "roles": ["Frontend Developer", "UI Designer"],
+      "year": "2023",
       "link": "https://www.figma.com/community/file/1373602545759094335/customizable-plants-shopping-platform-web-wireframe",
       "image": "images/portfolio/portfolio-9.png"
     }

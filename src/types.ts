@@ -20,6 +20,9 @@ export interface ExpertiseItem {
 export interface PortfolioItem {
   title: string;
   description: string;
+  technologies: string[];
+  roles: string[];
+  year: string;
   link: string;
   image: string;
 }
