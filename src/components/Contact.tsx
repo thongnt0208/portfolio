@@ -1,12 +1,14 @@
 import React, { useState, FormEvent } from 'react';
-import { Copy, CheckCircle, ArrowDown } from 'lucide-react';
+import { Copy, CheckCircle, ArrowDown, Eye } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Social } from './Social';
 
 declare const emailjs: any;
 declare const Toastify: any;
 
-const CV_URL = 'https://drive.google.com/uc?export=download&id=1NDAORzbytWDPnA-jtv_Avsv6vptplOvk';
+const CV_URL_DOWNLOAD = 'https://drive.google.com/uc?export=download&id=1NDAORzbytWDPnA-jtv_Avsv6vptplOvk';
+const CV_URL_PREVIEW = 'https://drive.google.com/file/d/1NDAORzbytWDPnA-jtv_Avsv6vptplOvk/view?usp=sharing';
 
 export const Contact: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -76,13 +78,18 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-40 px-6 bg-stone-100 text-stone-900 overflow-hidden relative">
+    <section
+      id="contact"
+      className="py-40 px-6 bg-stone-100 text-stone-900 overflow-hidden relative"
+    >
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center mb-20">
           <Reveal>
-            <span className="text-xs uppercase tracking-[0.5em] opacity-40 block mb-12">Available for collaborations</span>
+            <span className="text-xs uppercase tracking-[0.5em] opacity-40 block mb-12">
+              Available for collaborations
+            </span>
           </Reveal>
-          
+
           <Reveal delay={0.2}>
             <h2 className="text-6xl md:text-9xl font-bold mb-16 tracking-tighter">
               Let's build something <br /> remarkable.
@@ -93,12 +100,15 @@ export const Contact: React.FC = () => {
             <div className="relative inline-block">
               <div className="flex flex-col md:flex-row items-center gap-6 justify-center bg-white p-3 pr-4 rounded-full shadow-2xl shadow-stone-200/50 border border-white">
                 <div className="px-8 py-2">
-                  <a href={`mailto:${email}`} className="text-2xl md:text-4xl font-light hover:opacity-60 transition-opacity tracking-tight">
+                  <a
+                    href={`mailto:${email}`}
+                    className="text-2xl md:text-4xl font-light hover:opacity-60 transition-opacity tracking-tight"
+                  >
                     {email}
                   </a>
                 </div>
-                <button 
-                  aria-label="Copy Email Address" 
+                <button
+                  aria-label="Copy Email Address"
                   onClick={handleCopy}
                   className="w-14 h-14 rounded-full bg-stone-900 text-white flex items-center justify-center hover:scale-105 hover:bg-black transition-all duration-300 group"
                 >
@@ -117,7 +127,8 @@ export const Contact: React.FC = () => {
                     className="absolute inset-0 flex items-center justify-center bg-stone-900 text-white rounded-full z-20 pointer-events-none"
                   >
                     <span className="text-3xl md:text-5xl font-bold tracking-tighter flex items-center gap-4">
-                      COPIED! <CheckCircle className="w-8 h-8 md:w-10 md:h-10 fill-white text-stone-900" />
+                      COPIED!{" "}
+                      <CheckCircle className="w-8 h-8 md:w-10 md:h-10 fill-white text-stone-900" />
                     </span>
                   </motion.div>
                 )}
@@ -132,18 +143,29 @@ export const Contact: React.FC = () => {
             <div className="bg-gradient-to-br from-stone-900 to-stone-700 text-white shadow-xl rounded-[2rem] p-8 md:p-12">
               <h4 className="text-4xl font-bold mb-6">Thong Nguyen Trung</h4>
               <p className="leading-relaxed mb-8 opacity-90">
-                I am a highly passionate software engineer. I am eager to contribute my skills and knowledge to your
-                team. I am confident that my strong work ethic and dedication to learning will make me a valuable asset
-                to your organization.
+                I am a highly passionate software engineer. I am eager to contribute my skills and
+                knowledge to your team. I am confident that my strong work ethic and dedication to
+                learning will make me a valuable asset to your organization.
               </p>
-              <h3 className="text-2xl font-bold mb-4">Download my CV</h3>
-              <button
-                onClick={() => window.open(CV_URL)}
-                className="border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
-              >
-                Download
-                <ArrowDown className="w-4 h-4" />
-              </button>
+              <h3 className="text-2xl font-bold mb-4">My CV</h3>
+              <div className="flex gap-4">
+                {/* Preview button */}
+                <button
+                  onClick={() => window.open(CV_URL_PREVIEW, '_blank')}
+                  className="min-w-40 border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
+                >
+                  Preview
+                  <Eye className="w-4 h-4" />
+                </button>
+                {/* Download button */}
+                <button
+                  onClick={() => window.open(CV_URL_DOWNLOAD)}
+                  className="min-w-40 border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
+                >
+                  Download
+                  <ArrowDown className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </Reveal>
 
@@ -203,18 +225,8 @@ export const Contact: React.FC = () => {
               <p className="text-lg">Ho Chi Minh City, Vietnam</p>
             </div>
           </Reveal>
-          
-          <Reveal delay={0.9} className="h-full">
-            <div>
-              <p className="text-xs uppercase tracking-widest opacity-40 mb-4">Social</p>
-              <div className="flex gap-4 font-medium">
-                <a href="https://www.linkedin.com/in/thongnt0208" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">LI</a>
-                <a href="https://github.com/thongnt0208" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">GH</a>
-                <a href="https://www.facebook.com/thongwisen" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">FB</a>
-                <a href="https://www.tiktok.com/@thongwisen" target="_blank" rel="noopener noreferrer" className="hover:opacity-60 transition-opacity">TK</a>
-              </div>
-            </div>
-          </Reveal>
+
+          <Social />
 
           <Reveal delay={1.0} className="h-full">
             <div>
