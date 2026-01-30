@@ -97,12 +97,12 @@ export const Contact: React.FC = () => {
           </Reveal>
 
           <Reveal delay={0.4}>
-            <div className="relative inline-block">
-              <div className="flex flex-col md:flex-row items-center gap-6 justify-center bg-white p-3 pr-4 rounded-full shadow-2xl shadow-stone-200/50 border border-white">
-                <div className="px-8 py-2">
+            <div className="relative w-full max-w-full min-w-0 px-2 sm:px-0">
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6 justify-center bg-white p-3 md:pr-4 rounded-full shadow-2xl shadow-stone-200/50 border border-white w-full max-w-full min-w-0">
+                <div className="px-4 md:px-8 py-2 min-w-0 w-full md:w-auto text-center md:text-left">
                   <a
                     href={`mailto:${email}`}
-                    className="text-2xl md:text-4xl font-light hover:opacity-60 transition-opacity tracking-tight"
+                    className="text-base sm:text-2xl md:text-4xl font-light hover:opacity-60 transition-opacity tracking-tight break-all"
                   >
                     {email}
                   </a>
@@ -138,29 +138,27 @@ export const Contact: React.FC = () => {
         </div>
 
         {/* Contact Form Section */}
-        <div className="grid md:grid-cols-2 gap-12 mt-32">
+        <div className="grid md:grid-cols-2 gap-12 mt-32 min-w-0">
           <Reveal delay={0.6}>
-            <div className="bg-gradient-to-br from-stone-900 to-stone-700 text-white shadow-xl rounded-[2rem] p-8 md:p-12">
-              <h4 className="text-4xl font-bold mb-6">Thong Nguyen Trung</h4>
-              <p className="leading-relaxed mb-8 opacity-90">
+            <div className="bg-gradient-to-br from-stone-900 to-stone-700 text-white shadow-xl rounded-[2rem] p-6 md:p-12 min-w-0 overflow-hidden">
+              <h4 className="text-2xl sm:text-4xl font-bold mb-6 break-words">Thong Nguyen Trung</h4>
+              <p className="leading-relaxed mb-8 opacity-90 break-words text-sm sm:text-base">
                 I am a highly passionate software engineer. I am eager to contribute my skills and
                 knowledge to your team. I am confident that my strong work ethic and dedication to
                 learning will make me a valuable asset to your organization.
               </p>
-              <h3 className="text-2xl font-bold mb-4">My CV</h3>
-              <div className="flex gap-4">
-                {/* Preview button */}
+              <h3 className="text-xl sm:text-2xl font-bold mb-4">My CV</h3>
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
                   onClick={() => window.open(CV_URL_PREVIEW, '_blank')}
-                  className="min-w-40 border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
+                  className="w-full sm:min-w-40 border-2 border-white px-6 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center justify-center gap-3 font-medium"
                 >
                   Preview
                   <Eye className="w-4 h-4" />
                 </button>
-                {/* Download button */}
                 <button
                   onClick={() => window.open(CV_URL_DOWNLOAD)}
-                  className="min-w-40 border-2 border-white px-8 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center gap-3 font-medium"
+                  className="w-full sm:min-w-40 border-2 border-white px-6 py-3 rounded-full hover:bg-white hover:text-stone-900 transition-all duration-300 text-sm uppercase tracking-widest flex items-center justify-center gap-3 font-medium"
                 >
                   Download
                   <ArrowDown className="w-4 h-4" />
@@ -170,7 +168,7 @@ export const Contact: React.FC = () => {
           </Reveal>
 
           <Reveal delay={0.7}>
-            <div className="bg-white shadow-xl rounded-[2rem] p-8 md:p-12">
+            <div className="bg-white shadow-xl rounded-[2rem] p-6 md:p-12 min-w-0">
               <h4 className="text-3xl font-bold mb-8 capitalize">Start our project</h4>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>

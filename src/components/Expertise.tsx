@@ -37,7 +37,7 @@ export const Expertise: React.FC = () => {
         
         <div className="grid md:grid-cols-2 gap-6">
           {expertiseData.map((item, index) => (
-            <Reveal key={item.id} delay={index * 0.2}>
+            <Reveal key={item.id} delay={index * 0.2} className="h-full">
               <div className="bg-white p-10 md:p-12 rounded-[2rem] hover:bg-white hover:shadow-xl hover:shadow-stone-200/50 transition-all duration-500 group border border-stone-100 h-full">
                 <span className="text-sm font-mono opacity-40 mb-12 block">{item.number}</span>
                 <h3 className="text-3xl md:text-4xl mb-6 font-bold tracking-tight text-stone-900">{item.title}</h3>

@@ -24,9 +24,11 @@ export const Reveal: React.FC<RevealProps> = ({
     }
   }, [isInView, mainControls]);
 
+  const passHeight = className?.includes('h-full') ?? false;
   return (
     <div ref={ref} style={{ width }} className={className}>
       <motion.div
+        className={passHeight ? 'h-full' : undefined}
         variants={{
           hidden: { opacity: 0, y: 75 },
           visible: { opacity: 1, y: 0 },
