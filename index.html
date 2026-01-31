@@ -3,9 +3,37 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Thong's Portfolio Landing Page</title>
+    <meta
+      name="description"
+      content="Thong Nguyen Trung - Creative Web Developer specializing in React, TypeScript, Next.js. View my portfolio of web development projects and UX/UI designs."
+    />
+    <meta
+      name="keywords"
+      content="web developer, react developer, typescript, frontend developer, UI/UX designer, portfolio, Thong Nguyen, thongnt, wisen, wisenvn, FE, Front-end Developer, WiNote, Local Note, Smart Note, AI Note, Ghi chú thông minh, Nguyễn Trung Thông, wisensocute"
+    />
+    <meta name="author" content="Thong Nguyen Trung" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://thongnt.id.vn/" />
+    <meta property="og:title" content="Thong Nguyen Trung - Creative Web Developer" />
+    <meta
+      property="og:description"
+      content="Explore my portfolio of web development projects, UI/UX designs, and technical expertise in React, TypeScript, and modern web technologies."
+    />
+    <meta property="og:image" content="https://thongnt.id.vn/assets/avatar1-CTco0h-9.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Thong Nguyen Trung - Creative Web Developer" />
+    <meta name="twitter:description" content="..." />
+    <meta name="twitter:image" content="https://thongnt.id.vn/assets/avatar1-CTco0h-9.jpg" />
+
+    <link rel="canonical" href="https://thongnt.id.vn/" />
+    <title>Thong's Portfolio</title>
     <link rel="icon" type="image/x-icon" href="src/assets/images/favicon.ico" />
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,7 +41,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script>
@@ -45,11 +73,11 @@
         },
       };
     </script>
-    
+
     <!-- Custom Styles -->
     <style>
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         cursor: crosshair;
       }
       .vertical-text {
@@ -61,7 +89,7 @@
         width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #FBFAF3;
+        background: #fbfaf3;
       }
       ::-webkit-scrollbar-thumb {
         background: #ddd;
@@ -71,13 +99,19 @@
         background: #bbb;
       }
     </style>
-    
+
     <!-- EmailJS & Toastify -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
   </head>
-  <body class="bg-background-light text-slate-900 selection:bg-stone-200 selection:text-black overflow-x-hidden antialiased">
+  <body
+    class="bg-background-light text-slate-900 selection:bg-stone-200 selection:text-black overflow-x-hidden antialiased"
+  >
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
