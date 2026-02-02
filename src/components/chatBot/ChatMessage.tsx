@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { User, Sparkles } from 'lucide-react';
 import type { Message } from '../../types/chat';
+import '../../scss/components/_animations.scss';
 
 interface ChatMessageProps {
   message: Message;
@@ -67,20 +68,16 @@ export const TypingIndicator: React.FC = () => {
         <Sparkles size={16} />
       </div>
 
-      {/* Typing animation */}
+      {/* Typing animation - CSS so it keeps running when main thread is busy */}
       <div className="inline-block px-4 py-3 rounded-2xl bg-slate-100 rounded-bl-sm">
         <div className="flex gap-1">
           {[0, 1, 2].map((i) => (
-            <motion.div
+            <span
               key={i}
-              className="w-2 h-2 bg-slate-400 rounded-full"
-              animate={{
-                y: [0, -8, 0],
-              }}
-              transition={{
-                duration: 0.6,
-                repeat: Infinity,
-                delay: i * 0.15,
+              className="w-2 h-2 bg-slate-400 rounded-full inline-block"
+              style={{
+                animation: 'typing-dot 0.6s ease-in-out infinite',
+                animationDelay: `${i * 0.15}s`,
               }}
             />
           ))}
