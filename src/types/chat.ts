@@ -8,7 +8,7 @@ export interface Message {
 export interface LoadingProgress {
   progress: number;
   file: string;
-  status: string;
+  status: 'idle' | 'progress' | 'done' | 'ready';
   loaded?: number;
   total?: number;
 }
