@@ -1,6 +1,8 @@
 import { pipeline, env } from '@xenova/transformers';
 import type { ProgressCallback } from '../types/chat';
 import { SYSTEM_PROMPT } from '../data/chatContext';
+import { aggregateProgress, fileProgressMap } from '../utils/aiChat/aggregateProgress';
+
 
 // Configure transformers.js environment for better browser performance
 env.allowLocalModels = false; // Use CDN for model files
@@ -12,7 +14,9 @@ class AIChatService {
   private loadingPromise: Promise<void> | null = null;
 
   /**
-   * Load the GPT-2 model with progress tracking
+   * Load the model with progress tracking
+   * @param onProgress 
+   * @returns Promise<void>
    */
   async loadModel(onProgress?: ProgressCallback): Promise<void> {
     // If already loaded, return immediately
@@ -26,31 +30,19 @@ class AIChatService {
     }
 
     this.isLoading = true;
+    fileProgressMap.clear();
 
     this.loadingPromise = (async () => {
       try {
-        // Create the text generation pipeline with LaMini-Flan-T5
-        // LaMini-Flan-T5-783M is a 783M parameter instruction-tuned model
-        // - Specifically trained for question answering and instruction following
-        // - Optimized for browser inference with transformers.js
-        // - Publicly accessible without authentication
-        
+        // Use Xenova-converted model (ONNX IR ≤8); onnx-community Qwen2.5 uses IR 10, unsupported in browser
         this.pipeline = await pipeline(
-          'text2text-generation',
-          'Xenova/LaMini-Flan-T5-783M',
+          'text-generation',
+          'Xenova/Qwen1.5-0.5B-Chat',
           {
-            quantized: true, // Use quantized version for better performance
+            quantized: true,
             progress_callback: (progress: any) => {
               if (onProgress) {
-                // Extract progress information
-                const progressInfo = {
-                  progress: progress.progress || 0,
-                  file: progress.file || '',
-                  status: progress.status || 'downloading',
-                  loaded: progress.loaded,
-                  total: progress.total,
-                };
-                onProgress(progressInfo);
+                onProgress(aggregateProgress(progress));
               }
             },
           }
@@ -77,7 +69,6 @@ class AIChatService {
 
   /**
    * Truncate text to approximately fit within token limit
-   * GPT-2 uses roughly 1.3-1.5 tokens per word as a rough estimate
    */
   private truncateToTokenLimit(text: string, maxTokens: number): string {
     // Rough estimation: 1 token ≈ 0.75 words
@@ -100,42 +91,38 @@ class AIChatService {
     }
 
     try {
-      // T5 models work with a max context length of 512 tokens
-      const MAX_NEW_TOKENS = 128;
-      const RESERVED_TOKENS = 50; // Buffer for question
       const MAX_SYSTEM_TOKENS = 400;
 
       // Truncate system prompt if needed
       const truncatedSystemPrompt = this.truncateToTokenLimit(SYSTEM_PROMPT, MAX_SYSTEM_TOKENS);
 
-      // Build an instruction prompt optimized for T5/Flan models
-      // T5 is an encoder-decoder model, so we format as a clear instruction
-      const prompt = `${truncatedSystemPrompt}
+      // Qwen1.5-Chat expects Chat format (system + user); pipeline applies chat template and add_generation_prompt
+      const messages = [
+        { role: 'system' as const, content: truncatedSystemPrompt },
+        {
+          role: 'user' as const,
+          content: `${userMessage}\n\nProvide a concise, professional answer based only on the information above.`,
+        },
+      ];
 
-Question: ${userMessage}
-
-Provide a concise, professional answer based only on the information above.`;
-
-      // Generate the response with T5-optimized parameters
-      const result = await this.pipeline(prompt, {
-        max_new_tokens: MAX_NEW_TOKENS,
-        temperature: 0.7,
-        top_k: 50,
-        do_sample: true,
+      const result = await this.pipeline(messages, {
+        max_new_tokens: 150,
+        return_full_text: false,
+        do_sample: false,
       });
 
-      // Extract the generated text from T5 model
-      // T5 returns the output directly in generated_text field
+      // Chat input: generated_text is Message[] with new assistant message last
+      const raw = Array.isArray(result) ? (result[0] as any)?.generated_text : (result as any)?.generated_text;
       let generatedText = '';
-      if (Array.isArray(result)) {
-        generatedText = (result[0] as any)?.generated_text || '';
-      } else {
-        generatedText = (result as any)?.generated_text || '';
+      if (Array.isArray(raw) && raw.length > 0) {
+        const last = raw[raw.length - 1];
+        generatedText = typeof last?.content === 'string' ? last.content : '';
+      } else if (typeof raw === 'string') {
+        generatedText = raw;
       }
 
-      // T5 models return clean output without the prompt, so use directly
       const cleanResponse = generatedText
-        .split('\n\n')[0] // Take the first complete thought
+        .split('\n\n')[0]
         .trim();
 
       // Validate response quality

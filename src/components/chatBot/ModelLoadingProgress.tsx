@@ -37,8 +37,23 @@ const formatBytes = (bytes: number): string => {
   return `${formattedValue} ${BYTE_SIZES[index]}`;
 };
 
+/** Rounds to 1 decimal for MB/GB to reduce flicker when values update rapidly */
+const formatBytesStable = (bytes: number): string => {
+  if (!isValidNumber(bytes) || bytes < 0) return '0 Bytes';
+  if (bytes === 0) return '0 Bytes';
+
+  const index = Math.floor(Math.log(bytes) / Math.log(BYTES_UNIT));
+  const value = bytes / Math.pow(BYTES_UNIT, index);
+  const formattedValue = index >= 2 ? Math.round(value * 10) / 10 : Math.round(value * 100) / 100;
+
+  return `${formattedValue} ${BYTE_SIZES[index]}`;
+};
+
 const extractFileName = (filePath: string): string =>
   filePath.split('/').pop() || filePath;
+
+const fileProgressPercentage = (loaded: number, total: number): number =>
+  total > 0 ? Math.round((loaded / total) * 100) : 0;
 
 export const ModelLoadingProgress: React.FC<ModelLoadingProgressProps> = ({ progress }) => {
   const isComplete = useMemo(() => isCompleteStatus(progress.status), [progress.status]);
@@ -55,6 +70,8 @@ export const ModelLoadingProgress: React.FC<ModelLoadingProgressProps> = ({ prog
     [isComplete, progress.loaded, progress.total]
   );
 
+  const hasMultipleFiles = !isComplete && progress.files && progress.files.length > 0;
+
   const statusMessage = isComplete ? 'Model loaded, preparing to chat...' : 'Loading AI model...';
 
   return (
@@ -67,7 +84,7 @@ export const ModelLoadingProgress: React.FC<ModelLoadingProgressProps> = ({ prog
 
       <div className="text-center space-y-2">
         <p className="text-lg font-medium text-slate-900">{statusMessage}</p>
-        {!isComplete && fileName && (
+        {!isComplete && !hasMultipleFiles && fileName && (
           <p className="text-sm text-slate-600">{fileName}</p>
         )}
       </div>
@@ -84,9 +101,30 @@ export const ModelLoadingProgress: React.FC<ModelLoadingProgressProps> = ({ prog
         <p className="text-sm text-slate-600 text-center mt-2">{percentage}%</p>
       </div>
 
-      {showFileSize && (
+      {hasMultipleFiles && (
+        <div className="w-full max-w-xs space-y-1.5">
+          {progress.files!.map((f) => (
+            <div key={f.file} className="flex items-center gap-2">
+              <span className="text-xs text-slate-600 truncate flex-1 min-w-0" title={f.file}>
+                {extractFileName(f.file)}
+              </span>
+              <span className="text-xs text-slate-500 tabular-nums shrink-0">
+                {fileProgressPercentage(f.loaded, f.total)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showFileSize && !hasMultipleFiles && (
         <p className="text-xs text-slate-500 min-w-[110px] text-center tabular-nums">
           {formatBytes(progress.loaded!)} / {formatBytes(progress.total!)}
+        </p>
+      )}
+
+      {showFileSize && hasMultipleFiles && progress.loaded != null && progress.total != null && (
+        <p className="text-xs text-slate-500 min-w-[110px] text-center tabular-nums">
+          {formatBytesStable(progress.loaded)} / {formatBytesStable(progress.total)} total
         </p>
       )}
     </div>

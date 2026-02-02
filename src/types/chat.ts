@@ -5,12 +5,20 @@ export interface Message {
   timestamp: Date;
 }
 
+export interface FileProgress {
+  file: string;
+  loaded: number;
+  total: number;
+}
+
 export interface LoadingProgress {
   progress: number;
   file: string;
   status: 'idle' | 'progress' | 'done' | 'ready';
   loaded?: number;
   total?: number;
+  /** Per-file progress when loading multiple files in parallel */
+  files?: FileProgress[];
 }
 
 export interface ChatState {
