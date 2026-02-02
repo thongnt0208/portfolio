@@ -13,7 +13,7 @@ const Footer = lazy(() => import('./components/Footer').then(module => ({ defaul
 
 // Chat components (not lazy loaded as they manage their own loading)
 import { ChatToggleButton } from './components/chatBot/ChatToggleButton';
-import { ChatPanel } from './components/chatBot/ChatPanel';
+import { ChatPanel } from './components/chatBot/panel/ChatPanel';
 
 const App: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
