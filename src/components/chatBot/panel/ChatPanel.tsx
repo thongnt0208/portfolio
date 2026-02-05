@@ -46,11 +46,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     setIsModelLoading(true);
     setError(null);
     try {
-      // comment out for adjusting UI
       await aiChatService.loadModel((progress) => {
         setLoadingProgress(progress);
       });
-      await new Promise(resolve => setTimeout(resolve, 5000)); // for adjusting UI
+      // Keep the artificial delay only in development to avoid slowing down production UI
+      if (import.meta.env.DEV) {
+        await new Promise(resolve => setTimeout(resolve, 5000)); // for adjusting UI
+      }
       setIsModelReady(true);
       setIsModelLoading(false);
       addMessage(

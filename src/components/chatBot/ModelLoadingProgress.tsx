@@ -32,9 +32,10 @@ const formatBytes = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes';
 
   const index = Math.floor(Math.log(bytes) / Math.log(BYTES_UNIT));
-  const formattedValue = Math.round((bytes / Math.pow(BYTES_UNIT, index)) * 100) / 100;
+  const safeIndex = Math.min(index, BYTE_SIZES.length - 1);
+  const formattedValue = Math.round((bytes / Math.pow(BYTES_UNIT, safeIndex)) * 100) / 100;
 
-  return `${formattedValue} ${BYTE_SIZES[index]}`;
+  return `${formattedValue} ${BYTE_SIZES[safeIndex]}`;
 };
 
 /** Rounds to 1 decimal for MB/GB to reduce flicker when values update rapidly */
@@ -43,10 +44,11 @@ const formatBytesStable = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes';
 
   const index = Math.floor(Math.log(bytes) / Math.log(BYTES_UNIT));
-  const value = bytes / Math.pow(BYTES_UNIT, index);
-  const formattedValue = index >= 2 ? Math.round(value * 10) / 10 : Math.round(value * 100) / 100;
+  const safeIndex = Math.min(index, BYTE_SIZES.length - 1);
+  const value = bytes / Math.pow(BYTES_UNIT, safeIndex);
+  const formattedValue = safeIndex >= 2 ? Math.round(value * 10) / 10 : Math.round(value * 100) / 100;
 
-  return `${formattedValue} ${BYTE_SIZES[index]}`;
+  return `${formattedValue} ${BYTE_SIZES[safeIndex]}`;
 };
 
 const extractFileName = (filePath: string): string =>

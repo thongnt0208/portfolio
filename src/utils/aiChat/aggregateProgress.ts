@@ -2,12 +2,20 @@ import { LoadingProgress } from "@/types/chat";
 
 export const fileProgressMap = new Map<string, { loaded: number; total: number }>();
 
+type ProgressEvent = {
+  file?: string;
+  loaded?: number;
+  total?: number;
+  progress?: number;
+  status?: string;
+};
+
 /**
  * Aggregate progress from the model into a single progress object
  * @param progress 
  * @returns LoadingProgress from "@/types/chat"
  */
-export function aggregateProgress(progress: any): LoadingProgress {
+export function aggregateProgress(progress: ProgressEvent): LoadingProgress {
   const file = progress.file || '';
   const loaded = progress.loaded ?? 0;
   const total = progress.total ?? 0;
