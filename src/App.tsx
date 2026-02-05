@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 
 // Lazy load components
 
@@ -11,7 +11,13 @@ const LatestWork = lazy(() => import('./components/LatestWork').then(module => (
 const Contact = lazy(() => import('./components/Contact').then(module => ({ default: module.Contact })));
 const Footer = lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
 
+// Chat components (not lazy loaded as they manage their own loading)
+import { ChatToggleButton } from './components/chatBot/ChatToggleButton';
+import { ChatPanel } from './components/chatBot/panel/ChatPanel';
+
 const App: React.FC = () => {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
   return (
     <div className="relative min-h-screen w-full">
       <Suspense fallback={<div>Loading...</div>}>
@@ -28,6 +34,10 @@ const App: React.FC = () => {
 
         <Footer />
       </Suspense>
+
+      {/* AI Chat Feature */}
+      <ChatToggleButton onClick={() => setIsChatOpen(true)} />
+      <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 };
