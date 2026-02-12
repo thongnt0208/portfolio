@@ -3,13 +3,16 @@ import type { ProgressCallback } from '../types/chat';
 import { SYSTEM_PROMPT } from '../data/chatContext';
 import { aggregateProgress, fileProgressMap } from '../utils/aiChat/aggregateProgress';
 
-// Configure transformers.js environment for better browser performance
-env.allowLocalModels = false; // Use CDN for model files
-env.useBrowserCache = true;   // Cache models in browser
+// Configure transformers.js environment
+env.allowLocalModels = false;
+env.useBrowserCache = true;
 
-// Run WASM in a proxy worker so inference doesn't block the main thread (avoids "Page Unresponsive")
-if (typeof window !== 'undefined' && env.backends?.onnx?.wasm) {
-  env.backends.onnx.wasm.proxy = true;
+// Configure GPU acceleration
+if (typeof window !== 'undefined') {
+  // Configure WASM to run in worker (prevents blocking main thread)
+  if (env.backends?.onnx?.wasm) {
+    env.backends.onnx.wasm.proxy = true;
+  }
 }
 
 class AIChatService {
