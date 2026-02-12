@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { aiChatService } from '../../../services/aiChatService';
+import aiChatService  from '../../../services/aiChatService';
 import { ChatInput } from '../ChatInput';
 import { ChatPanelHeader } from './ChatPanelHeader';
 import { ChatErrorBanner } from './ChatErrorBanner';
