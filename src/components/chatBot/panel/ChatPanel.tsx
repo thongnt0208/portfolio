@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { aiChatService } from '../../../services/aiChatService';
+import aiChatService from '../../../services/aiChatService';
 import { ChatInput } from '../ChatInput';
 import { ChatPanelHeader } from './ChatPanelHeader';
 import { ChatErrorBanner } from './ChatErrorBanner';
@@ -31,8 +31,21 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && !hasInitialized.current && !aiChatService.isModelReady()) {
-      hasInitialized.current = true;
-      loadModel();
+      // Check WebGPU compatibility first (async)
+      const checkAndLoad = async () => {
+        const gpuCheck = await aiChatService.checkWebGPU();
+        console.log('ChatPanel WebGPU check:', gpuCheck);
+        if (!gpuCheck.supported) {
+          const errorMsg = gpuCheck.error || 'WebGPU is not supported in your browser.';
+          console.error('WebGPU not supported in ChatPanel:', gpuCheck.details);
+          setError(errorMsg);
+          return;
+        }
+        // Only set flag after WebGPU check passes
+        hasInitialized.current = true;
+        loadModel();
+      };
+      checkAndLoad();
     } else if (isOpen && aiChatService.isModelReady()) {
       setIsModelReady(true);
     }
@@ -61,9 +74,50 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
       );
     } catch (err) {
       console.error('Failed to load model:', err);
-      setError(
-        'Failed to load the AI model. Please check your internet connection and try again.'
-      );
+      
+      // Check WebGPU status when error occurs
+      let webGPUStatus = 'not checked';
+      let webGPUError = '';
+      try {
+        const gpuCheck = await aiChatService.checkWebGPU();
+        if (gpuCheck.supported) {
+          webGPUStatus = 'supported';
+        } else {
+          webGPUStatus = 'not supported';
+          webGPUError = gpuCheck.error || 'Unknown WebGPU error';
+        }
+      } catch (gpuErr) {
+        webGPUStatus = 'check failed';
+        webGPUError = gpuErr instanceof Error ? gpuErr.message : String(gpuErr);
+      }
+      
+      // Extract comprehensive error information for debugging (console only)
+      const errorDetails = {
+        message: err instanceof Error ? err.message : String(err),
+        name: err instanceof Error ? err.name : 'Unknown',
+        stack: err instanceof Error ? err.stack : undefined,
+        webGPU: webGPUStatus,
+        webGPUError,
+        webGPUInNavigator: 'gpu' in navigator,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        timestamp: new Date().toISOString(),
+      };
+      
+      console.error('Detailed error info:', errorDetails);
+      
+      // Show user-friendly error message
+      let errorMessage: string;
+      if (webGPUError && webGPUError.includes('HTTPS')) {
+        // HTTPS-related error - show the WebGPU error which has good guidance
+        errorMessage = webGPUError;
+      } else {
+        // Other errors - show simplified message
+        const baseMessage = err instanceof Error ? err.message : String(err);
+        errorMessage = baseMessage;
+      }
+      
+      setError(errorMessage);
       setIsModelLoading(false);
     }
   };
@@ -83,10 +137,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     addMessage('user', userMessage);
     setIsGenerating(true);
     setError(null);
-    
+
     // Allow React to render the loading state before heavy computation
     await new Promise(resolve => setTimeout(resolve, 0));
-    
+
     try {
       const response = await aiChatService.generateResponse(userMessage);
       addMessage('assistant', response);
