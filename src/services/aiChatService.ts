@@ -24,15 +24,131 @@ const SELECTED_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
 /**
  * Check if WebGPU is supported in the current browser
  */
-const checkWebGPUSupport = (): { supported: boolean; error?: string } => {
-  if (!('gpu' in navigator)) {
+const checkWebGPUSupport = async (): Promise<{ supported: boolean; error?: string; details?: any }> => {
+  // Check if we're in a secure context first
+  const isSecureContext = window.isSecureContext;
+  const protocol = window.location.protocol;
+  const hostname = window.location.hostname;
+  
+  if (!isSecureContext && protocol === 'http:' && !['localhost', '127.0.0.1', ''].includes(hostname)) {
+    const fullUrl = `${protocol}//${hostname}`;
+    console.warn('WebGPU blocked - insecure context detected:', {
+      protocol,
+      hostname,
+      fullUrl,
+      isSecureContext,
+      userAgent: navigator.userAgent,
+      solution: 'Use HTTPS or localhost',
+      workaround: `Add ${fullUrl} to chrome://flags/#unsafely-treat-insecure-origin-as-secure`,
+    });
+    
+    return {
+      supported: false,
+      error: `⚠️ WebGPU requires HTTPS
+
+Current URL: ${fullUrl}
+
+Solutions:
+• Use HTTPS instead of HTTP
+• Access via https://localhost:5173
+• For development: Enable in chrome://flags
+  Search: "Insecure origins treated as secure"
+  Add: ${fullUrl}`,
+      details: {
+        reason: 'insecure context - WebGPU blocked',
+        protocol,
+        hostname,
+        isSecureContext,
+        userAgent: navigator.userAgent,
+        suggestion: `Access via HTTPS or add ${fullUrl} to chrome://flags/#unsafely-treat-insecure-origin-as-secure`,
+      }
+    };
+  }
+  
+  // First check if navigator.gpu exists
+  if (!('gpu' in navigator) || !navigator.gpu) {
     return {
       supported: false,
       error:
         'WebGPU is not supported in your browser. Please use Chrome 113+, Edge 113+, or Safari 17.4+ for the best experience.',
+      details: {
+        reason: 'navigator.gpu not found',
+        userAgent: navigator.userAgent,
+        isSecureContext,
+        protocol,
+        hostname,
+      }
     };
   }
-  return { supported: true };
+
+  // Try to actually request a WebGPU adapter to verify it works
+  try {
+    const gpu = navigator.gpu as any;
+    
+    // Try high-performance first, then fallback to compatibility mode
+    let adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
+    
+    if (!adapter) {
+      console.log('High-performance adapter not available, trying default adapter...');
+      adapter = await gpu.requestAdapter();
+    }
+    
+    if (!adapter) {
+      console.log('Default adapter not available, trying low-power adapter...');
+      adapter = await gpu.requestAdapter({ powerPreference: 'low-power' });
+    }
+    
+    if (!adapter) {
+      return {
+        supported: false,
+        error: 'WebGPU adapter could not be created. Your device may not support WebGPU or it may be disabled.',
+        details: {
+          reason: 'adapter is null after trying all options',
+          userAgent: navigator.userAgent,
+          navigatorGPU: typeof navigator.gpu,
+          platform: navigator.platform,
+        }
+      };
+    }
+    
+    console.log('WebGPU adapter obtained successfully');
+    
+    // Get adapter info if available
+    let adapterInfo: any = { status: 'info not available' };
+    try {
+      if ('info' in adapter && adapter.info) {
+        adapterInfo = {
+          vendor: adapter.info.vendor || 'unknown',
+          architecture: adapter.info.architecture || 'unknown',
+          device: adapter.info.device || 'unknown',
+          description: adapter.info.description || 'unknown',
+        };
+      }
+    } catch (infoErr) {
+      adapterInfo = { error: 'Could not read adapter info', details: String(infoErr) };
+    }
+    
+    // Successfully got an adapter, WebGPU is truly supported
+    return { 
+      supported: true,
+      details: {
+        adapterInfo,
+        limits: adapter.limits ? 'available' : 'not available',
+        features: adapter.features ? `${adapter.features.size} features` : 'not available',
+      }
+    };
+  } catch (err) {
+    return {
+      supported: false,
+      error: `WebGPU initialization failed: ${err instanceof Error ? err.message : String(err)}`,
+      details: {
+        reason: 'adapter request failed',
+        errorName: err instanceof Error ? err.name : 'unknown',
+        errorMessage: err instanceof Error ? err.message : String(err),
+        userAgent: navigator.userAgent,
+      }
+    };
+  }
 };
 
 /**
@@ -80,28 +196,58 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
   if (isLoading && loadingPromise) return loadingPromise;
 
   // Check WebGPU support before attempting to load
-  const gpuCheck = checkWebGPUSupport();
+  const gpuCheck = await checkWebGPUSupport();
+  console.log('WebGPU check result:', gpuCheck);
   if (!gpuCheck.supported) {
-    throw new Error(gpuCheck.error);
+    const errorMsg = gpuCheck.error || 'WebGPU is not supported';
+    console.error('WebGPU not supported:', gpuCheck.details);
+    throw new Error(errorMsg);
   }
+  
+  console.log('WebGPU is supported:', gpuCheck.details);
 
   isLoading = true;
 
   loadingPromise = (async () => {
     try {
+      console.log('Starting to create MLCEngine with model:', SELECTED_MODEL);
+      
       // Create MLCEngine with progress callback
       engine = await CreateMLCEngine(SELECTED_MODEL, {
         initProgressCallback: (report: InitProgressReport) => {
+          console.log('Model loading progress:', report);
           if (onProgress) {
             onProgress(convertProgress(report));
           }
         },
       });
+      
+      console.log('MLCEngine created successfully');
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Failed to load model:', error);
+      const stack = error instanceof Error ? error.stack : undefined;
+      
+      console.error('Failed to load model:', {
+        error,
+        message,
+        stack,
+        modelId: SELECTED_MODEL,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+      });
+      
       engine = null;
-      throw new Error(`Failed to load AI model. ${message}`);
+      
+      // Provide more specific error messages based on error type
+      if (message.includes('fetch') || message.includes('network') || message.includes('Failed to fetch')) {
+        throw new Error(`Network error while loading model. Please check your internet connection. Details: ${message}`);
+      } else if (message.includes('memory') || message.includes('allocation')) {
+        throw new Error(`Insufficient memory to load model. Try closing other apps. Details: ${message}`);
+      } else if (message.includes('WebGPU') || message.includes('GPU')) {
+        throw new Error(`GPU initialization failed. ${message}`);
+      } else {
+        throw new Error(`Failed to load AI model: ${message}`);
+      }
     } finally {
       isLoading = false;
       loadingPromise = null;

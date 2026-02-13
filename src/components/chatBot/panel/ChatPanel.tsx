@@ -31,15 +31,21 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && !hasInitialized.current && !aiChatService.isModelReady()) {
-      // Check WebGPU compatibility first
-      const gpuCheck = aiChatService.checkWebGPU();
-      if (!gpuCheck.supported) {
-        setError(gpuCheck.error || 'WebGPU is not supported in your browser.');
-        return;
-      }
-      // Only set flag after WebGPU check passes
-      hasInitialized.current = true;
-      loadModel();
+      // Check WebGPU compatibility first (async)
+      const checkAndLoad = async () => {
+        const gpuCheck = await aiChatService.checkWebGPU();
+        console.log('ChatPanel WebGPU check:', gpuCheck);
+        if (!gpuCheck.supported) {
+          const errorMsg = gpuCheck.error || 'WebGPU is not supported in your browser.';
+          console.error('WebGPU not supported in ChatPanel:', gpuCheck.details);
+          setError(errorMsg);
+          return;
+        }
+        // Only set flag after WebGPU check passes
+        hasInitialized.current = true;
+        loadModel();
+      };
+      checkAndLoad();
     } else if (isOpen && aiChatService.isModelReady()) {
       setIsModelReady(true);
     }
@@ -68,10 +74,39 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
       );
     } catch (err) {
       console.error('Failed to load model:', err);
-      setError(
-        // 'Failed to load the AI model. Please check your internet connection and try again.'
-        JSON.stringify(err)
-      );
+      
+      // Check WebGPU status when error occurs
+      let webGPUStatus = 'not checked';
+      try {
+        const gpuCheck = await aiChatService.checkWebGPU();
+        webGPUStatus = gpuCheck.supported ? `Supported: ${JSON.stringify(gpuCheck.details)}` : `Not supported: ${gpuCheck.error}`;
+      } catch (gpuErr) {
+        webGPUStatus = `Check failed: ${gpuErr instanceof Error ? gpuErr.message : String(gpuErr)}`;
+      }
+      
+      // Extract comprehensive error information for debugging
+      const errorDetails = {
+        message: err instanceof Error ? err.message : String(err),
+        name: err instanceof Error ? err.name : 'Unknown',
+        stack: err instanceof Error ? err.stack : undefined,
+        // Additional error properties that might exist
+        ...(err && typeof err === 'object' ? err : {}),
+        // WebGPU status at time of error
+        webGPU: webGPUStatus,
+        webGPUInNavigator: 'gpu' in navigator,
+        // Device/browser context
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screenSize: `${window.screen.width}x${window.screen.height}`,
+        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+        timestamp: new Date().toISOString(),
+      };
+      
+      const errorMessage = `Failed to load model:\n${errorDetails.name}: ${errorDetails.message}\n\nWebGPU Status: ${webGPUStatus}\nDevice: ${errorDetails.platform}\nScreen: ${errorDetails.screenSize}\nViewport: ${errorDetails.viewportSize}\n\nFull details:\n${JSON.stringify(errorDetails, null, 2)}`;
+      
+      console.error('Detailed error info:', errorDetails);
+      setError(errorMessage);
       setIsModelLoading(false);
     }
   };
