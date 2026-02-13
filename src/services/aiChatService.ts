@@ -1,24 +1,27 @@
-import { pipeline, env } from '@xenova/transformers';
+import { CreateMLCEngine, type MLCEngineInterface, type InitProgressReport } from '@mlc-ai/web-llm';
 import type { ProgressCallback } from '../types/chat';
 import { SYSTEM_PROMPT } from '../data/chatContext';
-import { aggregateProgress, fileProgressMap } from '../utils/aiChat/aggregateProgress';
-
-// Configure transformers.js environment
-env.allowLocalModels = false;
-env.useBrowserCache = true;
-
-// Configure GPU acceleration
-if (typeof window !== 'undefined') {
-  // Configure WASM to run in worker (prevents blocking main thread)
-  if (env.backends?.onnx?.wasm) {
-    env.backends.onnx.wasm.proxy = true;
-  }
-}
 
 // Module-level state
-let model: any | null = null;
+let engine: MLCEngineInterface | null = null;
 let isLoading = false;
 let loadingPromise: Promise<void> | null = null;
+
+// Selected model - using a lightweight Qwen model optimized for WebGPU
+// {
+//       model: "https://huggingface.co/mlc-ai/Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
+//       model_id: "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
+//       model_lib:
+//         modelLibURLPrefix +
+//         modelVersion +
+//         "/Qwen2-0.5B-Instruct-q4f16_1-ctx4k_cs1k-webgpu.wasm",
+//       low_resource_required: true,
+//       vram_required_MB: 944.62,
+//       overrides: {
+//         context_window_size: 4096,
+//       },
+//     },
+const SELECTED_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
 
 /**
  * Truncate text to approximately fit within token limit
@@ -30,44 +33,42 @@ const truncateToTokenLimit = (text: string, maxTokens: number): string => {
 };
 
 /**
- * Extract generated text from pipeline result
+ * Convert WebLLM's InitProgressReport to our LoadingProgress format
  */
-const extractGeneratedText = (result: any): string => {
-  const raw = Array.isArray(result) ? result[0]?.generated_text : result?.generated_text;
+const convertProgress = (report: InitProgressReport) => {
+  const progress = report.progress || 0;
+  const text = report.text || '';
 
-  if (Array.isArray(raw) && raw.length > 0) {
-    const last = raw[raw.length - 1];
-    return typeof last?.content === 'string' ? last.content : '';
-  }
-
-  return typeof raw === 'string' ? raw : '';
+  return {
+    progress: progress * 100, // Convert 0-1 to 0-100
+    file: text,
+    status: progress >= 0.99 ? ('done' as const) : ('progress' as const),
+  };
 };
 
 /**
  * Load the model with progress tracking
  */
 export const loadModel = async (onProgress?: ProgressCallback): Promise<void> => {
-  if (model) return;
+  if (engine) return;
   if (isLoading && loadingPromise) return loadingPromise;
 
   isLoading = true;
-  fileProgressMap.clear();
 
   loadingPromise = (async () => {
     try {
-      // Use Xenova-converted model (ONNX IR ≤8)
-      model = await pipeline(
-        'text-generation',
-        'Xenova/Qwen1.5-0.5B-Chat',
-        {
-          quantized: true,
-          progress_callback: (progress: any) => onProgress?.(aggregateProgress(progress)),
-        }
-      ) as any;
+      // Create MLCEngine with progress callback
+      engine = await CreateMLCEngine(SELECTED_MODEL, {
+        initProgressCallback: (report: InitProgressReport) => {
+          if (onProgress) {
+            onProgress(convertProgress(report));
+          }
+        },
+      });
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error';
       console.error('Failed to load model:', error);
-      model = null;
+      engine = null;
       throw new Error(`Failed to load AI model. ${message}`);
     } finally {
       isLoading = false;
@@ -82,7 +83,7 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
  * Generate a response to the user's question
  */
 export const generateResponse = async (userMessage: string): Promise<string> => {
-  if (!model) {
+  if (!engine) {
     throw new Error('Model not loaded. Please call loadModel() first.');
   }
 
@@ -97,13 +98,13 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
       },
     ];
 
-    const result = await model(messages, {
-      max_new_tokens: 150,
-      return_full_text: false,
-      do_sample: false,
+    const response = await engine.chat.completions.create({
+      messages,
+      max_tokens: 150,
+      temperature: 0.7,
     });
 
-    const cleanResponse = extractGeneratedText(result).split('\n\n')[0].trim();
+    const cleanResponse = response.choices[0]?.message?.content?.trim() || '';
 
     return cleanResponse && cleanResponse.length >= 10
       ? cleanResponse
@@ -117,7 +118,7 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
 /**
  * Check if the model is ready for inference
  */
-export const isModelReady = (): boolean => model !== null;
+export const isModelReady = (): boolean => engine !== null;
 
 /**
  * Check if the model is currently loading
@@ -128,7 +129,7 @@ export const isModelLoading = (): boolean => isLoading;
  * Dispose of the model to free up memory
  */
 export const dispose = (): void => {
-  model = null;
+  engine = null;
   isLoading = false;
   loadingPromise = null;
 };
