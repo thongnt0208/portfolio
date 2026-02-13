@@ -22,6 +22,14 @@ let isGenerating = false;
 const SELECTED_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
 
 /**
+ * Detect if the user is on a mobile device
+ */
+const isMobileDevice = (): boolean => {
+  const ua = navigator.userAgent;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+};
+
+/**
  * Check if WebGPU is supported in the current browser
  */
 const checkWebGPUSupport = async (): Promise<{ supported: boolean; error?: string; details?: any }> => {
@@ -29,38 +37,46 @@ const checkWebGPUSupport = async (): Promise<{ supported: boolean; error?: strin
   const isSecureContext = window.isSecureContext;
   const protocol = window.location.protocol;
   const hostname = window.location.hostname;
+  const port = window.location.port;
+  const fullUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
+  const isMobile = isMobileDevice();
   
-  if (!isSecureContext && protocol === 'http:' && !['localhost', '127.0.0.1', ''].includes(hostname)) {
-    const fullUrl = `${protocol}//${hostname}`;
-    console.warn('WebGPU blocked - insecure context detected:', {
-      protocol,
-      hostname,
-      fullUrl,
-      isSecureContext,
-      userAgent: navigator.userAgent,
-      solution: 'Use HTTPS or localhost',
-      workaround: `Add ${fullUrl} to chrome://flags/#unsafely-treat-insecure-origin-as-secure`,
-    });
+  console.log('WebGPU support check:', {
+    isSecureContext,
+    protocol,
+    hostname,
+    port,
+    fullUrl,
+    isMobile,
+    hasNavigatorGPU: 'gpu' in navigator,
+  });
+  
+  // Check for obvious insecure context (HTTP on non-localhost)
+  if (protocol === 'http:' && !['localhost', '127.0.0.1', ''].includes(hostname)) {
+    console.warn('⚠️ HTTP detected on non-localhost - WebGPU blocked');
+    
+    const httpsUrl = fullUrl.replace('http://', 'https://');
+    const mobileMsg = isMobile 
+      ? `\n\nOn mobile, make sure you're visiting the HTTPS version of this site.` 
+      : '';
     
     return {
       supported: false,
-      error: `⚠️ WebGPU requires HTTPS
+      error: `⚠️ This site must use HTTPS for AI chat to work
 
-Current URL: ${fullUrl}
+Your device supports AI features, but this site is accessed via HTTP which blocks them for security.
 
-Solutions:
-• Use HTTPS instead of HTTP
-• Access via https://localhost:5173
-• For development: Enable in chrome://flags
-  Search: "Insecure origins treated as secure"
-  Add: ${fullUrl}`,
+Please visit: ${httpsUrl}${mobileMsg}`,
       details: {
-        reason: 'insecure context - WebGPU blocked',
+        reason: 'insecure context - HTTP on non-localhost',
         protocol,
         hostname,
+        port,
+        fullUrl,
+        httpsUrl,
         isSecureContext,
+        isMobile,
         userAgent: navigator.userAgent,
-        suggestion: `Access via HTTPS or add ${fullUrl} to chrome://flags/#unsafely-treat-insecure-origin-as-secure`,
       }
     };
   }
@@ -77,6 +93,7 @@ Solutions:
         isSecureContext,
         protocol,
         hostname,
+        isMobile,
       }
     };
   }
@@ -84,6 +101,14 @@ Solutions:
   // Try to actually request a WebGPU adapter to verify it works
   try {
     const gpu = navigator.gpu as any;
+    
+    console.log('Attempting to request WebGPU adapter...', {
+      isSecureContext,
+      protocol,
+      hostname,
+      isMobile,
+      hasGPU: !!gpu,
+    });
     
     // Try high-performance first, then fallback to compatibility mode
     let adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
@@ -99,15 +124,64 @@ Solutions:
     }
     
     if (!adapter) {
+      console.log('Low-power adapter not available, trying compatibility mode...');
+      adapter = await gpu.requestAdapter({ compatibilityMode: true } as any);
+    }
+    
+    if (!adapter) {
+      // Adapter is null - this often happens in insecure contexts even if navigator.gpu exists
+      const errorDetails = {
+        reason: 'adapter is null after trying all options',
+        userAgent: navigator.userAgent,
+        navigatorGPU: typeof navigator.gpu,
+        platform: navigator.platform,
+        isSecureContext,
+        protocol,
+        hostname,
+        isMobile,
+      };
+      
+      console.error('All adapter requests returned null:', errorDetails);
+      
+      // Check if this is likely an HTTPS issue
+      const httpsUrl = fullUrl.replace('http://', 'https://');
+      const isHttpIssue = !isSecureContext || (protocol === 'http:' && !['localhost', '127.0.0.1'].includes(hostname));
+      
+      if (isHttpIssue) {
+        const mobileMsg = isMobile 
+          ? `\n\nOn mobile, make sure you're visiting:\n${httpsUrl}\n\nBookmark the HTTPS version to avoid this issue.` 
+          : `\n\nFor development: Enable in chrome://flags\n  1. Open chrome://flags/#unsafely-treat-insecure-origin-as-secure\n  2. Add: ${fullUrl}\n  3. Restart Chrome`;
+        
+        return {
+          supported: false,
+          error: `⚠️ This site must use HTTPS for AI chat to work
+
+Your device supports AI features, but this site is accessed via HTTP which blocks them for security.
+
+Please visit: ${httpsUrl}${mobileMsg}`,
+          details: errorDetails,
+        };
+      }
+      
+      // Not an HTTPS issue - likely device limitation or browser flag needed
+      const deviceMsg = isMobile
+        ? `Your device browser supports WebGPU API, but the GPU adapter failed to initialize. 
+
+Try these steps:
+1. Update Chrome to the latest version (Settings → Google Play Store → Update)
+2. Restart your browser completely
+3. Enable WebGPU in Chrome flags:
+   - Open: chrome://flags/#enable-unsafe-webgpu
+   - Set to "Enabled"
+   - Restart Chrome
+
+If the issue persists, your device may have limited WebGPU support.`
+        : 'WebGPU adapter could not be created. Your device may not support WebGPU or it may be disabled.';
+      
       return {
         supported: false,
-        error: 'WebGPU adapter could not be created. Your device may not support WebGPU or it may be disabled.',
-        details: {
-          reason: 'adapter is null after trying all options',
-          userAgent: navigator.userAgent,
-          navigatorGPU: typeof navigator.gpu,
-          platform: navigator.platform,
-        }
+        error: deviceMsg,
+        details: errorDetails,
       };
     }
     
@@ -135,6 +209,7 @@ Solutions:
         adapterInfo,
         limits: adapter.limits ? 'available' : 'not available',
         features: adapter.features ? `${adapter.features.size} features` : 'not available',
+        isMobile,
       }
     };
   } catch (err) {
@@ -146,6 +221,7 @@ Solutions:
         errorName: err instanceof Error ? err.name : 'unknown',
         errorMessage: err instanceof Error ? err.message : String(err),
         userAgent: navigator.userAgent,
+        isMobile,
       }
     };
   }

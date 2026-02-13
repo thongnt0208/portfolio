@@ -77,35 +77,46 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
       
       // Check WebGPU status when error occurs
       let webGPUStatus = 'not checked';
+      let webGPUError = '';
       try {
         const gpuCheck = await aiChatService.checkWebGPU();
-        webGPUStatus = gpuCheck.supported ? `Supported: ${JSON.stringify(gpuCheck.details)}` : `Not supported: ${gpuCheck.error}`;
+        if (gpuCheck.supported) {
+          webGPUStatus = 'supported';
+        } else {
+          webGPUStatus = 'not supported';
+          webGPUError = gpuCheck.error || 'Unknown WebGPU error';
+        }
       } catch (gpuErr) {
-        webGPUStatus = `Check failed: ${gpuErr instanceof Error ? gpuErr.message : String(gpuErr)}`;
+        webGPUStatus = 'check failed';
+        webGPUError = gpuErr instanceof Error ? gpuErr.message : String(gpuErr);
       }
       
-      // Extract comprehensive error information for debugging
+      // Extract comprehensive error information for debugging (console only)
       const errorDetails = {
         message: err instanceof Error ? err.message : String(err),
         name: err instanceof Error ? err.name : 'Unknown',
         stack: err instanceof Error ? err.stack : undefined,
-        // Additional error properties that might exist
-        ...(err && typeof err === 'object' ? err : {}),
-        // WebGPU status at time of error
         webGPU: webGPUStatus,
+        webGPUError,
         webGPUInNavigator: 'gpu' in navigator,
-        // Device/browser context
         userAgent: navigator.userAgent,
         platform: navigator.platform,
-        language: navigator.language,
-        screenSize: `${window.screen.width}x${window.screen.height}`,
-        viewportSize: `${window.innerWidth}x${window.innerHeight}`,
         timestamp: new Date().toISOString(),
       };
       
-      const errorMessage = `Failed to load model:\n${errorDetails.name}: ${errorDetails.message}\n\nWebGPU Status: ${webGPUStatus}\nDevice: ${errorDetails.platform}\nScreen: ${errorDetails.screenSize}\nViewport: ${errorDetails.viewportSize}\n\nFull details:\n${JSON.stringify(errorDetails, null, 2)}`;
-      
       console.error('Detailed error info:', errorDetails);
+      
+      // Show user-friendly error message
+      let errorMessage: string;
+      if (webGPUError && webGPUError.includes('HTTPS')) {
+        // HTTPS-related error - show the WebGPU error which has good guidance
+        errorMessage = webGPUError;
+      } else {
+        // Other errors - show simplified message
+        const baseMessage = err instanceof Error ? err.message : String(err);
+        errorMessage = baseMessage;
+      }
+      
       setError(errorMessage);
       setIsModelLoading(false);
     }
