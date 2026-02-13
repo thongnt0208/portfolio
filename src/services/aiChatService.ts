@@ -6,22 +6,34 @@ import { SYSTEM_PROMPT } from '../data/chatContext';
 let engine: MLCEngineInterface | null = null;
 let isLoading = false;
 let loadingPromise: Promise<void> | null = null;
+let isGenerating = false;
 
-// Selected model - using a lightweight Qwen model optimized for WebGPU
-// {
-//       model: "https://huggingface.co/mlc-ai/Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
-//       model_id: "Qwen2.5-0.5B-Instruct-q4f16_1-MLC",
-//       model_lib:
-//         modelLibURLPrefix +
-//         modelVersion +
-//         "/Qwen2-0.5B-Instruct-q4f16_1-ctx4k_cs1k-webgpu.wasm",
-//       low_resource_required: true,
-//       vram_required_MB: 944.62,
-//       overrides: {
-//         context_window_size: 4096,
-//       },
-//     },
+/**
+ * Selected model identifier used by WebLLM.
+ *
+ * Reference configuration for this model (for documentation only):
+ * - Model URL: https://huggingface.co/mlc-ai/Qwen2.5-0.5B-Instruct-q4f16_1-MLC
+ * - Model ID: Qwen2.5-0.5B-Instruct-q4f16_1-MLC
+ * - Model library (WASM): Qwen2-0.5B-Instruct-q4f16_1-ctx4k_cs1k-webgpu.wasm
+ * - Low resource required: true
+ * - Approx. VRAM required (MB): 944.62
+ * - Overrides: context_window_size = 4096
+ */
 const SELECTED_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+
+/**
+ * Check if WebGPU is supported in the current browser
+ */
+const checkWebGPUSupport = (): { supported: boolean; error?: string } => {
+  if (!('gpu' in navigator)) {
+    return {
+      supported: false,
+      error:
+        'WebGPU is not supported in your browser. Please use Chrome 113+, Edge 113+, or Safari 17.4+ for the best experience.',
+    };
+  }
+  return { supported: true };
+};
 
 /**
  * Truncate text to approximately fit within token limit
@@ -36,13 +48,27 @@ const truncateToTokenLimit = (text: string, maxTokens: number): string => {
  * Convert WebLLM's InitProgressReport to our LoadingProgress format
  */
 const convertProgress = (report: InitProgressReport) => {
-  const progress = report.progress || 0;
+  const progress = typeof report.progress === 'number' ? report.progress : 0;
   const text = report.text || '';
+  const progressPercent = progress * 100; // Convert 0-1 to 0-100
 
   return {
-    progress: progress * 100, // Convert 0-1 to 0-100
+    // Overall progress (0-100)
+    progress: progressPercent,
+    // For backwards compatibility with earlier single-file tracking
     file: text,
-    status: progress >= 0.99 ? ('done' as const) : ('progress' as const),
+    // Status based on exact completion
+    status: progress === 1 ? ('done' as const) : ('progress' as const),
+    // Multi-file compatible structure: we expose progress per file
+    files: text
+      ? [
+          {
+            file: text,
+            loaded: progressPercent,
+            total: 100,
+          },
+        ]
+      : [],
   };
 };
 
@@ -52,6 +78,12 @@ const convertProgress = (report: InitProgressReport) => {
 export const loadModel = async (onProgress?: ProgressCallback): Promise<void> => {
   if (engine) return;
   if (isLoading && loadingPromise) return loadingPromise;
+
+  // Check WebGPU support before attempting to load
+  const gpuCheck = checkWebGPUSupport();
+  if (!gpuCheck.supported) {
+    throw new Error(gpuCheck.error);
+  }
 
   isLoading = true;
 
@@ -87,6 +119,13 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
     throw new Error('Model not loaded. Please call loadModel() first.');
   }
 
+  // Prevent concurrent generation requests
+  if (isGenerating) {
+    throw new Error('Another request is already being processed. Please wait.');
+  }
+
+  isGenerating = true;
+
   try {
     const truncatedSystemPrompt = truncateToTokenLimit(SYSTEM_PROMPT, 400);
 
@@ -101,17 +140,24 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
     const response = await engine.chat.completions.create({
       messages,
       max_tokens: 150,
-      temperature: 0.7,
+      temperature: 0.7, // Intentionally using non-zero temperature for varied responses
     });
 
-    const cleanResponse = response.choices[0]?.message?.content?.trim() || '';
+    const rawContent = response.choices?.[0]?.message?.content;
+    if (rawContent == null) {
+      throw new Error('AI response missing message content.');
+    }
 
-    return cleanResponse && cleanResponse.length >= 10
+    const cleanResponse = rawContent.trim();
+
+    return cleanResponse.length >= 4
       ? cleanResponse
       : "I'm sorry, I couldn't generate a proper response. Please try asking in a different way.";
   } catch (error) {
     console.error('Error generating response:', error);
     throw error;
+  } finally {
+    isGenerating = false;
   }
 };
 
@@ -128,11 +174,24 @@ export const isModelLoading = (): boolean => isLoading;
 /**
  * Dispose of the model to free up memory
  */
-export const dispose = (): void => {
+export const dispose = async (): Promise<void> => {
+  if (engine) {
+    try {
+      await engine.unload();
+    } catch (error) {
+      console.error('Error unloading engine:', error);
+    }
+  }
   engine = null;
   isLoading = false;
   loadingPromise = null;
+  isGenerating = false;
 };
+
+/**
+ * Check if WebGPU is supported (exported for UI compatibility checks)
+ */
+export const checkWebGPU = checkWebGPUSupport;
 
 // Default export for compatibility
 export default {
@@ -141,4 +200,5 @@ export default {
   isModelReady,
   isModelLoading,
   dispose,
+  checkWebGPU,
 };

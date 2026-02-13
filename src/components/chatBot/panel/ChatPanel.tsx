@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import aiChatService  from '../../../services/aiChatService';
+import aiChatService from '../../../services/aiChatService';
 import { ChatInput } from '../ChatInput';
 import { ChatPanelHeader } from './ChatPanelHeader';
 import { ChatErrorBanner } from './ChatErrorBanner';
@@ -31,6 +31,13 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && !hasInitialized.current && !aiChatService.isModelReady()) {
+      // Check WebGPU compatibility first
+      const gpuCheck = aiChatService.checkWebGPU();
+      if (!gpuCheck.supported) {
+        setError(gpuCheck.error || 'WebGPU is not supported in your browser.');
+        return;
+      }
+      // Only set flag after WebGPU check passes
       hasInitialized.current = true;
       loadModel();
     } else if (isOpen && aiChatService.isModelReady()) {
@@ -62,7 +69,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     } catch (err) {
       console.error('Failed to load model:', err);
       setError(
-        'Failed to load the AI model. Please check your internet connection and try again.'
+        // 'Failed to load the AI model. Please check your internet connection and try again.'
+        JSON.stringify(err)
       );
       setIsModelLoading(false);
     }
@@ -83,10 +91,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     addMessage('user', userMessage);
     setIsGenerating(true);
     setError(null);
-    
+
     // Allow React to render the loading state before heavy computation
     await new Promise(resolve => setTimeout(resolve, 0));
-    
+
     try {
       const response = await aiChatService.generateResponse(userMessage);
       addMessage('assistant', response);
