@@ -110,22 +110,28 @@ Please visit: ${httpsUrl}${mobileMsg}`,
       hasGPU: !!gpu,
     });
     
-    // Try high-performance first, then fallback to compatibility mode
-    let adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
+    // Try different adapter configurations
+    // Start with default (no options) as it's most likely to work on mobile
+    console.log('Trying default adapter (no options)...');
+    let adapter = await gpu.requestAdapter();
+    console.log('Default adapter result:', adapter ? 'SUCCESS' : 'null');
     
     if (!adapter) {
-      console.log('High-performance adapter not available, trying default adapter...');
-      adapter = await gpu.requestAdapter();
-    }
-    
-    if (!adapter) {
-      console.log('Default adapter not available, trying low-power adapter...');
+      console.log('Trying low-power adapter...');
       adapter = await gpu.requestAdapter({ powerPreference: 'low-power' });
+      console.log('Low-power adapter result:', adapter ? 'SUCCESS' : 'null');
     }
     
     if (!adapter) {
-      console.log('Low-power adapter not available, trying compatibility mode...');
-      adapter = await gpu.requestAdapter({ compatibilityMode: true } as any);
+      console.log('Trying high-performance adapter...');
+      adapter = await gpu.requestAdapter({ powerPreference: 'high-performance' });
+      console.log('High-performance adapter result:', adapter ? 'SUCCESS' : 'null');
+    }
+    
+    if (!adapter) {
+      console.log('Trying fallback adapter...');
+      adapter = await gpu.requestAdapter({ forceFallbackAdapter: true });
+      console.log('Fallback adapter result:', adapter ? 'SUCCESS' : 'null');
     }
     
     if (!adapter) {
@@ -165,18 +171,19 @@ Please visit: ${httpsUrl}${mobileMsg}`,
       
       // Not an HTTPS issue - likely device limitation or browser flag needed
       const deviceMsg = isMobile
-        ? `Your device browser supports WebGPU API, but the GPU adapter failed to initialize. 
+        ? `WebGPU needs to be enabled on your device.
 
-Try these steps:
-1. Update Chrome to the latest version (Settings → Google Play Store → Update)
-2. Restart your browser completely
-3. Enable WebGPU in Chrome flags:
-   - Open: chrome://flags/#enable-unsafe-webgpu
-   - Set to "Enabled"
-   - Restart Chrome
+To enable WebGPU in Chrome:
+1. Open Chrome and visit: chrome://flags
+2. Search for "WebGPU"
+3. Enable these flags:
+   • "Unsafe WebGPU" - Set to "Enabled"
+   • "WebGPU Developer Features" - Set to "Enabled"
+4. Tap "Relaunch" at the bottom
+5. Return to this page and try again
 
-If the issue persists, your device may have limited WebGPU support.`
-        : 'WebGPU adapter could not be created. Your device may not support WebGPU or it may be disabled.';
+Note: WebGPU is experimental on mobile. If enabling flags doesn't work, your device may not fully support WebGPU yet.`
+        : 'WebGPU adapter could not be created. Your device may not support WebGPU or it may be disabled in chrome://flags.';
       
       return {
         supported: false,
@@ -315,7 +322,15 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
       engine = null;
       
       // Provide more specific error messages based on error type
-      if (message.includes('fetch') || message.includes('network') || message.includes('Failed to fetch')) {
+      if (message.includes('ShaderModule') || message.includes('shader') || message.includes('compute stage')) {
+        throw new Error(`⚠️ Your device's GPU doesn't fully support the AI features yet.
+
+WebGPU is enabled on your device, but the GPU implementation is experimental and missing some features needed to run AI models.
+
+Unfortunately, this feature isn't available on your device at this time. Mobile WebGPU support is actively being developed and may improve in future browser updates.
+
+You can still explore the rest of the portfolio!`);
+      } else if (message.includes('fetch') || message.includes('network') || message.includes('Failed to fetch')) {
         throw new Error(`Network error while loading model. Please check your internet connection. Details: ${message}`);
       } else if (message.includes('memory') || message.includes('allocation')) {
         throw new Error(`Insufficient memory to load model. Try closing other apps. Details: ${message}`);
