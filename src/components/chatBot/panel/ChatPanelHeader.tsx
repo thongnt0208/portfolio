@@ -8,8 +8,8 @@ interface ChatPanelHeaderProps {
 }
 
 const backendLabel: Record<string, string> = {
-  webgpu: 'Fast · WebGPU',
-  onnx: 'Compatible · ONNX',
+  webgpu: 'WebGPU',
+  onnx: 'ONNX',
 };
 
 export const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({ isModelReady, onClose }) => {

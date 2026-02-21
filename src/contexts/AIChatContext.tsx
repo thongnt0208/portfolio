@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import type { LoadingProgress } from '../types/chat';
 import type { AIBackend } from '../services/aiChatServiceInterface';
 import hybridService from '../services/aiChatServiceHybrid';
@@ -38,7 +38,7 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     return unsubscribe;
   }, []);
 
-  const loadModel = async () => {
+  const loadModel = useCallback(async () => {
     if (loadingRef.current || hybridService.isModelReady()) {
       if (hybridService.isModelReady()) {
         setIsModelReady(true);
@@ -71,13 +71,13 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setIsModelLoading(false);
       loadingRef.current = false;
     }
-  };
+  }, []);
 
-  const generateResponse = async (message: string): Promise<string> => {
+  const generateResponse = useCallback(async (message: string): Promise<string> => {
     return hybridService.generateResponse(message);
-  };
+  }, []);
 
-  const dispose = async () => {
+  const dispose = useCallback(async () => {
     await hybridService.dispose();
     setIsModelReady(false);
     setIsModelLoading(false);
@@ -85,9 +85,9 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setLoadingProgress({ progress: 0, file: '', status: 'idle' });
     setError(null);
     loadingRef.current = false;
-  };
+  }, []);
 
-  const clearError = () => setError(null);
+  const clearError = useCallback(() => setError(null), []);
 
   return (
     <AIChatContext.Provider value={{ backend, isModelReady, isModelLoading, loadingProgress, error, loadModel, generateResponse, dispose, clearError }}>

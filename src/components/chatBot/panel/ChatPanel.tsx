@@ -22,16 +22,18 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
+  const hasShownGreeting = useRef(false);
 
   useEffect(() => {
     if (isOpen && !hasInitialized.current) {
       hasInitialized.current = true;
       loadModel();
     }
-  }, [isOpen]);
+  }, [isOpen, loadModel]);
 
   useEffect(() => {
-    if (isModelReady && messages.length === 0 && !isGenerating) {
+    if (isModelReady && !hasShownGreeting.current) {
+      hasShownGreeting.current = true;
       addMessage('assistant', "Hi! I'm here to answer questions about Thong. Feel free to ask about his experience, skills, projects, or anything else!");
     }
   }, [isModelReady]);
