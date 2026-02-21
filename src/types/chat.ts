@@ -32,3 +32,5 @@ export interface ChatState {
 }
 
 export type ProgressCallback = (progress: LoadingProgress) => void;
+
+export type { AIBackend } from '../services/aiChatServiceInterface';
