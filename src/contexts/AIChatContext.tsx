@@ -57,6 +57,7 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       });
 
       if (import.meta.env.DEV) {
+        // Keep a deliberate delay in dev so progress/transition states are easier to validate manually.
         await new Promise((resolve) => setTimeout(resolve, 5000));
       }
 

@@ -76,6 +76,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     clearError();
     setLocalError(null);
     hasInitialized.current = false;
+    hasShownGreeting.current = false;
     loadModel();
   };
 

@@ -27,7 +27,13 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
   if (!gpuCheck.supported) {
     console.log('Hybrid: WebGPU unavailable, using ONNX');
     setBackend('onnx');
-    return onnxService.loadModel(onProgress);
+    try {
+      await onnxService.loadModel(onProgress);
+      return;
+    } catch (error) {
+      setBackend('error');
+      throw error;
+    }
   }
 
   // WebGPU available - try WebLLM first
@@ -44,7 +50,13 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
     if (isShaderFailure || isComputeError) {
       console.warn('Hybrid: WebGPU partial support (shader failure), falling back to ONNX');
       setBackend('onnx');
-      return onnxService.loadModel(onProgress);
+      try {
+        await onnxService.loadModel(onProgress);
+        return;
+      } catch (onnxError) {
+        setBackend('error');
+        throw onnxError;
+      }
     }
 
     // Non-recoverable error (network, memory, etc.) - surface it

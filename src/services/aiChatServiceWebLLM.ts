@@ -2,6 +2,7 @@ import { CreateMLCEngine, type MLCEngineInterface, type InitProgressReport } fro
 import type { ProgressCallback } from '../types/chat';
 import type { AIChatService } from './aiChatServiceInterface';
 import { SYSTEM_PROMPT } from '../data/chatContext';
+import { FALLBACK_RESPONSE, MIN_RESPONSE_LENGTH, truncateToTokenLimit } from '../utils/aiChat/responseUtils';
 
 let engine: MLCEngineInterface | null = null;
 let isLoading = false;
@@ -104,12 +105,6 @@ export const checkWebGPUSupport = async (): Promise<{ supported: boolean; error?
   }
 };
 
-const truncateToTokenLimit = (text: string, maxTokens: number): string => {
-  const maxWords = Math.floor(maxTokens * 0.75);
-  const words = text.split(/\s+/);
-  return words.length <= maxWords ? text : words.slice(0, maxWords).join(' ') + '...';
-};
-
 const convertProgress = (report: InitProgressReport) => {
   const progress = typeof report.progress === 'number' ? report.progress : 0;
   const text = report.text || '';
@@ -184,9 +179,9 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
     if (rawContent == null) throw new Error('AI response missing message content.');
 
     const cleanResponse = rawContent.trim();
-    return cleanResponse.length >= 4
+    return cleanResponse.length >= MIN_RESPONSE_LENGTH
       ? cleanResponse
-      : "I'm sorry, I couldn't generate a proper response. Please try asking in a different way.";
+      : FALLBACK_RESPONSE;
   } catch (error) {
     console.error('Error generating response:', error);
     throw error;

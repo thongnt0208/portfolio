@@ -2,6 +2,7 @@ import { pipeline, env } from '@xenova/transformers';
 import type { ProgressCallback } from '../types/chat';
 import type { AIChatService } from './aiChatServiceInterface';
 import { SYSTEM_PROMPT } from '../data/chatContext';
+import { FALLBACK_RESPONSE, MIN_RESPONSE_LENGTH, truncateToTokenLimit } from '../utils/aiChat/responseUtils';
 
 env.allowLocalModels = false;
 env.useBrowserCache = true;
@@ -15,6 +16,7 @@ if (typeof window !== 'undefined') {
 let model: any | null = null;
 let isLoading = false;
 let loadingPromise: Promise<void> | null = null;
+let isGenerating = false;
 
 // Per-file progress tracking, isolated from WebLLM service
 const fileProgressMap = new Map<string, { loaded: number; total: number }>();
@@ -50,12 +52,6 @@ const aggregateProgress = (progress: ProgressEvent) => {
     total: totalBytes,
     files: files.length ? files : undefined,
   };
-};
-
-const truncateToTokenLimit = (text: string, maxTokens: number): string => {
-  const maxWords = Math.floor(maxTokens * 0.75);
-  const words = text.split(/\s+/);
-  return words.length <= maxWords ? text : words.slice(0, maxWords).join(' ') + '...';
 };
 
 const extractGeneratedText = (result: any): string => {
@@ -96,7 +92,9 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
 
 export const generateResponse = async (userMessage: string): Promise<string> => {
   if (!model) throw new Error('Model not loaded. Please call loadModel() first.');
+  if (isGenerating) throw new Error('Another request is already being processed. Please wait.');
 
+  isGenerating = true;
   try {
     const truncatedSystemPrompt = truncateToTokenLimit(SYSTEM_PROMPT, 400);
     const messages = [
@@ -107,12 +105,14 @@ export const generateResponse = async (userMessage: string): Promise<string> => 
     const result = await model(messages, { max_new_tokens: 150, return_full_text: false, do_sample: false });
     const cleanResponse = extractGeneratedText(result).split('\n\n')[0].trim();
 
-    return cleanResponse && cleanResponse.length >= 10
+    return cleanResponse && cleanResponse.length >= MIN_RESPONSE_LENGTH
       ? cleanResponse
-      : "I'm sorry, I couldn't generate a proper response. Please try asking in a different way.";
+      : FALLBACK_RESPONSE;
   } catch (error) {
     console.error('Error generating response:', error);
     throw error;
+  } finally {
+    isGenerating = false;
   }
 };
 
@@ -120,9 +120,17 @@ export const isModelReady = (): boolean => model !== null;
 export const isModelLoading = (): boolean => isLoading;
 
 export const dispose = async (): Promise<void> => {
+  if (model && typeof model.dispose === 'function') {
+    try {
+      await model.dispose();
+    } catch (error) {
+      console.error('Error disposing ONNX model:', error);
+    }
+  }
   model = null;
   isLoading = false;
   loadingPromise = null;
+  isGenerating = false;
   fileProgressMap.clear();
 };
 
