@@ -1,4 +1,4 @@
-import { LoadingProgress } from "@/types/chat";
+import type { LoadingProgress } from '../../types/chat';
 
 export const fileProgressMap = new Map<string, { loaded: number; total: number }>();
 
