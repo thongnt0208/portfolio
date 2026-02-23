@@ -3,8 +3,11 @@ import type { AIBackend } from './aiChatServiceInterface';
 import webLLMService, { checkWebGPUSupport } from './aiChatServiceWebLLM';
 import onnxService from './aiChatServiceONNX';
 
+export type GPUCheckResult = { supported: boolean; error?: string; details?: unknown };
+
 let activeBackend: AIBackend = 'detecting';
 let backendListeners: Array<(backend: AIBackend) => void> = [];
+let cachedGpuCheck: GPUCheckResult | null = null;
 
 const setBackend = (backend: AIBackend) => {
   activeBackend = backend;
@@ -20,9 +23,17 @@ export const onBackendChange = (fn: (backend: AIBackend) => void): (() => void) 
   };
 };
 
+/** Run WebGPU support check once and cache result. Call when panel opens to show status immediately. */
+export const checkGPU = async (): Promise<GPUCheckResult> => {
+  if (cachedGpuCheck) return cachedGpuCheck;
+  const result = await checkWebGPUSupport();
+  cachedGpuCheck = { supported: result.supported, error: result.error, details: result.details };
+  console.log('Hybrid: WebGPU check result:', cachedGpuCheck);
+  return cachedGpuCheck;
+};
+
 export const loadModel = async (onProgress?: ProgressCallback): Promise<void> => {
-  const gpuCheck = await checkWebGPUSupport();
-  console.log('Hybrid: WebGPU check result:', gpuCheck);
+  const gpuCheck = await checkGPU();
 
   if (!gpuCheck.supported) {
     console.log('Hybrid: WebGPU unavailable, using ONNX');
@@ -86,8 +97,7 @@ export const isModelLoading = (): boolean => {
 export const dispose = async (): Promise<void> => {
   await Promise.allSettled([webLLMService.dispose(), onnxService.dispose()]);
   setBackend('detecting');
+  cachedGpuCheck = null;
 };
 
-export const checkWebGPU = checkWebGPUSupport;
-
-export default { loadModel, generateResponse, isModelReady, isModelLoading, dispose, getBackend, onBackendChange, checkWebGPU };
+export default { loadModel, generateResponse, isModelReady, isModelLoading, dispose, getBackend, onBackendChange, checkGPU };

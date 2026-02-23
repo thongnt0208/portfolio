@@ -1,14 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import type { LoadingProgress } from '../types/chat';
 import type { AIBackend } from '../services/aiChatServiceInterface';
+import type { GPUCheckResult } from '../services/aiChatServiceHybrid';
 import hybridService from '../services/aiChatServiceHybrid';
+
+export type GPUCheckStatus = 'idle' | 'checking' | GPUCheckResult;
 
 interface AIChatContextValue {
   backend: AIBackend;
+  gpuCheck: GPUCheckStatus;
   isModelReady: boolean;
   isModelLoading: boolean;
   loadingProgress: LoadingProgress;
   error: string | null;
+  checkGPU: () => Promise<GPUCheckResult>;
   loadModel: () => Promise<void>;
   generateResponse: (message: string) => Promise<string>;
   dispose: () => Promise<void>;
@@ -25,6 +30,7 @@ export const useAIChatContext = (): AIChatContextValue => {
 
 export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [backend, setBackend] = useState<AIBackend>('detecting');
+  const [gpuCheck, setGpuCheck] = useState<GPUCheckStatus>('idle');
   const [isModelReady, setIsModelReady] = useState(false);
   const [isModelLoading, setIsModelLoading] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState<LoadingProgress>({ progress: 0, file: '', status: 'idle' });
@@ -36,6 +42,19 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       setBackend(newBackend);
     });
     return unsubscribe;
+  }, []);
+
+  const checkGPU = useCallback(async (): Promise<GPUCheckResult> => {
+    setGpuCheck('checking');
+    try {
+      const result = await hybridService.checkGPU();
+      setGpuCheck(result);
+      return result;
+    } catch (err) {
+      const result: GPUCheckResult = { supported: false, error: err instanceof Error ? err.message : String(err) };
+      setGpuCheck(result);
+      return result;
+    }
   }, []);
 
   const loadModel = useCallback(async () => {
@@ -83,6 +102,7 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     setIsModelReady(false);
     setIsModelLoading(false);
     setBackend('detecting');
+    setGpuCheck('idle');
     setLoadingProgress({ progress: 0, file: '', status: 'idle' });
     setError(null);
     loadingRef.current = false;
@@ -91,7 +111,7 @@ export const AIChatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const clearError = useCallback(() => setError(null), []);
 
   return (
-    <AIChatContext.Provider value={{ backend, isModelReady, isModelLoading, loadingProgress, error, loadModel, generateResponse, dispose, clearError }}>
+    <AIChatContext.Provider value={{ backend, gpuCheck, isModelReady, isModelLoading, loadingProgress, error, checkGPU, loadModel, generateResponse, dispose, clearError }}>
       {children}
     </AIChatContext.Provider>
   );

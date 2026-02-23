@@ -15,7 +15,7 @@ interface ChatPanelProps {
 }
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
-  const { isModelReady, isModelLoading, loadingProgress, error, loadModel, generateResponse, clearError } = useAIChatContext();
+  const { isModelReady, isModelLoading, loadingProgress, error, checkGPU, loadModel, generateResponse, clearError } = useAIChatContext();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -27,9 +27,9 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     if (isOpen && !hasInitialized.current) {
       hasInitialized.current = true;
-      loadModel();
+      checkGPU().then(() => loadModel());
     }
-  }, [isOpen, loadModel]);
+  }, [isOpen, checkGPU, loadModel]);
 
   useEffect(() => {
     if (isModelReady && !hasShownGreeting.current) {
