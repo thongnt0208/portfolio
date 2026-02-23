@@ -73,11 +73,12 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
   };
 
   const handleRetry = async () => {
+    const hadLoadError = !!error;
     clearError();
     setLocalError(null);
 
     // Full re-initialization is only needed when model loading failed.
-    if (!error) return;
+    if (!hadLoadError) return;
 
     hasShownGreeting.current = messages.length > 0;
 
@@ -118,7 +119,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
             <div className="flex-1 overflow-y-auto p-4">
               {isModelLoading && <ModelLoadingProgress progress={loadingProgress} />}
 
-              {displayError && <ChatErrorBanner error={displayError} onRetry={handleRetry} />}
+              {displayError && <ChatErrorBanner error={displayError} onRetry={handleRetry} isRetryable={!!error} />}
 
               {showEmptyState && <ChatEmptyState onSelectQuestion={handleSendMessage} />}
 

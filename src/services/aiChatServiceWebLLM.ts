@@ -1,4 +1,4 @@
-import { CreateMLCEngine, type MLCEngineInterface, type InitProgressReport } from '@mlc-ai/web-llm';
+import type { MLCEngineInterface, InitProgressReport } from '@mlc-ai/web-llm';
 import type { ProgressCallback } from '../types/chat';
 import type { AIChatService } from './aiChatServiceInterface';
 import { SYSTEM_PROMPT } from '../data/chatContext';
@@ -123,6 +123,7 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
 
   loadingPromise = (async () => {
     try {
+      const { CreateMLCEngine } = await import('@mlc-ai/web-llm');
       engine = await CreateMLCEngine(SELECTED_MODEL, {
         initProgressCallback: (report: InitProgressReport) => {
           if (onProgress) onProgress(convertProgress(report));
