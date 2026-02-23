@@ -2,6 +2,8 @@ import type { ProgressCallback } from '../types/chat';
 import type { AIBackend } from './aiChatServiceInterface';
 import webLLMService, { checkWebGPUSupport } from './aiChatServiceWebLLM';
 import onnxService from './aiChatServiceONNX';
+import { runWebGPUShaderTest } from '../utils/webgpuShaderTest';
+import { getPersistedBackend, persistBackend, clearPersistedBackend } from '../utils/aiBackendPersistence';
 
 export type GPUCheckResult = { supported: boolean; error?: string; details?: unknown };
 
@@ -31,21 +33,36 @@ export const checkGPU = async (): Promise<GPUCheckResult> => {
   return cachedGpuCheck;
 };
 
+const loadONNXBackend = async (onProgress?: ProgressCallback): Promise<void> => {
+  setBackend('onnx');
+  try {
+    await onnxService.loadModel(onProgress);
+  } catch (error) {
+    setBackend('error');
+    throw error;
+  }
+};
+
 export const loadModel = async (onProgress?: ProgressCallback): Promise<void> => {
+  const persisted = getPersistedBackend();
+  if (persisted === 'onnx') {
+    return loadONNXBackend(onProgress);
+  }
+
   const gpuCheck = await checkGPU();
 
   if (!gpuCheck.supported) {
-    setBackend('onnx');
-    try {
-      await onnxService.loadModel(onProgress);
-      return;
-    } catch (error) {
-      setBackend('error');
-      throw error;
-    }
+    persistBackend('onnx');
+    return loadONNXBackend(onProgress);
   }
 
-  // WebGPU available - try WebLLM first
+  const shaderTest = await runWebGPUShaderTest();
+  if (!shaderTest.passed) {
+    console.warn('Hybrid: WebGPU shader test failed, using ONNX:', shaderTest.error);
+    persistBackend('onnx');
+    return loadONNXBackend(onProgress);
+  }
+
   try {
     setBackend('webgpu');
     await webLLMService.loadModel(onProgress);
@@ -55,18 +72,11 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
     const isComputeError = message.includes('ShaderModule') || message.includes('compute stage') || message.includes('shader');
 
     if (isShaderFailure || isComputeError) {
-      console.warn('Hybrid: WebGPU partial support (shader failure), falling back to ONNX');
-      setBackend('onnx');
-      try {
-        await onnxService.loadModel(onProgress);
-        return;
-      } catch (onnxError) {
-        setBackend('error');
-        throw onnxError;
-      }
+      console.warn('Hybrid: WebGPU model load shader failure, falling back to ONNX');
+      persistBackend('onnx');
+      return loadONNXBackend(onProgress);
     }
 
-    // Non-recoverable error (network, memory, etc.) - surface it
     setBackend('error');
     throw error;
   }
@@ -90,10 +100,15 @@ export const isModelLoading = (): boolean => {
   return false;
 };
 
+export const resetBackendPreference = (): void => {
+  clearPersistedBackend();
+  cachedGpuCheck = null;
+};
+
 export const dispose = async (): Promise<void> => {
   await Promise.allSettled([webLLMService.dispose(), onnxService.dispose()]);
   setBackend('detecting');
   cachedGpuCheck = null;
 };
 
-export default { loadModel, generateResponse, isModelReady, isModelLoading, dispose, getBackend, onBackendChange, checkGPU };
+export default { loadModel, generateResponse, isModelReady, isModelLoading, dispose, getBackend, onBackendChange, checkGPU, resetBackendPreference };
