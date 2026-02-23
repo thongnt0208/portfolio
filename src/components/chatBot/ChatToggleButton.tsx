@@ -10,7 +10,6 @@ interface ChatToggleButtonProps {
 const pillConfig = {
   webgpu: { color: '#22c55e', label: 'WebGPU' },
   onnx:   { color: '#3b82f6', label: 'ONNX' },
-  detecting: { color: '#9ca3af', label: 'Detecting' },
   error:  { color: '#ef4444', label: 'Error' },
 } as const;
 
@@ -23,8 +22,7 @@ export const ChatToggleButton: React.FC<ChatToggleButtonProps> = ({ onClick }) =
     onClick();
   };
 
-  const showPill = hasOpened && backend !== 'detecting';
-  const pill = pillConfig[backend];
+  const pill = backend !== 'detecting' ? pillConfig[backend] : null;
 
   return (
     <motion.button
@@ -52,7 +50,7 @@ export const ChatToggleButton: React.FC<ChatToggleButtonProps> = ({ onClick }) =
       />
 
       {/* Backend state dot */}
-      {showPill && (
+      {hasOpened && pill && (
         <motion.span
           key={backend}
           initial={{ scale: 0 }}

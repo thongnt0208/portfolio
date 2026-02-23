@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAIChatContext } from '../../../contexts/AIChatContext';
 import { ChatInput } from '../ChatInput';
@@ -15,7 +15,7 @@ interface ChatPanelProps {
 }
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
-  const { isModelReady, isModelLoading, loadingProgress, error, checkGPU, loadModel, generateResponse, clearError } = useAIChatContext();
+  const { isModelReady, isModelLoading, loadingProgress, error, checkGPU, loadModel, generateResponse, dispose, clearError } = useAIChatContext();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
@@ -23,6 +23,16 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const hasInitialized = useRef(false);
   const hasShownGreeting = useRef(false);
+
+  const addMessage = useCallback((role: 'user' | 'assistant', content: string) => {
+    const newMessage: Message = {
+      id: `${Date.now()}-${Math.random()}`,
+      role,
+      content,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, newMessage]);
+  }, []);
 
   useEffect(() => {
     if (isOpen && !hasInitialized.current) {
@@ -32,25 +42,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
   }, [isOpen, checkGPU, loadModel]);
 
   useEffect(() => {
-    if (isModelReady && !hasShownGreeting.current) {
+    if (isModelReady && messages.length === 0 && !hasShownGreeting.current) {
       hasShownGreeting.current = true;
       addMessage('assistant', "Hi! I'm here to answer questions about Thong. Feel free to ask about his experience, skills, projects, or anything else!");
     }
-  }, [isModelReady]);
+  }, [isModelReady, messages.length, addMessage]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isGenerating]);
-
-  const addMessage = (role: 'user' | 'assistant', content: string) => {
-    const newMessage: Message = {
-      id: `${Date.now()}-${Math.random()}`,
-      role,
-      content,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, newMessage]);
-  };
 
   const handleSendMessage = async (userMessage: string) => {
     if (!isModelReady || isGenerating) return;
@@ -72,12 +72,22 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onClose }) => {
     }
   };
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
     clearError();
     setLocalError(null);
-    hasInitialized.current = false;
-    hasShownGreeting.current = false;
-    loadModel();
+
+    // Full re-initialization is only needed when model loading failed.
+    if (!error) return;
+
+    hasShownGreeting.current = messages.length > 0;
+
+    try {
+      await dispose();
+      await checkGPU();
+      await loadModel();
+    } catch (err) {
+      console.error('Failed to retry model initialization:', err);
+    }
   };
 
   const displayError = error || localError;

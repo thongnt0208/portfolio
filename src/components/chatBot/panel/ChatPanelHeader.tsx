@@ -15,7 +15,13 @@ const backendLabel: Record<string, string> = {
 export const ChatPanelHeader: React.FC<ChatPanelHeaderProps> = ({ isModelReady, onClose }) => {
   const { backend, gpuCheck } = useAIChatContext();
   const statusText = isModelReady ? `AI Assistant Ready` : 'Loading...';
-  const gpuStatusText = gpuCheck === 'checking' ? 'Checking GPU...' : `Using ${backendLabel[backend] ? `${backendLabel[backend]}` : 'Cannot check GPU'}`;
+  const gpuStatusText = (() => {
+    if (gpuCheck === 'checking') return 'Checking GPU...';
+    if (backend === 'detecting') return 'Detecting backend...';
+    if (backend === 'error') return 'Error loading backend';
+    if (backendLabel[backend]) return `Using ${backendLabel[backend]}`;
+    return 'Cannot check GPU';
+  })();
 
   return (
     <div className="flex items-center justify-between p-4 border-b border-slate-200">
