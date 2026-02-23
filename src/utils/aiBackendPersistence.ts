@@ -1,5 +1,7 @@
 const STORAGE_KEY = 'ai-backend-preference';
 const STORAGE_VERSION = 1;
+// Transient issues (driver bugs, shader failures) can resolve after browser/driver updates, so reset preference after 4 days.
+const TTL_MS = 4 * 24 * 60 * 60 * 1000;
 
 interface PersistedBackend {
   version: number;
@@ -13,6 +15,10 @@ export function getPersistedBackend(): 'onnx' | 'webgpu' | null {
     if (!raw) return null;
     const data: PersistedBackend = JSON.parse(raw);
     if (data.version !== STORAGE_VERSION) return null;
+    if (Date.now() - data.timestamp > TTL_MS) {
+      clearPersistedBackend();
+      return null;
+    }
     return data.backend;
   } catch {
     return null;
