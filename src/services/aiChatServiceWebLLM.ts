@@ -24,8 +24,6 @@ export const checkWebGPUSupport = async (): Promise<{ supported: boolean; error?
   const fullUrl = `${protocol}//${hostname}${port ? ':' + port : ''}`;
   const isMobile = isMobileDevice();
 
-  console.log('WebGPU support check:', { isSecureContext, protocol, hostname, port, fullUrl, isMobile, hasNavigatorGPU: 'gpu' in navigator });
-
   if (protocol === 'http:' && !['localhost', '127.0.0.1', ''].includes(hostname)) {
     console.warn('HTTP detected on non-localhost - WebGPU blocked');
     const httpsUrl = fullUrl.replace('http://', 'https://');

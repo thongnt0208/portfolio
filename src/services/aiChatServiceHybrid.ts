@@ -28,7 +28,6 @@ export const checkGPU = async (): Promise<GPUCheckResult> => {
   if (cachedGpuCheck) return cachedGpuCheck;
   const result = await checkWebGPUSupport();
   cachedGpuCheck = { supported: result.supported, error: result.error, details: result.details };
-  console.log('Hybrid: WebGPU check result:', cachedGpuCheck);
   return cachedGpuCheck;
 };
 
@@ -36,7 +35,6 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
   const gpuCheck = await checkGPU();
 
   if (!gpuCheck.supported) {
-    console.log('Hybrid: WebGPU unavailable, using ONNX');
     setBackend('onnx');
     try {
       await onnxService.loadModel(onProgress);
@@ -49,10 +47,8 @@ export const loadModel = async (onProgress?: ProgressCallback): Promise<void> =>
 
   // WebGPU available - try WebLLM first
   try {
-    console.log('Hybrid: WebGPU available, trying WebLLM');
     setBackend('webgpu');
     await webLLMService.loadModel(onProgress);
-    console.log('Hybrid: WebLLM loaded successfully');
   } catch (error) {
     const isShaderFailure = (error as any)?.isShaderFailure === true;
     const message = error instanceof Error ? error.message : '';
