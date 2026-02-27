@@ -12,6 +12,7 @@ const Footer = lazy(() => import('./components/Footer').then(module => ({ defaul
 
 import { ChatToggleButton } from './components/chatBot/ChatToggleButton';
 import { ChatPanel } from './components/chatBot/panel/ChatPanel';
+import { AIChatProvider } from './contexts/AIChatContext';
 
 const WiNoteApp = lazy(() => import('./winote').then(m => ({ default: m.WiNoteApp })));
 
@@ -19,6 +20,7 @@ const Portfolio: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
+    <AIChatProvider>
     <div className="relative min-h-screen w-full">
       <Suspense fallback={<div>Loading...</div>}>
         <Navbar />
@@ -38,6 +40,7 @@ const Portfolio: React.FC = () => {
       <ChatToggleButton onClick={() => setIsChatOpen(true)} />
       <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
+    </AIChatProvider>
   );
 };
 
