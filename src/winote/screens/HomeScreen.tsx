@@ -43,7 +43,7 @@ export const HomeScreen: React.FC = () => {
         transition={{ delay: 0.1 }}
         className="pt-2 px-6 pb-6"
       >
-        <h1 className="text-wn-3xl font-bold leading-tight">
+        <h1 className="text-wn-3xl font-bold leading-9 text-wn-text-primary font-wn">
           {getGreeting()}
           <br />
           <span className="text-wn-accent-green">{user.name}</span>
@@ -71,7 +71,7 @@ export const HomeScreen: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 className="text-wn-xl font-semibold px-6 mb-4">
+        <h2 className="text-wn-xl font-bold px-6 mb-4 text-wn-text-primary font-wn leading-7">
           Your Collection
         </h2>
 

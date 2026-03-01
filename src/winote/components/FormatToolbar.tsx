@@ -12,7 +12,7 @@ const tools = [
 
 export const FormatToolbar: React.FC = () => {
   return (
-    <div className="flex items-center gap-1 py-2 px-4 bg-wn-bg-light rounded-wn-xl shadow-wn-card border border-wn-border">
+    <div className="flex items-center gap-1 py-2 px-4 bg-wn-bg shadow-wn-card rounded-wn-xl border-none">
       {tools.map((t, i) => (
         <React.Fragment key={t.label}>
           {(i === 3 || i === 5) && (

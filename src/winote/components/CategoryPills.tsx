@@ -23,10 +23,10 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({ active, onChange }
             key={cat.id}
             whileTap={{ scale: 0.93 }}
             onClick={() => onChange(cat.id)}
-            className={`flex items-center gap-2 py-2 px-4 rounded-wn-pill border border-wn-border cursor-pointer text-wn-base font-wn text-wn-text-primary ${
+            className={`flex items-center gap-2 py-2 px-4 rounded-wn-pill border-none cursor-pointer text-wn-sm font-wn ${
               isActive
-                ? 'bg-wn-card-green shadow-wn-inset font-semibold'
-                : 'bg-wn-bg-light shadow-wn-btn font-normal'
+                ? 'bg-wn-card-green shadow-wn-inset font-semibold text-wn-text-primary'
+                : 'bg-wn-bg shadow-wn-btn font-normal text-wn-text-secondary'
             }`}
           >
             <cat.icon size={12} />
@@ -36,9 +36,9 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({ active, onChange }
       })}
       <motion.button
         whileTap={{ scale: 0.93 }}
-        className="w-8 h-8 rounded-wn-pill border border-wn-border bg-wn-bg-light shadow-wn-btn cursor-pointer flex items-center justify-center"
+        className="w-8 h-8 rounded-wn-pill border-none bg-wn-bg shadow-wn-btn cursor-pointer flex items-center justify-center"
       >
-        <Plus size={14} color="var(--wn-text-secondary)" />
+        <Plus size={14} className="text-wn-text-secondary" />
       </motion.button>
     </div>
   );

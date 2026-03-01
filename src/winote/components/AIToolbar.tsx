@@ -10,7 +10,7 @@ const aiTools = [
 
 export const AIToolbar: React.FC = () => {
   return (
-    <div className="flex justify-around py-3 px-4 bg-wn-bg-light rounded-wn-xl shadow-wn-card border border-wn-border">
+    <div className="flex justify-around py-3 px-4 bg-wn-bg shadow-wn-card rounded-wn-xl border-none">
       {aiTools.map((t) => (
         <button
           key={t.label}

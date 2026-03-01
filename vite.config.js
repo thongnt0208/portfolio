@@ -4,10 +4,12 @@ import sass from "sass";
 import alias from "@rollup/plugin-alias";
 import { fileURLToPath, URL } from "url";
 import { VitePWA } from "vite-plugin-pwa";
+import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
   plugins: [
     react(),
+    svgr(),
     alias({
       entries: [
         { find: "@assets", replacement: fileURLToPath(new URL("./src/assets", import.meta.url)) },

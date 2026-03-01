@@ -40,14 +40,10 @@ export const RewardsOverlay: React.FC = () => {
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 60, opacity: 0, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="relative w-[calc(100%-48px)] max-w-[380px] bg-wn-bg rounded-wn-2xl overflow-hidden py-8 px-6 flex flex-col items-center text-center"
-        style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
+        className="relative w-[calc(100%-48px)] max-w-[380px] bg-wn-bg rounded-wn-xl overflow-hidden py-8 px-6 flex flex-col items-center text-center shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
       >
         {/* Decorative gradient */}
-        <div
-          className="absolute top-0 left-0 right-0 h-[120px] opacity-40 pointer-events-none"
-          style={{ background: 'linear-gradient(180deg, var(--wn-card-green) 0%, transparent 100%)' }}
-        />
+        <div className="absolute top-0 left-0 right-0 h-[120px] opacity-40 pointer-events-none bg-gradient-to-b from-wn-card-green to-transparent" />
 
         {/* Close */}
         {completed && (
@@ -66,13 +62,11 @@ export const RewardsOverlay: React.FC = () => {
         <motion.div
           animate={completed ? { scale: [1, 1.15, 1], rotate: [0, 10, -10, 0] } : {}}
           transition={{ duration: 0.6 }}
-          className="w-[72px] h-[72px] rounded-full flex items-center justify-center mb-5 mt-4 relative z-[1]"
-          style={{
-            background: completed
-              ? 'linear-gradient(135deg, var(--wn-accent-green) 0%, #8BAF6B 100%)'
-              : 'linear-gradient(135deg, var(--wn-card-yellow) 0%, var(--wn-premium-gold) 100%)',
-            boxShadow: '0 4px 16px rgba(107,143,91,0.3)',
-          }}
+          className={`w-[72px] h-[72px] rounded-full flex items-center justify-center mb-5 mt-4 relative z-[1] shadow-[0_4px_16px_rgba(107,143,91,0.3)] ${
+            completed
+              ? 'bg-gradient-to-br from-wn-accent-green to-[#8BAF6B]'
+              : 'bg-gradient-to-br from-wn-card-yellow to-wn-premium-gold'
+          }`}
         >
           {completed ? (
             <CheckCircle size={32} color="white" />
@@ -84,11 +78,11 @@ export const RewardsOverlay: React.FC = () => {
         </motion.div>
 
         {/* Title */}
-        <h2 className="text-wn-xl font-bold mb-2 relative z-[1]">
+        <h2 className="text-wn-xl font-bold mb-2 relative z-[1] text-wn-text-primary font-wn">
           {completed ? 'Reward Earned!' : 'Watch to Earn Rewards'}
         </h2>
 
-        <p className="text-wn-base text-wn-text-secondary leading-normal mb-6 relative z-[1]">
+        <p className="text-wn-base text-wn-text-secondary leading-normal mb-6 relative z-[1] font-wn">
           {completed
             ? 'You earned 30 minutes of ad-free experience.'
             : 'Watch a short video to unlock 30 minutes of ad-free experience.'}
@@ -101,8 +95,7 @@ export const RewardsOverlay: React.FC = () => {
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                className="h-full rounded"
-                style={{ background: 'linear-gradient(90deg, var(--wn-accent-green) 0%, #8BAF6B 100%)' }}
+                className="h-full rounded bg-gradient-to-r from-wn-cta-bg to-[#8BAF6B]"
               />
             </div>
             <p className="text-wn-xs text-wn-text-tertiary mt-2">
@@ -118,7 +111,7 @@ export const RewardsOverlay: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             whileTap={{ scale: 0.96 }}
             onClick={closeRewardsOverlay}
-            className="w-full py-3.5 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-md font-semibold cursor-pointer font-wn relative z-[1]"
+            className="w-full py-3.5 rounded-wn-xl bg-wn-cta-bg text-wn-white border-none text-wn-md font-semibold cursor-pointer font-wn relative z-[1]"
           >
             Continue
           </motion.button>

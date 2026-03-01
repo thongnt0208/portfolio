@@ -1,55 +1,55 @@
 :root {
   /* ── Palette ── */
-  --wn-bg: #F5F0E6;
-  --wn-bg-light: #FAF7F0;
-  --wn-card-green: #D6E4CC;
-  --wn-card-green-light: #E4EDD9;
-  --wn-card-yellow: #EDE5CE;
+  --wn-bg: #FAF5E4;
+  --wn-bg-light: #FDFBF0;
+  --wn-card-green: #D6E4C8;
+  --wn-card-green-light: #EAF2E2;
+  --wn-card-yellow: #E6D5A7;
   --wn-card-yellow-light: #F2ECDA;
   --wn-card-lavender: #E2DDEE;
-  --wn-card-gray: #E8E4DD;
-  --wn-sidebar-bg: linear-gradient(180deg, #E0EBDA 0%, #D4DEC8 50%, #C8D4B8 100%);
-  --wn-accent-green: #6B8F5B;
-  --wn-accent-green-dark: #4A6B3A;
+  --wn-card-gray: #E5E7EB;
+  --wn-sidebar-bg: linear-gradient(180deg, #D6E4C8 38%, #E6D5A7 100%);
+  --wn-accent-green: #B4C6A6;
+  --wn-accent-green-dark: #6F825F;
+  --wn-cta-bg: #6F825F;
   --wn-premium-gold: #C5A44E;
   --wn-premium-card: linear-gradient(135deg, #6B7B5A 0%, #8B9B6A 100%);
-  --wn-text-primary: #3A3A32;
-  --wn-text-secondary: #7A7A6E;
-  --wn-text-tertiary: #A8A89A;
-  --wn-text-accent: #6B8F5B;
-  --wn-text-danger: #C45B5B;
+  --wn-text-primary: #4A4F46;
+  --wn-text-secondary: #7A8074;
+  --wn-text-tertiary: #A3B096;
+  --wn-text-accent: #6F825F;
+  --wn-text-danger: #EF4444;
+  --wn-text-danger-icon: #F87171;
   --wn-border: rgba(0, 0, 0, 0.06);
   --wn-divider: rgba(0, 0, 0, 0.04);
   --wn-overlay: rgba(40, 40, 30, 0.4);
   --wn-white: #FFFFFF;
 
-  /* ── Shadows (Clay Effect) ── */
-  --wn-shadow-card:
-    4px 4px 10px rgba(0, 0, 0, 0.06),
-    -2px -2px 6px rgba(255, 255, 255, 0.7);
-  --wn-shadow-card-sm:
-    2px 2px 6px rgba(0, 0, 0, 0.05),
-    -1px -1px 4px rgba(255, 255, 255, 0.6);
-  --wn-shadow-inset:
-    inset 2px 2px 4px rgba(0, 0, 0, 0.06),
-    inset -1px -1px 3px rgba(255, 255, 255, 0.5);
-  --wn-shadow-btn:
-    2px 2px 6px rgba(0, 0, 0, 0.08),
-    -1px -1px 3px rgba(255, 255, 255, 0.6);
-  --wn-shadow-fab:
-    4px 4px 14px rgba(0, 0, 0, 0.15),
-    -2px -2px 6px rgba(255, 255, 255, 0.3);
+  /* ── Semantic aliases ── */
+  --wn-orange-text: #6D5D34;
+  --wn-orange-bg: #E6D5A7;
 
-  /* ── Radii ── */
+  /* ── Shadows (Clay Effect — compound from Figma) ── */
+  --wn-shadow-card: 8px 8px 16px 0px rgba(163, 176, 150, 0.40), -8px -8px 16px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-card-sm: 5px 5px 10px 0px rgba(163, 176, 150, 0.40), -5px -5px 10px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-card-green: 6px 6px 14px 0px rgba(163, 176, 150, 0.50), -6px -6px 14px 0px rgba(255, 255, 255, 0.60);
+  --wn-shadow-inset: -4px -4px 8px rgba(255, 255, 255, 0.90) inset;
+  --wn-shadow-btn: 5px 5px 10px 0px rgba(163, 176, 150, 0.40), -5px -5px 10px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-fab: 0px 8px 10px -6px rgba(0, 0, 0, 0.10);
+  --wn-shadow-cta-inset: -2px -2px 4px rgba(0, 0, 0, 0.05) inset;
+
+  /* ── Radii (4B: map 18→16, 28→24) ── */
+  --wn-radius-xs: 6px;
   --wn-radius-sm: 8px;
   --wn-radius-md: 12px;
   --wn-radius-lg: 16px;
-  --wn-radius-xl: 20px;
+  --wn-radius-xl: 24px;
   --wn-radius-2xl: 24px;
-  --wn-radius-pill: 999px;
+  --wn-radius-pill: 9999px;
 
-  /* ── Typography ── */
+  /* ── Typography (5A: Inter only) ── */
   --wn-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --wn-text-2xs: 0.5625rem;  /* 9px */
   --wn-text-xs: 0.6875rem;   /* 11px */
   --wn-text-sm: 0.75rem;     /* 12px */
   --wn-text-base: 0.875rem;  /* 14px */
@@ -57,7 +57,7 @@
   --wn-text-lg: 1.125rem;    /* 18px */
   --wn-text-xl: 1.25rem;     /* 20px */
   --wn-text-2xl: 1.5rem;     /* 24px */
-  --wn-text-3xl: 2rem;       /* 32px */
+  --wn-text-3xl: 1.875rem;   /* 30px */
 
   /* ── Spacing ── */
   --wn-space-1: 4px;
@@ -72,7 +72,7 @@
 
   /* ── Layout ── */
   --wn-max-width: 440px;
-  --wn-header-height: 112px;
+  --wn-header-height: 120px;
   --wn-ad-banner-height: 102px;
   --wn-fab-size: 56px;
 

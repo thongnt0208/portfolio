@@ -26,10 +26,10 @@ export const FilterChips: React.FC<FilterChipsProps> = ({ active, onChange }) =>
             key={f.type}
             whileTap={{ scale: 0.93 }}
             onClick={() => onChange(f.type)}
-            className={`flex items-center gap-1.5 py-2 px-4 rounded-wn-pill border border-wn-border cursor-pointer text-wn-base font-wn text-wn-text-primary whitespace-nowrap shrink-0 ${
+            className={`flex items-center gap-1.5 py-2 px-4 rounded-wn-pill border-none cursor-pointer text-wn-sm font-wn whitespace-nowrap shrink-0 ${
               isActive
-                ? 'bg-wn-card-green-light shadow-wn-inset font-semibold'
-                : 'bg-wn-bg-light shadow-wn-btn font-normal'
+                ? 'bg-wn-card-green-light shadow-wn-inset font-semibold text-wn-text-primary'
+                : 'bg-wn-bg shadow-wn-btn font-normal text-wn-text-secondary'
             }`}
           >
             {f.icon && <f.icon size={12} />}

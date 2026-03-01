@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Crown, Sparkles, Search, Brain, Shield, Check } from 'lucide-react';
 import { useUserStore } from '../store/useUserStore';
+import ChevronLeftIcon from '@assets/winote/illustration/chevron-left.svg?react';
 
 const features = [
   { icon: Sparkles, title: 'AI-Powered Summaries', desc: 'Get instant summaries of your notes with on-device AI.' },
@@ -30,11 +31,9 @@ export const PremiumScreen: React.FC = () => {
       <div className="flex items-center pt-12 px-6 pb-4">
         <button
           onClick={() => navigate(-1)}
-          className="bg-transparent border-none cursor-pointer p-2 flex items-center"
+          className="bg-wn-bg shadow-wn-card-sm rounded-wn-lg border-none cursor-pointer px-4 py-2.5 flex items-center text-wn-text-primary"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
+          <ChevronLeftIcon className="w-[18px] h-[18px]" />
         </button>
       </div>
 
@@ -47,20 +46,14 @@ export const PremiumScreen: React.FC = () => {
           transition={{ delay: 0.1 }}
           className="mb-6"
         >
-          <div
-            className="w-16 h-16 rounded-wn-lg flex items-center justify-center mb-5"
-            style={{
-              background: 'linear-gradient(135deg, var(--wn-card-yellow) 0%, var(--wn-premium-gold) 100%)',
-              boxShadow: '0 4px 16px rgba(197,164,78,0.3)',
-            }}
-          >
+          <div className="w-16 h-16 rounded-wn-xl flex items-center justify-center mb-5 bg-gradient-to-br from-wn-card-yellow to-wn-premium-gold shadow-[0_4px_16px_rgba(197,164,78,0.3)]">
             <Crown size={28} color="white" />
           </div>
 
-          <h1 className="text-wn-2xl font-bold leading-snug mb-2">
+          <h1 className="text-wn-2xl font-bold leading-snug mb-2 text-wn-text-primary font-wn">
             Remove Ads & Unlock<br />All Features
           </h1>
-          <p className="text-wn-base text-wn-text-secondary leading-relaxed">
+          <p className="text-wn-base text-wn-text-secondary leading-relaxed font-wn">
             Go Pro for the full WiNote experience with AI tools, advanced search, and zero interruptions.
           </p>
         </motion.div>
@@ -81,13 +74,13 @@ export const PremiumScreen: React.FC = () => {
               className="clay-card flex items-start gap-3.5 p-4"
             >
               <div className="w-9 h-9 rounded-wn-sm bg-wn-card-green-light flex items-center justify-center shrink-0">
-                <f.icon size={16} color="var(--wn-accent-green)" />
+                <f.icon size={16} className="text-wn-accent-green" />
               </div>
               <div>
-                <h3 className="text-wn-base font-semibold mb-0.5">
+                <h3 className="text-wn-base font-semibold mb-0.5 text-wn-text-primary font-wn">
                   {f.title}
                 </h3>
-                <p className="text-wn-sm text-wn-text-secondary leading-snug">
+                <p className="text-wn-sm text-wn-text-secondary leading-snug font-wn">
                   {f.desc}
                 </p>
               </div>
@@ -103,12 +96,12 @@ export const PremiumScreen: React.FC = () => {
           className="mb-6"
         >
           <div className="flex items-baseline gap-1 mb-1">
-            <span className="text-wn-3xl font-extrabold">$4.99</span>
-            <span className="text-wn-base text-wn-text-secondary">/month</span>
+            <span className="text-wn-3xl font-extrabold text-wn-text-primary font-wn">$4.99</span>
+            <span className="text-wn-base text-wn-text-secondary font-wn">/month</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check size={14} color="var(--wn-accent-green)" />
-            <span className="text-wn-sm text-wn-text-secondary">
+            <Check size={14} className="text-wn-accent-green" />
+            <span className="text-wn-sm text-wn-text-secondary font-wn">
               7-day free trial included
             </span>
           </div>
@@ -124,8 +117,7 @@ export const PremiumScreen: React.FC = () => {
       >
         <button
           onClick={() => { togglePremium(); navigate('/winote'); }}
-          className="w-full p-4 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-md font-semibold cursor-pointer font-wn"
-          style={{ boxShadow: '0 4px 16px rgba(107,143,91,0.4)' }}
+          className="w-full p-4 rounded-wn-xl bg-wn-cta-bg text-wn-white border-none text-wn-md font-semibold cursor-pointer font-wn shadow-[0_4px_16px_rgba(111,130,95,0.4)]"
         >
           Start Free Trial
         </button>

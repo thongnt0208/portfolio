@@ -4,13 +4,14 @@ import { AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { AdBanner } from './AdBanner';
 import { RewardsOverlay } from '../components/RewardsOverlay';
+import { AIModelsModal } from '../components/AIModelsModal';
 import { WiNoteErrorBoundary } from '../components/ErrorBoundary';
 import { useUIStore } from '../store/useUIStore';
 import { useUserStore } from '../store/useUserStore';
 
 export const WiNoteLayout: React.FC = () => {
   const location = useLocation();
-  const { isSidebarOpen, isRewardsOverlayOpen } = useUIStore();
+  const { isSidebarOpen, isRewardsOverlayOpen, isAIModelsModalOpen } = useUIStore();
   const { user } = useUserStore();
 
   const hideAdBanner = user.isPremium || location.pathname.includes('/note/');
@@ -29,6 +30,10 @@ export const WiNoteLayout: React.FC = () => {
 
       <AnimatePresence>
         {isRewardsOverlayOpen && <RewardsOverlay />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isAIModelsModalOpen && <AIModelsModal />}
       </AnimatePresence>
 
       {!hideAdBanner && <AdBanner />}

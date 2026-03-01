@@ -48,41 +48,38 @@ export const SearchScreen: React.FC = () => {
       className="pb-[140px]"
     >
       {/* Search Header */}
-      <div className="flex items-center gap-3 pt-12 px-6 pb-4 sticky top-0 z-20 bg-wn-bg">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-          className="w-10 h-10 rounded-full border-none bg-transparent cursor-pointer flex items-center justify-center shrink-0"
-        >
-          <ArrowLeft size={20} color="var(--wn-text-primary)" />
-        </button>
-
-        <div className="flex-1 flex items-center h-11 rounded-wn-xl bg-wn-bg-light shadow-wn-inset border border-wn-border px-4">
+      <div className="flex items-center gap-4 pt-14 px-6 pb-2 sticky top-0 z-20 bg-wn-bg">
+        <div className="flex-1 flex items-center h-12 rounded-wn-pill bg-wn-card-gray shadow-wn-inset px-4 gap-3">
+          <ArrowLeft
+            size={20}
+            className="text-wn-text-tertiary cursor-pointer shrink-0"
+            onClick={() => navigate(-1)}
+          />
           <input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
-            className="flex-1 border-none bg-transparent outline-none text-wn-base font-wn text-wn-text-primary"
+            className="flex-1 border-none bg-transparent outline-none text-[15px] font-medium font-wn text-wn-text-primary"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
               className="bg-transparent border-none cursor-pointer p-1"
             >
-              <X size={16} color="var(--wn-text-tertiary)" />
+              <X size={18} className="text-wn-text-tertiary" />
             </button>
           )}
         </div>
       </div>
 
       {/* Results count + sort */}
-      <div className="flex justify-between items-center pt-2 px-6 pb-3">
-        <h1 className="text-wn-xl font-semibold">
+      <div className="flex justify-between items-center pt-4 px-6 pb-4">
+        <h1 className="text-wn-xl font-bold text-wn-text-primary font-wn leading-7">
           {filtered.length} results found
         </h1>
-        <button className="flex items-center gap-1 bg-transparent border-none cursor-pointer text-wn-sm text-wn-text-secondary font-wn uppercase tracking-wide font-medium">
-          <SlidersHorizontal size={12} />
+        <button className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-wn-xs text-wn-text-tertiary font-wn uppercase tracking-[0.6px] font-bold">
+          <SlidersHorizontal size={12} className="text-wn-text-tertiary" />
           Newest
         </button>
       </div>
@@ -100,19 +97,19 @@ export const SearchScreen: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-5 mx-6 p-5 rounded-wn-lg bg-wn-card-yellow shadow-wn-card border border-wn-border"
+          className="mt-5 mx-6 p-4 rounded-wn-xl bg-wn-card-yellow shadow-wn-card-green overflow-hidden relative"
         >
-          <h3 className="text-wn-lg font-bold mb-1.5">
+          <h3 className="text-wn-lg font-bold mb-1.5 text-wn-orange-text font-wn leading-7">
             Advanced Search
           </h3>
-          <p className="text-wn-sm text-wn-text-secondary leading-normal mb-3">
+          <p className="text-wn-xs text-[#8C7A4A] leading-[19.5px] mb-3 font-wn">
             Upgrade to Pro to search inside PDFs and handwritten notes.
           </p>
           <button
             onClick={() => navigate('/winote/premium')}
-            className="bg-transparent border-none cursor-pointer text-wn-base font-semibold font-wn text-wn-text-primary flex items-center gap-1"
+            className="bg-transparent border-none cursor-pointer text-wn-2xs font-bold font-wn text-wn-orange-text flex items-center gap-1 uppercase tracking-[0.5px] leading-[15px]"
           >
-            VIEW PLAN →
+            View Plan →
           </button>
         </motion.div>
       )}

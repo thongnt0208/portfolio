@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Tag, Brain, Settings, Crown, Info } from 'lucide-react';
 import { useUIStore } from '../store/useUIStore';
+import { useUserStore } from '../store/useUserStore';
+import CheckIcon from '@assets/winote/illustration/check.svg?react';
 
 const menuItems = [
   { icon: Home, label: 'Home', path: '/winote' },
@@ -16,7 +18,9 @@ const intelligenceItems = [
 
 export const Sidebar: React.FC = () => {
   const navigate = useNavigate();
-  const { closeSidebar, openRewardsOverlay } = useUIStore();
+  const { closeSidebar, openRewardsOverlay, openAIModelsModal } = useUIStore();
+  const { user } = useUserStore();
+  const avatarLetter = (user.name || 'U').charAt(0).toUpperCase();
 
   const handleNav = (path: string) => {
     closeSidebar();
@@ -39,130 +43,154 @@ export const Sidebar: React.FC = () => {
         animate={{ x: 0 }}
         exit={{ x: '-100%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[100dvh] z-[51] pointer-events-none"
-        style={{ maxWidth: 'var(--wn-max-width)' }}
+        className="fixed top-0 left-0 h-[100dvh] z-[51] pointer-events-none"
       >
         <motion.div
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           exit={{ x: '-100%' }}
           transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-          className="w-[87%] h-full flex flex-col pointer-events-auto overflow-y-auto"
-          style={{ background: 'linear-gradient(180deg, #E8EFDE 0%, #DCE6D0 50%, #D0DAC2 100%)' }}
+          className="w-[384px] max-w-[min(384px,100vw)] h-full flex flex-col justify-between pointer-events-auto overflow-y-auto rounded-r-[40px] shadow-[20px_0px_40px_rgba(74,79,70,0.10)]"
+          style={{ background: 'var(--wn-sidebar-bg)' }}
         >
           {/* Header */}
-          <div className="pt-12 px-8 pb-6 flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full border-2 border-wn-accent-green flex items-center justify-center bg-white/30">
-              <span className="text-[28px] text-wn-text-secondary">A</span>
-            </div>
-            <div>
-              <p className="text-wn-sm text-wn-text-secondary uppercase tracking-wide">
-                Welcome TO
-              </p>
-              <h2 className="text-wn-2xl font-bold">WiNote</h2>
-            </div>
-          </div>
-
-          {/* Menu Section */}
-          <div className="pt-5 px-6">
-            <h3 className="wn-section-title">MENU</h3>
-            <div className="clay-card mt-3 p-2">
-              {menuItems.map((item, i) => (
-                <motion.button
-                  key={item.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05 }}
-                  onClick={() => handleNav(item.path)}
-                  className="w-full flex items-center gap-4 p-4 bg-transparent border-none rounded-wn-md cursor-pointer text-wn-lg font-wn text-wn-text-primary text-left"
-                >
-                  <item.icon size={18} />
-                  <span>{item.label}</span>
-                </motion.button>
-              ))}
+          <div className="flex flex-col flex-shrink-0 pt-12 pb-10 px-8">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0 border-4 border-wn-white shadow-[0px_4px_6px_-4px_rgba(0,0,0,0.10)]">
+                <span className="font-bold text-[28px] text-wn-text-primary font-wn">
+                  {avatarLetter}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <p className="uppercase font-bold text-wn-base text-wn-text-secondary tracking-[0.7px] leading-5 font-wn">
+                  Welcome TO
+                </p>
+                <h2 className="font-bold text-wn-2xl text-wn-text-primary leading-[30px] font-wn">
+                  WiNote
+                </h2>
+              </div>
             </div>
           </div>
 
-          {/* Intelligences Section */}
-          <div className="pt-5 px-6">
-            <h3 className="wn-section-title">INTELLIGENCES</h3>
-            <div className="clay-card mt-3 p-2">
-              {intelligenceItems.map((item, i) => (
-                <motion.button
-                  key={item.label}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + i * 0.05 }}
-                  onClick={() => item.path && handleNav(item.path)}
-                  className="w-full flex items-center gap-4 p-4 bg-transparent border-none rounded-wn-md cursor-pointer text-wn-lg font-wn text-wn-text-primary text-left"
-                >
-                  <item.icon size={18} />
-                  <div className="flex-1">
-                    <span>{item.label}</span>
-                    {item.subtitle && (
-                      <span className="block text-wn-xs text-wn-text-tertiary">
-                        {item.subtitle}
-                      </span>
-                    )}
-                  </div>
-                  {item.hasCheck && (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" fill="var(--wn-accent-green)" />
-                      <path d="M8 12l3 3 5-5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  )}
-                </motion.button>
-              ))}
+          {/* Middle: Menu + Intelligences */}
+          <div className="flex-1 overflow-hidden flex flex-col py-5">
+            <div className="flex flex-col gap-4 px-6 pb-6">
+              {/* MENU */}
+              <div className="flex flex-col gap-4 pt-2">
+                <p className="uppercase font-bold text-wn-base text-wn-text-secondary tracking-[1.4px] leading-5 font-wn">
+                  MENU
+                </p>
+                <div className="flex flex-col gap-1 p-2 bg-wn-card-green shadow-wn-card rounded-wn-xl">
+                  {menuItems.map((item, i) => (
+                    <motion.button
+                      key={item.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + i * 0.05 }}
+                      onClick={() => handleNav(item.path)}
+                      className={`w-full flex items-center gap-4 border-none cursor-pointer text-left font-bold text-wn-lg text-wn-text-primary leading-[22.5px] h-14 px-4 rounded-wn-pill font-wn ${
+                        i === 0 ? 'bg-wn-bg shadow-wn-inset' : ''
+                      }`}
+                    >
+                      <item.icon size={18} className="text-wn-text-secondary shrink-0" />
+                      <span>{item.label}</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* INTELLIGENCES */}
+              <div className="flex flex-col gap-4 pt-2">
+                <p className="uppercase font-bold text-wn-base text-wn-text-secondary tracking-[1.4px] leading-5 font-wn">
+                  INTELLIGENCES
+                </p>
+                <div className="flex flex-col gap-1 p-2 bg-wn-card-green shadow-wn-card rounded-wn-xl">
+                  {intelligenceItems.map((item, i) => (
+                    <motion.button
+                      key={item.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.2 + i * 0.05 }}
+                      onClick={() => {
+                        if (item.label === 'AI Models') {
+                          closeSidebar();
+                          openAIModelsModal();
+                        } else if (item.path) {
+                          handleNav(item.path);
+                        }
+                      }}
+                      className={`w-full flex items-center gap-4 border-none cursor-pointer text-left font-bold text-wn-lg text-wn-text-primary leading-[22.5px] px-4 font-wn ${
+                        item.subtitle ? 'py-3 rounded-[32px] h-[67px]' : 'h-14 rounded-wn-pill'
+                      }`}
+                    >
+                      <item.icon size={18} className="text-wn-text-secondary shrink-0" />
+                      <div className="flex-1 min-w-0 flex flex-col items-start">
+                        <span>{item.label}</span>
+                        {item.subtitle && (
+                          <span className="font-medium mt-0.5 text-wn-sm text-wn-text-tertiary leading-4 font-wn">
+                            {item.subtitle}
+                          </span>
+                        )}
+                      </div>
+                      {item.hasCheck && (
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-[#DCFCE7] shadow-wn-cta-inset">
+                          <CheckIcon className="w-[18px] h-[18px]" />
+                        </div>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Spacer */}
-          <div className="flex-1" />
 
           {/* Bottom Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="p-6"
+            className="flex-shrink-0 flex flex-col gap-6 pt-6 pb-8 px-6"
+            style={{ background: 'linear-gradient(0deg, #FCFBF9 0%, rgba(252, 251, 249, 0) 100%)' }}
           >
             {/* Remove Ads Card */}
-            <div
-              className="rounded-wn-lg overflow-hidden shadow-wn-card"
-              style={{ background: 'linear-gradient(135deg, #6B7B5A 0%, #8B9B6A 100%)' }}
-            >
-              <div className="p-5 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-wn-sm bg-white/15 flex items-center justify-center">
-                  <Crown size={20} color="white" />
+            <div className="w-full max-w-[336px] self-center relative overflow-hidden p-1 bg-wn-cta-bg shadow-[-6px_-6px_14px_#A6BC8F] rounded-[48px]">
+              <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-white/20 to-transparent" />
+              <div className="flex items-center justify-between relative px-5 py-4">
+                <div className="flex items-center gap-3 flex-1">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/20 shadow-[0px_1px_2px_rgba(0,0,0,0.05)]">
+                    <Crown size={24} color="white" />
+                  </div>
+                  <span className="font-bold text-wn-lg text-wn-white leading-7 font-wn">
+                    Remove Ads
+                  </span>
                 </div>
-                <span className="text-wn-lg font-semibold text-white">
-                  Remove Ads
-                </span>
               </div>
-              <div className="flex gap-3 px-5 pb-5">
+              <div className="flex gap-3 relative px-5 pb-4">
                 <button
                   onClick={() => { closeSidebar(); openRewardsOverlay(); }}
-                  className="flex-1 p-3 rounded-wn-md bg-white/20 border border-white/25 text-white font-semibold text-wn-base cursor-pointer font-wn"
+                  className="flex-1 min-h-[44px] flex items-center justify-center font-semibold cursor-pointer rounded-full px-4 py-3 bg-white/35 shadow-[-10px_-10px_18px_rgba(255,255,255,0.55)_inset] text-wn-text-primary text-wn-base leading-[21px] font-wn border-none"
                 >
                   Watch a video
                 </button>
                 <button
                   onClick={() => handleNav('/winote/premium')}
-                  className="flex-1 p-3 rounded-wn-md bg-wn-card-yellow border-none text-wn-text-primary font-semibold text-wn-base cursor-pointer font-wn"
+                  className="flex-1 min-h-[44px] flex items-center justify-center font-semibold cursor-pointer rounded-full border-none px-4 py-3 bg-wn-card-yellow shadow-[-10px_-10px_18px_rgba(255,255,255,0.55)_inset] text-wn-text-primary text-wn-base leading-[21px] font-wn"
                 >
                   Go Premium
                 </button>
               </div>
             </div>
 
-            <p className="text-center text-wn-xs text-wn-text-secondary mt-4 leading-relaxed">
-              Tip: Premium removes ads permanently and unlocks extra AI tools.
+            <p className="text-center font-normal opacity-40 text-wn-xs text-wn-text-primary leading-[18px] font-wn">
+              Tip: Premium removes ads permanently
+              <br />
+              and unlocks extra AI tools.
             </p>
 
-            <div className="flex items-center justify-center gap-1.5 mt-4 pb-2">
-              <Info size={12} color="var(--wn-text-tertiary)" />
-              <span className="text-wn-xs text-wn-text-tertiary">
-                Vintage Clay Note AI v1.2.0
+            <div className="flex items-center justify-center gap-2 opacity-40">
+              <Info size={12} className="text-wn-text-primary" />
+              <span className="font-bold text-wn-sm text-wn-text-primary leading-4 font-wn">
+                WiNote v0.2.0
               </span>
             </div>
           </motion.div>

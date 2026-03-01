@@ -14,7 +14,7 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
   return (
     <div>
       <div className="flex justify-between items-center px-6 mb-3">
-        <h2 className="text-wn-xl font-semibold">Forgotten Notes</h2>
+        <h2 className="text-wn-xl font-bold text-wn-text-primary font-wn leading-7">Forgotten Notes</h2>
         {onViewAll && (
           <button
             onClick={onViewAll}
@@ -27,7 +27,7 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
 
       <div
         ref={scrollRef}
-        className="wn-no-scrollbar flex gap-4 overflow-x-auto px-6 pb-2 snap-x snap-mandatory"
+        className="wn-no-scrollbar flex gap-5 overflow-x-auto px-6 py-6 snap-x snap-mandatory -my-4"
       >
         {notes.map((note, i) => (
           <motion.div
@@ -37,7 +37,9 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
             transition={{ delay: i * 0.08, duration: 0.4 }}
             className="snap-start"
           >
-            <NoteCard note={note} variant="carousel" />
+            <div className={`${i === 0 ? 'ml-5' : ''}`}>
+              <NoteCard note={note} variant="carousel" />
+              </div>
           </motion.div>
         ))}
       </div>

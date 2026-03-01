@@ -64,7 +64,7 @@ export class WiNoteErrorBoundary extends React.Component<ErrorBoundaryProps, Err
         <div className="flex gap-3">
           <button
             onClick={this.handleRetry}
-            className="flex items-center gap-2 py-3 px-5 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-base font-semibold font-wn cursor-pointer shadow-wn-btn"
+            className="flex items-center gap-2 py-3 px-5 rounded-wn-xl bg-wn-cta-bg text-wn-white border-none text-wn-base font-semibold font-wn cursor-pointer shadow-wn-btn"
           >
             <RefreshCw size={16} />
             Retry
@@ -72,7 +72,7 @@ export class WiNoteErrorBoundary extends React.Component<ErrorBoundaryProps, Err
 
           <button
             onClick={this.handleGoHome}
-            className="flex items-center gap-2 py-3 px-5 rounded-wn-md bg-wn-bg-light text-wn-text-primary border border-wn-border text-wn-base font-semibold font-wn cursor-pointer shadow-wn-btn"
+            className="flex items-center gap-2 py-3 px-5 rounded-wn-xl bg-wn-bg shadow-wn-card-sm text-wn-text-primary border-none text-wn-base font-semibold font-wn cursor-pointer"
           >
             <Home size={16} />
             Home

@@ -6,6 +6,7 @@ import { CategoryPills } from '../components/CategoryPills';
 import { FormatToolbar } from '../components/FormatToolbar';
 import { AIToolbar } from '../components/AIToolbar';
 import { useNotesStore } from '../store/useNotesStore';
+import ChevronLeftIcon from '@assets/winote/illustration/chevron-left.svg?react';
 
 export const NoteDetailScreen: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -71,28 +72,26 @@ export const NoteDetailScreen: React.FC = () => {
       className="flex flex-col min-h-[100dvh]"
     >
       {/* Top bar */}
-      <div className="flex items-center justify-between pt-12 px-6 pb-2 sticky top-0 z-20 bg-wn-bg">
+      <div className="flex items-center justify-between pt-14 px-6 pb-2 sticky top-0 z-20 bg-wn-bg">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-1 bg-transparent border-none cursor-pointer text-wn-base font-wn text-wn-text-primary p-2"
+          className="flex items-center gap-2 bg-wn-bg shadow-wn-card-sm rounded-wn-lg border-none cursor-pointer text-[13px] font-medium font-wn text-wn-text-primary px-4 py-2.5"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
+          <ChevronLeftIcon className="w-4 h-4" />
           Back
         </button>
 
-        <div className="flex items-center gap-1.5 py-1.5 px-3 rounded-wn-pill bg-wn-bg-light shadow-wn-card-sm border border-wn-border">
+        <div className="flex items-center gap-1.5 py-1.5 px-3 rounded-wn-pill bg-wn-bg shadow-wn-card-sm">
           <div className="w-1.5 h-1.5 rounded-full bg-wn-accent-green" />
-          <span className="text-wn-sm text-wn-text-secondary">Auto-saved</span>
+          <span className="text-wn-xs text-wn-text-secondary font-wn">Auto-saved</span>
         </div>
 
         <button
           onClick={handleDelete}
-          className="w-10 h-10 rounded-wn-md bg-wn-bg-light shadow-wn-card-sm border border-wn-border cursor-pointer flex items-center justify-center"
+          className="w-10 h-10 rounded-wn-lg bg-wn-bg shadow-wn-card-sm border-none cursor-pointer flex items-center justify-center"
           aria-label="Delete note"
         >
-          <Trash2 size={18} color="var(--wn-text-secondary)" />
+          <Trash2 size={18} className="text-wn-text-secondary" />
         </button>
       </div>
 
@@ -110,15 +109,15 @@ export const NoteDetailScreen: React.FC = () => {
 
       {/* Metadata */}
       <div className="flex gap-2 py-3 px-6 flex-wrap">
-        <div className="clay-card-sm flex items-center gap-2 py-1.5 px-3">
-          <Calendar size={14} color="var(--wn-text-secondary)" />
-          <span className="text-wn-sm text-wn-text-secondary">
+        <div className="flex items-center gap-2 py-1.5 px-3 bg-wn-bg shadow-wn-card-sm rounded-wn-lg">
+          <Calendar size={14} className="text-wn-text-secondary" />
+          <span className="text-wn-xs text-wn-text-secondary font-wn">
             {dateStr} • {timeStr}
           </span>
         </div>
-        <div className="clay-card-sm flex items-center gap-2 py-1.5 px-3">
-          <Clock size={14} color="var(--wn-text-secondary)" />
-          <span className="text-wn-sm text-wn-text-secondary">
+        <div className="flex items-center gap-2 py-1.5 px-3 bg-wn-bg shadow-wn-card-sm rounded-wn-lg">
+          <Clock size={14} className="text-wn-text-secondary" />
+          <span className="text-wn-xs text-wn-text-secondary font-wn">
             {formatEditedAgo(note.updatedAt)}
           </span>
         </div>
@@ -140,8 +139,8 @@ export const NoteDetailScreen: React.FC = () => {
         />
 
         <div className="absolute right-6 bottom-4 flex flex-col gap-2">
-          <button className="w-10 h-10 rounded-wn-md bg-wn-bg-light shadow-wn-card-sm border border-wn-border cursor-pointer flex items-center justify-center">
-            <Settings2 size={18} color="var(--wn-text-secondary)" />
+          <button className="w-10 h-10 rounded-wn-lg bg-wn-bg shadow-wn-card-sm border-none cursor-pointer flex items-center justify-center">
+            <Settings2 size={18} className="text-wn-text-secondary" />
           </button>
         </div>
       </div>

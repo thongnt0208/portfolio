@@ -28,9 +28,9 @@ export const NoteGrid: React.FC<NoteGridProps> = ({ notes, showBadgeForFirst }) 
       variants={container}
       initial="hidden"
       animate="show"
-      className="flex gap-4 px-6"
+      className="flex gap-5 px-6"
     >
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="flex-1 flex flex-col gap-5">
         {col1.map((note, i) => (
           <motion.div key={note.id} variants={item}>
             <NoteCard
@@ -40,7 +40,7 @@ export const NoteGrid: React.FC<NoteGridProps> = ({ notes, showBadgeForFirst }) 
           </motion.div>
         ))}
       </div>
-      <div className="flex-1 flex flex-col gap-4">
+      <div className="flex-1 flex flex-col gap-5">
         {col2.map((note) => (
           <motion.div key={note.id} variants={item}>
             <NoteCard note={note} />
