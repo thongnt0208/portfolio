@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { AdBanner } from './AdBanner';
 import { RewardsOverlay } from '../components/RewardsOverlay';
+import { WiNoteErrorBoundary } from '../components/ErrorBoundary';
 import { useUIStore } from '../store/useUIStore';
 import { useUserStore } from '../store/useUserStore';
 
@@ -16,9 +17,11 @@ export const WiNoteLayout: React.FC = () => {
 
   return (
     <div className="winote-app">
-      <AnimatePresence mode="wait">
-        <Outlet key={location.pathname} />
-      </AnimatePresence>
+      <WiNoteErrorBoundary>
+        <AnimatePresence mode="wait">
+          <Outlet key={location.pathname} />
+        </AnimatePresence>
+      </WiNoteErrorBoundary>
 
       <AnimatePresence>
         {isSidebarOpen && <Sidebar />}
