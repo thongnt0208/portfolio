@@ -15,7 +15,7 @@ interface CategoryPillsProps {
 
 export const CategoryPills: React.FC<CategoryPillsProps> = ({ active, onChange }) => {
   return (
-    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+    <div className="flex gap-2.5 flex-wrap">
       {categories.map((cat) => {
         const isActive = active === cat.id;
         return (
@@ -23,21 +23,11 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({ active, onChange }
             key={cat.id}
             whileTap={{ scale: 0.93 }}
             onClick={() => onChange(cat.id)}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '8px 16px',
-              borderRadius: 'var(--wn-radius-pill)',
-              border: '1px solid var(--wn-border)',
-              background: isActive ? 'var(--wn-card-green)' : 'var(--wn-bg-light)',
-              boxShadow: isActive ? 'var(--wn-shadow-inset)' : 'var(--wn-shadow-btn)',
-              cursor: 'pointer',
-              fontSize: 'var(--wn-text-base)',
-              fontFamily: 'var(--wn-font)',
-              fontWeight: isActive ? 600 : 400,
-              color: 'var(--wn-text-primary)',
-            }}
+            className={`flex items-center gap-2 py-2 px-4 rounded-wn-pill border border-wn-border cursor-pointer text-wn-base font-wn text-wn-text-primary ${
+              isActive
+                ? 'bg-wn-card-green shadow-wn-inset font-semibold'
+                : 'bg-wn-bg-light shadow-wn-btn font-normal'
+            }`}
           >
             <cat.icon size={12} />
             {cat.id}
@@ -46,18 +36,7 @@ export const CategoryPills: React.FC<CategoryPillsProps> = ({ active, onChange }
       })}
       <motion.button
         whileTap={{ scale: 0.93 }}
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: 'var(--wn-radius-pill)',
-          border: '1px solid var(--wn-border)',
-          background: 'var(--wn-bg-light)',
-          boxShadow: 'var(--wn-shadow-btn)',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+        className="w-8 h-8 rounded-wn-pill border border-wn-border bg-wn-bg-light shadow-wn-btn cursor-pointer flex items-center justify-center"
       >
         <Plus size={14} color="var(--wn-text-secondary)" />
       </motion.button>

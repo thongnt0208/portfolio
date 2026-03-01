@@ -28,23 +28,11 @@ export const RewardsOverlay: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 60,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
+      className="fixed inset-0 z-[60] flex items-center justify-center"
     >
       <div
         onClick={completed ? closeRewardsOverlay : undefined}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'rgba(30, 30, 20, 0.7)',
-          backdropFilter: 'blur(4px)',
-        }}
+        className="absolute inset-0 bg-[rgba(30,30,20,0.7)] backdrop-blur-[4px]"
       />
 
       <motion.div
@@ -52,32 +40,14 @@ export const RewardsOverlay: React.FC = () => {
         animate={{ y: 0, opacity: 1, scale: 1 }}
         exit={{ y: 60, opacity: 0, scale: 0.95 }}
         transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        style={{
-          position: 'relative',
-          width: 'calc(100% - 48px)',
-          maxWidth: 380,
-          background: 'var(--wn-bg)',
-          borderRadius: 'var(--wn-radius-2xl)',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-          overflow: 'hidden',
-          padding: '32px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-        }}
+        className="relative w-[calc(100%-48px)] max-w-[380px] bg-wn-bg rounded-wn-2xl overflow-hidden py-8 px-6 flex flex-col items-center text-center"
+        style={{ boxShadow: '0 20px 60px rgba(0,0,0,0.3)' }}
       >
         {/* Decorative gradient */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 120,
-          background: 'linear-gradient(180deg, var(--wn-card-green) 0%, transparent 100%)',
-          opacity: 0.4,
-          pointerEvents: 'none',
-        }} />
+        <div
+          className="absolute top-0 left-0 right-0 h-[120px] opacity-40 pointer-events-none"
+          style={{ background: 'linear-gradient(180deg, var(--wn-card-green) 0%, transparent 100%)' }}
+        />
 
         {/* Close */}
         {completed && (
@@ -86,20 +56,7 @@ export const RewardsOverlay: React.FC = () => {
             animate={{ opacity: 1 }}
             onClick={closeRewardsOverlay}
             aria-label="Close"
-            style={{
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              width: 32,
-              height: 32,
-              borderRadius: '50%',
-              border: '1px solid var(--wn-border)',
-              background: 'var(--wn-bg-light)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full border border-wn-border bg-wn-bg-light cursor-pointer flex items-center justify-center"
           >
             <X size={16} />
           </motion.button>
@@ -109,21 +66,12 @@ export const RewardsOverlay: React.FC = () => {
         <motion.div
           animate={completed ? { scale: [1, 1.15, 1], rotate: [0, 10, -10, 0] } : {}}
           transition={{ duration: 0.6 }}
+          className="w-[72px] h-[72px] rounded-full flex items-center justify-center mb-5 mt-4 relative z-[1]"
           style={{
-            width: 72,
-            height: 72,
-            borderRadius: '50%',
             background: completed
               ? 'linear-gradient(135deg, var(--wn-accent-green) 0%, #8BAF6B 100%)'
               : 'linear-gradient(135deg, var(--wn-card-yellow) 0%, var(--wn-premium-gold) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
-            marginTop: 16,
             boxShadow: '0 4px 16px rgba(107,143,91,0.3)',
-            position: 'relative',
-            zIndex: 1,
           }}
         >
           {completed ? (
@@ -136,24 +84,11 @@ export const RewardsOverlay: React.FC = () => {
         </motion.div>
 
         {/* Title */}
-        <h2 style={{
-          fontSize: 'var(--wn-text-xl)',
-          fontWeight: 700,
-          marginBottom: 8,
-          position: 'relative',
-          zIndex: 1,
-        }}>
+        <h2 className="text-wn-xl font-bold mb-2 relative z-[1]">
           {completed ? 'Reward Earned!' : 'Watch to Earn Rewards'}
         </h2>
 
-        <p style={{
-          fontSize: 'var(--wn-text-base)',
-          color: 'var(--wn-text-secondary)',
-          lineHeight: 1.5,
-          marginBottom: 24,
-          position: 'relative',
-          zIndex: 1,
-        }}>
+        <p className="text-wn-base text-wn-text-secondary leading-normal mb-6 relative z-[1]">
           {completed
             ? 'You earned 30 minutes of ad-free experience.'
             : 'Watch a short video to unlock 30 minutes of ad-free experience.'}
@@ -161,34 +96,16 @@ export const RewardsOverlay: React.FC = () => {
 
         {/* Progress */}
         {!completed && (
-          <div style={{
-            width: '100%',
-            marginBottom: 24,
-            position: 'relative',
-            zIndex: 1,
-          }}>
-            <div style={{
-              height: 8,
-              borderRadius: 4,
-              background: 'var(--wn-card-gray)',
-              overflow: 'hidden',
-              boxShadow: 'var(--wn-shadow-inset)',
-            }}>
+          <div className="w-full mb-6 relative z-[1]">
+            <div className="h-2 rounded bg-wn-card-gray overflow-hidden shadow-wn-inset">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
-                style={{
-                  height: '100%',
-                  borderRadius: 4,
-                  background: 'linear-gradient(90deg, var(--wn-accent-green) 0%, #8BAF6B 100%)',
-                }}
+                className="h-full rounded"
+                style={{ background: 'linear-gradient(90deg, var(--wn-accent-green) 0%, #8BAF6B 100%)' }}
               />
             </div>
-            <p style={{
-              fontSize: 'var(--wn-text-xs)',
-              color: 'var(--wn-text-tertiary)',
-              marginTop: 8,
-            }}>
+            <p className="text-wn-xs text-wn-text-tertiary mt-2">
               {progress < 100 ? `${Math.round(progress)}% complete` : 'Finishing...'}
             </p>
           </div>
@@ -201,20 +118,7 @@ export const RewardsOverlay: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             whileTap={{ scale: 0.96 }}
             onClick={closeRewardsOverlay}
-            style={{
-              width: '100%',
-              padding: '14px',
-              borderRadius: 'var(--wn-radius-md)',
-              background: 'var(--wn-accent-green)',
-              color: 'white',
-              border: 'none',
-              fontSize: 'var(--wn-text-md)',
-              fontWeight: 600,
-              cursor: 'pointer',
-              fontFamily: 'var(--wn-font)',
-              position: 'relative',
-              zIndex: 1,
-            }}
+            className="w-full py-3.5 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-md font-semibold cursor-pointer font-wn relative z-[1]"
           >
             Continue
           </motion.button>

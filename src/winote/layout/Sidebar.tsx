@@ -31,12 +31,7 @@ export const Sidebar: React.FC = () => {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
         onClick={closeSidebar}
-        style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'var(--wn-overlay)',
-          zIndex: 50,
-        }}
+        className="fixed inset-0 bg-wn-overlay z-50"
       />
 
       <motion.nav
@@ -44,59 +39,34 @@ export const Sidebar: React.FC = () => {
         animate={{ x: 0 }}
         exit={{ x: '-100%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          width: '100%',
-          maxWidth: 'var(--wn-max-width)',
-          height: '100dvh',
-          zIndex: 51,
-          pointerEvents: 'none',
-        }}
+        className="fixed top-0 left-1/2 -translate-x-1/2 w-full h-[100dvh] z-[51] pointer-events-none"
+        style={{ maxWidth: 'var(--wn-max-width)' }}
       >
         <motion.div
           initial={{ x: '-100%' }}
           animate={{ x: 0 }}
           exit={{ x: '-100%' }}
           transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-          style={{
-            width: '87%',
-            height: '100%',
-            background: 'linear-gradient(180deg, #E8EFDE 0%, #DCE6D0 50%, #D0DAC2 100%)',
-            display: 'flex',
-            flexDirection: 'column',
-            pointerEvents: 'auto',
-            overflowY: 'auto',
-          }}
+          className="w-[87%] h-full flex flex-col pointer-events-auto overflow-y-auto"
+          style={{ background: 'linear-gradient(180deg, #E8EFDE 0%, #DCE6D0 50%, #D0DAC2 100%)' }}
         >
           {/* Header */}
-          <div style={{ padding: '48px 32px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{
-              width: 64,
-              height: 64,
-              borderRadius: '50%',
-              border: '2px solid var(--wn-accent-green)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'rgba(255,255,255,0.3)',
-            }}>
-              <span style={{ fontSize: 28, color: 'var(--wn-text-secondary)' }}>A</span>
+          <div className="pt-12 px-8 pb-6 flex items-center gap-4">
+            <div className="w-16 h-16 rounded-full border-2 border-wn-accent-green flex items-center justify-center bg-white/30">
+              <span className="text-[28px] text-wn-text-secondary">A</span>
             </div>
             <div>
-              <p style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <p className="text-wn-sm text-wn-text-secondary uppercase tracking-wide">
                 Welcome TO
               </p>
-              <h2 style={{ fontSize: 'var(--wn-text-2xl)', fontWeight: 700 }}>WiNote</h2>
+              <h2 className="text-wn-2xl font-bold">WiNote</h2>
             </div>
           </div>
 
           {/* Menu Section */}
-          <div style={{ padding: '20px 24px 0' }}>
+          <div className="pt-5 px-6">
             <h3 className="wn-section-title">MENU</h3>
-            <div className="clay-card" style={{ marginTop: 12, padding: 8 }}>
+            <div className="clay-card mt-3 p-2">
               {menuItems.map((item, i) => (
                 <motion.button
                   key={item.label}
@@ -104,21 +74,7 @@ export const Sidebar: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 + i * 0.05 }}
                   onClick={() => handleNav(item.path)}
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 16,
-                    padding: '16px',
-                    background: 'none',
-                    border: 'none',
-                    borderRadius: 'var(--wn-radius-md)',
-                    cursor: 'pointer',
-                    fontSize: 'var(--wn-text-lg)',
-                    fontFamily: 'var(--wn-font)',
-                    color: 'var(--wn-text-primary)',
-                    textAlign: 'left',
-                  }}
+                  className="w-full flex items-center gap-4 p-4 bg-transparent border-none rounded-wn-md cursor-pointer text-wn-lg font-wn text-wn-text-primary text-left"
                 >
                   <item.icon size={18} />
                   <span>{item.label}</span>
@@ -128,9 +84,9 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {/* Intelligences Section */}
-          <div style={{ padding: '20px 24px 0' }}>
+          <div className="pt-5 px-6">
             <h3 className="wn-section-title">INTELLIGENCES</h3>
-            <div className="clay-card" style={{ marginTop: 12, padding: 8 }}>
+            <div className="clay-card mt-3 p-2">
               {intelligenceItems.map((item, i) => (
                 <motion.button
                   key={item.label}
@@ -138,27 +94,13 @@ export const Sidebar: React.FC = () => {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 + i * 0.05 }}
                   onClick={() => item.path && handleNav(item.path)}
-                  style={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 16,
-                    padding: '16px',
-                    background: 'none',
-                    border: 'none',
-                    borderRadius: 'var(--wn-radius-md)',
-                    cursor: 'pointer',
-                    fontSize: 'var(--wn-text-lg)',
-                    fontFamily: 'var(--wn-font)',
-                    color: 'var(--wn-text-primary)',
-                    textAlign: 'left',
-                  }}
+                  className="w-full flex items-center gap-4 p-4 bg-transparent border-none rounded-wn-md cursor-pointer text-wn-lg font-wn text-wn-text-primary text-left"
                 >
                   <item.icon size={18} />
-                  <div style={{ flex: 1 }}>
+                  <div className="flex-1">
                     <span>{item.label}</span>
                     {item.subtitle && (
-                      <span style={{ display: 'block', fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-tertiary)' }}>
+                      <span className="block text-wn-xs text-wn-text-tertiary">
                         {item.subtitle}
                       </span>
                     )}
@@ -175,96 +117,51 @@ export const Sidebar: React.FC = () => {
           </div>
 
           {/* Spacer */}
-          <div style={{ flex: 1 }} />
+          <div className="flex-1" />
 
           {/* Bottom Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            style={{ padding: '24px' }}
+            className="p-6"
           >
             {/* Remove Ads Card */}
-            <div style={{
-              borderRadius: 'var(--wn-radius-lg)',
-              overflow: 'hidden',
-              background: 'linear-gradient(135deg, #6B7B5A 0%, #8B9B6A 100%)',
-              boxShadow: 'var(--wn-shadow-card)',
-            }}>
-              <div style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 'var(--wn-radius-sm)',
-                  background: 'rgba(255,255,255,0.15)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+            <div
+              className="rounded-wn-lg overflow-hidden shadow-wn-card"
+              style={{ background: 'linear-gradient(135deg, #6B7B5A 0%, #8B9B6A 100%)' }}
+            >
+              <div className="p-5 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-wn-sm bg-white/15 flex items-center justify-center">
                   <Crown size={20} color="white" />
                 </div>
-                <span style={{ fontSize: 'var(--wn-text-lg)', fontWeight: 600, color: 'white' }}>
+                <span className="text-wn-lg font-semibold text-white">
                   Remove Ads
                 </span>
               </div>
-              <div style={{ display: 'flex', gap: 12, padding: '0 20px 20px' }}>
+              <div className="flex gap-3 px-5 pb-5">
                 <button
                   onClick={() => { closeSidebar(); openRewardsOverlay(); }}
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    borderRadius: 'var(--wn-radius-md)',
-                    background: 'rgba(255,255,255,0.2)',
-                    border: '1px solid rgba(255,255,255,0.25)',
-                    color: 'white',
-                    fontWeight: 600,
-                    fontSize: 'var(--wn-text-base)',
-                    cursor: 'pointer',
-                    fontFamily: 'var(--wn-font)',
-                  }}
+                  className="flex-1 p-3 rounded-wn-md bg-white/20 border border-white/25 text-white font-semibold text-wn-base cursor-pointer font-wn"
                 >
                   Watch a video
                 </button>
                 <button
                   onClick={() => handleNav('/winote/premium')}
-                  style={{
-                    flex: 1,
-                    padding: '12px',
-                    borderRadius: 'var(--wn-radius-md)',
-                    background: 'var(--wn-card-yellow)',
-                    border: 'none',
-                    color: 'var(--wn-text-primary)',
-                    fontWeight: 600,
-                    fontSize: 'var(--wn-text-base)',
-                    cursor: 'pointer',
-                    fontFamily: 'var(--wn-font)',
-                  }}
+                  className="flex-1 p-3 rounded-wn-md bg-wn-card-yellow border-none text-wn-text-primary font-semibold text-wn-base cursor-pointer font-wn"
                 >
                   Go Premium
                 </button>
               </div>
             </div>
 
-            <p style={{
-              textAlign: 'center',
-              fontSize: 'var(--wn-text-xs)',
-              color: 'var(--wn-text-secondary)',
-              marginTop: 16,
-              lineHeight: 1.5,
-            }}>
+            <p className="text-center text-wn-xs text-wn-text-secondary mt-4 leading-relaxed">
               Tip: Premium removes ads permanently and unlocks extra AI tools.
             </p>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 6,
-              marginTop: 16,
-              paddingBottom: 8,
-            }}>
+            <div className="flex items-center justify-center gap-1.5 mt-4 pb-2">
               <Info size={12} color="var(--wn-text-tertiary)" />
-              <span style={{ fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-tertiary)' }}>
+              <span className="text-wn-xs text-wn-text-tertiary">
                 Vintage Clay Note AI v1.2.0
               </span>
             </div>

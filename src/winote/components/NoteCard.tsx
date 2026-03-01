@@ -47,106 +47,69 @@ export const NoteCard: React.FC<NoteCardProps> = ({ note, showBadge, variant = '
     <motion.button
       whileTap={{ scale: 0.97 }}
       onClick={() => navigate(`/winote/note/${note.id}`)}
-      style={{
-        width: isCarousel ? 220 : '100%',
-        minHeight: isCarousel ? 220 : undefined,
-        flexShrink: 0,
-        background: bg,
-        borderRadius: 'var(--wn-radius-lg)',
-        boxShadow: 'var(--wn-shadow-card)',
-        border: '1px solid var(--wn-border)',
-        padding: 16,
-        display: 'flex',
-        flexDirection: 'column',
-        textAlign: 'left',
-        cursor: 'pointer',
-        fontFamily: 'var(--wn-font)',
-        color: 'var(--wn-text-primary)',
-        overflow: 'hidden',
-      }}
+      className={`${
+        isCarousel ? 'w-[220px] min-h-[220px]' : 'w-full'
+      } shrink-0 rounded-wn-lg shadow-wn-card border border-wn-border p-4 flex flex-col text-left cursor-pointer font-wn text-wn-text-primary overflow-hidden`}
+      style={{ background: bg }}
     >
       {/* Time / Badge */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
-        <span style={{ fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-secondary)', fontWeight: showBadge ? 700 : 500 }}>
+      <div className="flex justify-between items-center mb-1.5">
+        <span className={`text-wn-xs text-wn-text-secondary ${showBadge ? 'font-bold' : 'font-medium'}`}>
           {showBadge || (isCarousel ? formatDate(note.updatedAt) : formatTimeAgo(note.updatedAt))}
         </span>
         {note.isPinned && <Pin size={12} color="var(--wn-text-secondary)" />}
       </div>
 
       {/* Title */}
-      <h3 style={{
-        fontSize: isCarousel ? 'var(--wn-text-xl)' : 'var(--wn-text-lg)',
-        fontWeight: 600,
-        lineHeight: 1.3,
-        marginBottom: 8,
-      }}>
+      <h3 className={`${isCarousel ? 'text-wn-xl' : 'text-wn-lg'} font-semibold leading-tight mb-2`}>
         {note.title}
       </h3>
 
       {/* Content preview */}
       {note.type === 'checklist' && note.checklist && (
-        <ul style={{ listStyle: 'none', fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-secondary)', flex: 1 }}>
+        <ul className="list-none text-wn-xs text-wn-text-secondary flex-1">
           {note.checklist.slice(0, 3).map((item) => (
-            <li key={item.id} style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+            <li key={item.id} className="flex items-center gap-1.5 mb-1">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10" />
               </svg>
-              <span style={{ textDecoration: item.checked ? 'line-through' : 'none' }}>{item.text}</span>
+              <span className={item.checked ? 'line-through' : ''}>{item.text}</span>
             </li>
           ))}
         </ul>
       )}
 
       {note.type === 'text' && note.content && (
-        <p style={{
-          fontSize: 'var(--wn-text-xs)',
-          color: 'var(--wn-text-secondary)',
-          lineHeight: 1.5,
-          flex: 1,
-          overflow: 'hidden',
-          display: '-webkit-box',
-          WebkitLineClamp: isCarousel ? 2 : 3,
-          WebkitBoxOrient: 'vertical',
-        }}>
+        <p
+          className={`text-wn-xs text-wn-text-secondary leading-normal flex-1 overflow-hidden`}
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: isCarousel ? 2 : 3,
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
           {note.content}
         </p>
       )}
 
       {note.type === 'audio' && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flex: 1 }}>
-          <div style={{
-            width: 28,
-            height: 28,
-            borderRadius: '50%',
-            background: 'var(--wn-accent-green)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <div className="flex items-center gap-2 mt-1 flex-1">
+          <div className="w-7 h-7 rounded-full bg-wn-accent-green flex items-center justify-center">
             <Play size={12} color="white" fill="white" />
           </div>
-          <div style={{ flex: 1, height: 4, borderRadius: 2, background: 'var(--wn-accent-green)', opacity: 0.3 }} />
-          <span style={{ fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-secondary)' }}>{note.audioDuration}</span>
+          <div className="flex-1 h-1 rounded-sm bg-wn-accent-green opacity-30" />
+          <span className="text-wn-xs text-wn-text-secondary">{note.audioDuration}</span>
         </div>
       )}
 
       {note.type === 'image' && (
-        <div style={{
-          flex: 1,
-          background: 'var(--wn-card-lavender)',
-          borderRadius: 'var(--wn-radius-sm)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: 60,
-          marginBottom: 4,
-        }}>
+        <div className="flex-1 bg-wn-card-lavender rounded-wn-sm flex items-center justify-center min-h-[60px] mb-1">
           <Image size={24} color="var(--wn-text-tertiary)" />
         </div>
       )}
 
       {/* Bottom: Category / Tags */}
-      <div style={{ display: 'flex', gap: 6, marginTop: 'auto', paddingTop: 8, flexWrap: 'wrap' }}>
+      <div className="flex gap-1.5 mt-auto pt-2 flex-wrap">
         {note.tags.length > 0 && variant === 'grid' && (
           note.tags.slice(0, 2).map((tag) => (
             <span key={tag} className="clay-pill">

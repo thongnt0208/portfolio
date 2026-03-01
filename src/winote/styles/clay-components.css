@@ -26,8 +26,8 @@
 .winote-app *::before,
 .winote-app *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  /* margin: 0;
+  padding: 0; */
 }
 
 /* ── Clay Card ── */

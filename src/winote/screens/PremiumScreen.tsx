@@ -21,40 +21,16 @@ export const PremiumScreen: React.FC = () => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 30 }}
       transition={{ duration: 0.3 }}
-      style={{
-        minHeight: '100dvh',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        overflow: 'hidden',
-      }}
+      className="min-h-[100dvh] flex flex-col relative overflow-hidden"
     >
       {/* Decorative bg */}
-      <div style={{
-        position: 'absolute',
-        top: -80,
-        right: -60,
-        width: 250,
-        height: 250,
-        borderRadius: '50%',
-        background: 'var(--wn-card-green)',
-        opacity: 0.3,
-        filter: 'blur(60px)',
-        pointerEvents: 'none',
-      }} />
+      <div className="absolute -top-20 -right-[60px] w-[250px] h-[250px] rounded-full bg-wn-card-green opacity-30 blur-[60px] pointer-events-none" />
 
       {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '48px 24px 16px',
-      }}>
+      <div className="flex items-center pt-12 px-6 pb-4">
         <button
           onClick={() => navigate(-1)}
-          style={{
-            background: 'none', border: 'none', cursor: 'pointer', padding: 8,
-            display: 'flex', alignItems: 'center',
-          }}
+          className="bg-transparent border-none cursor-pointer p-2 flex items-center"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="m15 18-6-6 6-6" />
@@ -63,41 +39,28 @@ export const PremiumScreen: React.FC = () => {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '0 24px', flex: 1 }}>
+      <div className="px-6 flex-1">
         {/* Icon + Title */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          style={{ marginBottom: 24 }}
+          className="mb-6"
         >
-          <div style={{
-            width: 64,
-            height: 64,
-            borderRadius: 'var(--wn-radius-lg)',
-            background: 'linear-gradient(135deg, var(--wn-card-yellow) 0%, var(--wn-premium-gold) 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
-            boxShadow: '0 4px 16px rgba(197,164,78,0.3)',
-          }}>
+          <div
+            className="w-16 h-16 rounded-wn-lg flex items-center justify-center mb-5"
+            style={{
+              background: 'linear-gradient(135deg, var(--wn-card-yellow) 0%, var(--wn-premium-gold) 100%)',
+              boxShadow: '0 4px 16px rgba(197,164,78,0.3)',
+            }}
+          >
             <Crown size={28} color="white" />
           </div>
 
-          <h1 style={{
-            fontSize: 'var(--wn-text-2xl)',
-            fontWeight: 700,
-            lineHeight: 1.3,
-            marginBottom: 8,
-          }}>
+          <h1 className="text-wn-2xl font-bold leading-snug mb-2">
             Remove Ads & Unlock<br />All Features
           </h1>
-          <p style={{
-            fontSize: 'var(--wn-text-base)',
-            color: 'var(--wn-text-secondary)',
-            lineHeight: 1.6,
-          }}>
+          <p className="text-wn-base text-wn-text-secondary leading-relaxed">
             Go Pro for the full WiNote experience with AI tools, advanced search, and zero interruptions.
           </p>
         </motion.div>
@@ -107,7 +70,7 @@ export const PremiumScreen: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}
+          className="flex flex-col gap-3 mb-8"
         >
           {features.map((f, i) => (
             <motion.div
@@ -115,26 +78,16 @@ export const PremiumScreen: React.FC = () => {
               initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.25 + i * 0.07 }}
-              className="clay-card"
-              style={{ display: 'flex', alignItems: 'flex-start', gap: 14, padding: 16 }}
+              className="clay-card flex items-start gap-3.5 p-4"
             >
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: 'var(--wn-radius-sm)',
-                background: 'var(--wn-card-green-light)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-              }}>
+              <div className="w-9 h-9 rounded-wn-sm bg-wn-card-green-light flex items-center justify-center shrink-0">
                 <f.icon size={16} color="var(--wn-accent-green)" />
               </div>
               <div>
-                <h3 style={{ fontSize: 'var(--wn-text-base)', fontWeight: 600, marginBottom: 2 }}>
+                <h3 className="text-wn-base font-semibold mb-0.5">
                   {f.title}
                 </h3>
-                <p style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)', lineHeight: 1.4 }}>
+                <p className="text-wn-sm text-wn-text-secondary leading-snug">
                   {f.desc}
                 </p>
               </div>
@@ -147,20 +100,15 @@ export const PremiumScreen: React.FC = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          style={{ marginBottom: 24 }}
+          className="mb-6"
         >
-          <div style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: 4,
-            marginBottom: 4,
-          }}>
-            <span style={{ fontSize: 'var(--wn-text-3xl)', fontWeight: 800 }}>$4.99</span>
-            <span style={{ fontSize: 'var(--wn-text-base)', color: 'var(--wn-text-secondary)' }}>/month</span>
+          <div className="flex items-baseline gap-1 mb-1">
+            <span className="text-wn-3xl font-extrabold">$4.99</span>
+            <span className="text-wn-base text-wn-text-secondary">/month</span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div className="flex items-center gap-1.5">
             <Check size={14} color="var(--wn-accent-green)" />
-            <span style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>
+            <span className="text-wn-sm text-wn-text-secondary">
               7-day free trial included
             </span>
           </div>
@@ -172,23 +120,12 @@ export const PremiumScreen: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        style={{ padding: '16px 24px 40px' }}
+        className="pt-4 px-6 pb-10"
       >
         <button
           onClick={() => { togglePremium(); navigate('/winote'); }}
-          style={{
-            width: '100%',
-            padding: '16px',
-            borderRadius: 'var(--wn-radius-md)',
-            background: 'var(--wn-accent-green)',
-            color: 'white',
-            border: 'none',
-            fontSize: 'var(--wn-text-md)',
-            fontWeight: 600,
-            cursor: 'pointer',
-            fontFamily: 'var(--wn-font)',
-            boxShadow: '0 4px 16px rgba(107,143,91,0.4)',
-          }}
+          className="w-full p-4 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-md font-semibold cursor-pointer font-wn"
+          style={{ boxShadow: '0 4px 16px rgba(107,143,91,0.4)' }}
         >
           Start Free Trial
         </button>

@@ -12,35 +12,15 @@ const tools = [
 
 export const FormatToolbar: React.FC = () => {
   return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: 4,
-      padding: '8px 16px',
-      background: 'var(--wn-bg-light)',
-      borderRadius: 'var(--wn-radius-xl)',
-      boxShadow: 'var(--wn-shadow-card)',
-      border: '1px solid var(--wn-border)',
-    }}>
+    <div className="flex items-center gap-1 py-2 px-4 bg-wn-bg-light rounded-wn-xl shadow-wn-card border border-wn-border">
       {tools.map((t, i) => (
         <React.Fragment key={t.label}>
           {(i === 3 || i === 5) && (
-            <div style={{ width: 1, height: 16, background: 'var(--wn-border)', margin: '0 6px' }} />
+            <div className="w-px h-4 bg-wn-border mx-1.5" />
           )}
           <button
             aria-label={t.label}
-            style={{
-              width: 34,
-              height: 34,
-              border: 'none',
-              background: 'none',
-              borderRadius: 'var(--wn-radius-sm)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: 'var(--wn-text-secondary)',
-            }}
+            className="w-[34px] h-[34px] border-none bg-transparent rounded-wn-sm cursor-pointer flex items-center justify-center text-wn-text-secondary"
           >
             <t.icon size={18} />
           </button>

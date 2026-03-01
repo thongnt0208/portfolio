@@ -45,68 +45,30 @@ export const SearchScreen: React.FC = () => {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 30 }}
       transition={{ duration: 0.3 }}
-      style={{ paddingBottom: 140 }}
+      className="pb-[140px]"
     >
       {/* Search Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        padding: '48px 24px 16px',
-        position: 'sticky',
-        top: 0,
-        zIndex: 20,
-        background: 'var(--wn-bg)',
-      }}>
+      <div className="flex items-center gap-3 pt-12 px-6 pb-4 sticky top-0 z-20 bg-wn-bg">
         <button
           onClick={() => navigate(-1)}
           aria-label="Go back"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: '50%',
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}
+          className="w-10 h-10 rounded-full border-none bg-transparent cursor-pointer flex items-center justify-center shrink-0"
         >
           <ArrowLeft size={20} color="var(--wn-text-primary)" />
         </button>
 
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          alignItems: 'center',
-          height: 44,
-          borderRadius: 'var(--wn-radius-xl)',
-          background: 'var(--wn-bg-light)',
-          boxShadow: 'var(--wn-shadow-inset)',
-          border: '1px solid var(--wn-border)',
-          padding: '0 16px',
-        }}>
+        <div className="flex-1 flex items-center h-11 rounded-wn-xl bg-wn-bg-light shadow-wn-inset border border-wn-border px-4">
           <input
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search..."
-            style={{
-              flex: 1,
-              border: 'none',
-              background: 'none',
-              outline: 'none',
-              fontSize: 'var(--wn-text-base)',
-              fontFamily: 'var(--wn-font)',
-              color: 'var(--wn-text-primary)',
-            }}
+            className="flex-1 border-none bg-transparent outline-none text-wn-base font-wn text-wn-text-primary"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
+              className="bg-transparent border-none cursor-pointer p-1"
             >
               <X size={16} color="var(--wn-text-tertiary)" />
             </button>
@@ -115,36 +77,18 @@ export const SearchScreen: React.FC = () => {
       </div>
 
       {/* Results count + sort */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '8px 24px 12px',
-      }}>
-        <h1 style={{ fontSize: 'var(--wn-text-xl)', fontWeight: 600 }}>
+      <div className="flex justify-between items-center pt-2 px-6 pb-3">
+        <h1 className="text-wn-xl font-semibold">
           {filtered.length} results found
         </h1>
-        <button style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 4,
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          fontSize: 'var(--wn-text-sm)',
-          color: 'var(--wn-text-secondary)',
-          fontFamily: 'var(--wn-font)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.04em',
-          fontWeight: 500,
-        }}>
+        <button className="flex items-center gap-1 bg-transparent border-none cursor-pointer text-wn-sm text-wn-text-secondary font-wn uppercase tracking-wide font-medium">
           <SlidersHorizontal size={12} />
           Newest
         </button>
       </div>
 
       {/* Filter Chips */}
-      <div style={{ marginBottom: 20 }}>
+      <div className="mb-5">
         <FilterChips active={filter} onChange={setFilter} />
       </div>
 
@@ -156,35 +100,17 @@ export const SearchScreen: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          style={{
-            margin: '20px 24px 0',
-            padding: 20,
-            borderRadius: 'var(--wn-radius-lg)',
-            background: 'var(--wn-card-yellow)',
-            boxShadow: 'var(--wn-shadow-card)',
-            border: '1px solid var(--wn-border)',
-          }}
+          className="mt-5 mx-6 p-5 rounded-wn-lg bg-wn-card-yellow shadow-wn-card border border-wn-border"
         >
-          <h3 style={{ fontSize: 'var(--wn-text-lg)', fontWeight: 700, marginBottom: 6 }}>
+          <h3 className="text-wn-lg font-bold mb-1.5">
             Advanced Search
           </h3>
-          <p style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)', lineHeight: 1.5, marginBottom: 12 }}>
+          <p className="text-wn-sm text-wn-text-secondary leading-normal mb-3">
             Upgrade to Pro to search inside PDFs and handwritten notes.
           </p>
           <button
             onClick={() => navigate('/winote/premium')}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              fontSize: 'var(--wn-text-base)',
-              fontWeight: 600,
-              fontFamily: 'var(--wn-font)',
-              color: 'var(--wn-text-primary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}
+            className="bg-transparent border-none cursor-pointer text-wn-base font-semibold font-wn text-wn-text-primary flex items-center gap-1"
           >
             VIEW PLAN →
           </button>

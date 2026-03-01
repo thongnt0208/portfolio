@@ -18,15 +18,7 @@ interface FilterChipsProps {
 
 export const FilterChips: React.FC<FilterChipsProps> = ({ active, onChange }) => {
   return (
-    <div
-      className="wn-no-scrollbar"
-      style={{
-        display: 'flex',
-        gap: 10,
-        overflowX: 'auto',
-        padding: '0 24px',
-      }}
-    >
+    <div className="wn-no-scrollbar flex gap-2.5 overflow-x-auto px-6">
       {filters.map((f) => {
         const isActive = active === f.type;
         return (
@@ -34,24 +26,11 @@ export const FilterChips: React.FC<FilterChipsProps> = ({ active, onChange }) =>
             key={f.type}
             whileTap={{ scale: 0.93 }}
             onClick={() => onChange(f.type)}
-            className={isActive ? 'clay-inset' : ''}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '8px 16px',
-              borderRadius: 'var(--wn-radius-pill)',
-              border: '1px solid var(--wn-border)',
-              background: isActive ? 'var(--wn-card-green-light)' : 'var(--wn-bg-light)',
-              boxShadow: isActive ? 'var(--wn-shadow-inset)' : 'var(--wn-shadow-btn)',
-              cursor: 'pointer',
-              fontSize: 'var(--wn-text-base)',
-              fontFamily: 'var(--wn-font)',
-              fontWeight: isActive ? 600 : 400,
-              color: 'var(--wn-text-primary)',
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}
+            className={`flex items-center gap-1.5 py-2 px-4 rounded-wn-pill border border-wn-border cursor-pointer text-wn-base font-wn text-wn-text-primary whitespace-nowrap shrink-0 ${
+              isActive
+                ? 'bg-wn-card-green-light shadow-wn-inset font-semibold'
+                : 'bg-wn-bg-light shadow-wn-btn font-normal'
+            }`}
           >
             {f.icon && <f.icon size={12} />}
             {f.label}

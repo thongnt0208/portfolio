@@ -3,82 +3,34 @@ import { Monitor } from 'lucide-react';
 
 export const AdBanner: React.FC = () => {
   return (
-    <div style={{
-      position: 'fixed',
-      bottom: 0,
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '100%',
-      maxWidth: 'var(--wn-max-width)',
-      zIndex: 30,
-    }}>
-      <div style={{
-        height: 32,
-        background: 'linear-gradient(to bottom, transparent, var(--wn-bg))',
-        pointerEvents: 'none',
-      }} />
-      <div style={{
-        background: 'var(--wn-bg)',
-        padding: '8px 16px 16px',
-      }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 12,
-          padding: '10px 12px',
-          background: 'var(--wn-bg-light)',
-          borderRadius: 'var(--wn-radius-md)',
-          boxShadow: 'var(--wn-shadow-card-sm)',
-          border: '1px solid var(--wn-border)',
-          position: 'relative',
-        }}>
-          <div style={{
-            width: 40,
-            height: 40,
-            borderRadius: 'var(--wn-radius-sm)',
-            background: 'var(--wn-card-green-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
+    <div
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full z-30"
+      style={{ maxWidth: 'var(--wn-max-width)' }}
+    >
+      <div
+        className="h-8 pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, transparent, var(--wn-bg))' }}
+      />
+      <div className="bg-wn-bg px-4 pt-2 pb-4">
+        <div className="flex items-center gap-3 py-2.5 px-3 bg-wn-bg-light rounded-wn-md shadow-wn-card-sm border border-wn-border relative">
+          <div className="w-10 h-10 rounded-wn-sm bg-wn-card-green-light flex items-center justify-center shrink-0">
             <Monitor size={18} color="var(--wn-accent-green)" />
           </div>
 
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontSize: 'var(--wn-text-sm)', fontWeight: 500, lineHeight: 1.3 }}>
+          <div className="flex-1 min-w-0">
+            <p className="text-wn-sm font-medium leading-tight">
               Organize your life with TaskMaster
             </p>
-            <p style={{ fontSize: 'var(--wn-text-xs)', color: 'var(--wn-text-tertiary)', lineHeight: 1.3 }}>
+            <p className="text-wn-xs text-wn-text-tertiary leading-tight">
               Rated 4.9 stars by productivity experts
             </p>
           </div>
 
-          <button style={{
-            padding: '6px 12px',
-            borderRadius: 'var(--wn-radius-pill)',
-            background: '#4285F4',
-            color: 'white',
-            border: 'none',
-            fontSize: 'var(--wn-text-xs)',
-            fontWeight: 700,
-            letterSpacing: '0.04em',
-            cursor: 'pointer',
-            flexShrink: 0,
-          }}>
+          <button className="py-1.5 px-3 rounded-wn-pill bg-[#4285F4] text-white border-none text-wn-xs font-bold tracking-wide cursor-pointer shrink-0">
             INSTALL
           </button>
 
-          <span style={{
-            position: 'absolute',
-            top: -6,
-            right: 4,
-            fontSize: 9,
-            color: 'var(--wn-text-tertiary)',
-            background: 'var(--wn-bg-light)',
-            padding: '0 4px',
-            borderRadius: 4,
-          }}>
+          <span className="absolute -top-1.5 right-1 text-[9px] text-wn-text-tertiary bg-wn-bg-light px-1 rounded">
             Ad
           </span>
         </div>

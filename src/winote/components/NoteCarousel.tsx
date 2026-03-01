@@ -13,25 +13,12 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
 
   return (
     <div>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '0 24px',
-        marginBottom: 12,
-      }}>
-        <h2 style={{ fontSize: 'var(--wn-text-xl)', fontWeight: 600 }}>Forgotten Notes</h2>
+      <div className="flex justify-between items-center px-6 mb-3">
+        <h2 className="text-wn-xl font-semibold">Forgotten Notes</h2>
         {onViewAll && (
           <button
             onClick={onViewAll}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'var(--wn-text-secondary)',
-              fontSize: 'var(--wn-text-sm)',
-              cursor: 'pointer',
-              fontFamily: 'var(--wn-font)',
-            }}
+            className="bg-transparent border-none text-wn-text-secondary text-wn-sm cursor-pointer font-wn"
           >
             View All
           </button>
@@ -40,16 +27,7 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
 
       <div
         ref={scrollRef}
-        className="wn-no-scrollbar"
-        style={{
-          display: 'flex',
-          gap: 16,
-          overflowX: 'auto',
-          paddingLeft: 24,
-          paddingRight: 24,
-          paddingBottom: 8,
-          scrollSnapType: 'x mandatory',
-        }}
+        className="wn-no-scrollbar flex gap-4 overflow-x-auto px-6 pb-2 snap-x snap-mandatory"
       >
         {notes.map((note, i) => (
           <motion.div
@@ -57,7 +35,7 @@ export const NoteCarousel: React.FC<NoteCarouselProps> = ({ notes, onViewAll }) 
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.08, duration: 0.4 }}
-            style={{ scrollSnapAlign: 'start' }}
+            className="snap-start"
           >
             <NoteCard note={note} variant="carousel" />
           </motion.div>

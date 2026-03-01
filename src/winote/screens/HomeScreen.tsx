@@ -32,7 +32,7 @@ export const HomeScreen: React.FC = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, x: -30 }}
       transition={{ duration: 0.3 }}
-      style={{ paddingBottom: 140 }}
+      className="pb-[140px]"
     >
       <Header />
 
@@ -41,12 +41,12 @@ export const HomeScreen: React.FC = () => {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
-        style={{ padding: '8px 24px 24px' }}
+        className="pt-2 px-6 pb-6"
       >
-        <h1 style={{ fontSize: 'var(--wn-text-3xl)', fontWeight: 700, lineHeight: 1.2 }}>
+        <h1 className="text-wn-3xl font-bold leading-tight">
           {getGreeting()}
           <br />
-          <span style={{ color: 'var(--wn-accent-green)' }}>{user.name}</span>
+          <span className="text-wn-accent-green">{user.name}</span>
         </h1>
       </motion.div>
 
@@ -56,7 +56,7 @@ export const HomeScreen: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          style={{ marginBottom: 32 }}
+          className="mb-8"
         >
           <NoteCarousel
             notes={forgottenNotes}
@@ -71,12 +71,7 @@ export const HomeScreen: React.FC = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 style={{
-          fontSize: 'var(--wn-text-xl)',
-          fontWeight: 600,
-          padding: '0 24px',
-          marginBottom: 16,
-        }}>
+        <h2 className="text-wn-xl font-semibold px-6 mb-4">
           Your Collection
         </h2>
 

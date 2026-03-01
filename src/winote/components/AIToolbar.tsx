@@ -10,32 +10,12 @@ const aiTools = [
 
 export const AIToolbar: React.FC = () => {
   return (
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-around',
-      padding: '12px 16px',
-      background: 'var(--wn-bg-light)',
-      borderRadius: 'var(--wn-radius-xl)',
-      boxShadow: 'var(--wn-shadow-card)',
-      border: '1px solid var(--wn-border)',
-    }}>
+    <div className="flex justify-around py-3 px-4 bg-wn-bg-light rounded-wn-xl shadow-wn-card border border-wn-border">
       {aiTools.map((t) => (
         <button
           key={t.label}
           aria-label={t.label}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 4,
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: 'var(--wn-text-secondary)',
-            fontFamily: 'var(--wn-font)',
-            fontSize: 'var(--wn-text-xs)',
-            padding: 8,
-          }}
+          className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer text-wn-text-secondary font-wn text-wn-xs p-2"
         >
           <t.icon size={18} />
           <span>{t.label}</span>

@@ -33,35 +33,21 @@ export const SettingsScreen: React.FC = () => {
         variants={container}
         initial="hidden"
         animate="show"
-        style={{ padding: '0 24px' }}
+        className="px-6"
       >
         {/* Profile Card */}
-        <motion.div variants={item} className="clay-card" style={{ padding: 20, display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28 }}>
-          <div style={{
-            width: 64,
-            height: 64,
-            borderRadius: '50%',
-            background: 'var(--wn-card-green-light)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-          }}>
+        <motion.div variants={item} className="clay-card p-5 flex items-center gap-4 mb-7">
+          <div className="w-16 h-16 rounded-full bg-wn-card-green-light flex items-center justify-center shrink-0">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--wn-text-secondary)" strokeWidth="1.5">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
               <circle cx="12" cy="7" r="4" />
             </svg>
           </div>
-          <div style={{ flex: 1 }}>
-            <h2 style={{ fontSize: 'var(--wn-text-xl)', fontWeight: 600 }}>{user.name}</h2>
-            <p style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>{user.plan}</p>
+          <div className="flex-1">
+            <h2 className="text-wn-xl font-semibold">{user.name}</h2>
+            <p className="text-wn-sm text-wn-text-secondary">{user.plan}</p>
           </div>
-          <button style={{
-            width: 40, height: 40, borderRadius: 'var(--wn-radius-md)',
-            background: 'var(--wn-bg-light)', boxShadow: 'var(--wn-shadow-card-sm)',
-            border: '1px solid var(--wn-border)', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
+          <button className="w-10 h-10 rounded-wn-md bg-wn-bg-light shadow-wn-card-sm border border-wn-border cursor-pointer flex items-center justify-center">
             <Edit size={16} color="var(--wn-text-secondary)" />
           </button>
         </motion.div>
@@ -69,13 +55,9 @@ export const SettingsScreen: React.FC = () => {
         {/* Cloud Sync */}
         <motion.div variants={item}>
           <h3 className="wn-section-title">CLOUD SYNC</h3>
-          <div className="clay-card" style={{ padding: 20, marginTop: 8, marginBottom: 28 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 16 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: 'var(--wn-radius-md)',
-                background: 'var(--wn-card-green-light)', display: 'flex',
-                alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              }}>
+          <div className="clay-card p-5 mt-2 mb-7">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 rounded-wn-md bg-wn-card-green-light flex items-center justify-center shrink-0">
                 <svg width="24" height="24" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
@@ -83,11 +65,11 @@ export const SettingsScreen: React.FC = () => {
                   <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                 </svg>
               </div>
-              <div style={{ flex: 1 }}>
-                <h4 style={{ fontSize: 'var(--wn-text-lg)', fontWeight: 600 }}>Google Drive</h4>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 4 }}>
-                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--wn-accent-green)' }} />
-                  <span style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>Synced: Just now</span>
+              <div className="flex-1">
+                <h4 className="text-wn-lg font-semibold">Google Drive</h4>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <div className="w-2 h-2 rounded-full bg-wn-accent-green" />
+                  <span className="text-wn-sm text-wn-text-secondary">Synced: Just now</span>
                 </div>
               </div>
               <div
@@ -96,21 +78,15 @@ export const SettingsScreen: React.FC = () => {
               />
             </div>
 
-            <div className="clay-inset" style={{ display: 'flex', justifyContent: 'space-between', padding: '12px', marginBottom: 12 }}>
-              <span style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>Backup Frequency</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                <span style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>Daily</span>
+            <div className="clay-inset flex justify-between p-3 mb-3">
+              <span className="text-wn-sm text-wn-text-secondary">Backup Frequency</span>
+              <div className="flex items-center gap-1">
+                <span className="text-wn-sm text-wn-text-secondary">Daily</span>
                 <ChevronRight size={14} color="var(--wn-text-tertiary)" />
               </div>
             </div>
 
-            <button style={{
-              width: '100%', padding: '12px', borderRadius: 'var(--wn-radius-md)',
-              background: 'var(--wn-bg-light)', boxShadow: 'var(--wn-shadow-btn)',
-              border: '1px solid var(--wn-border)', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              fontFamily: 'var(--wn-font)', fontSize: 'var(--wn-text-md)', fontWeight: 500,
-            }}>
+            <button className="w-full p-3 rounded-wn-md bg-wn-bg-light shadow-wn-btn border border-wn-border cursor-pointer flex items-center justify-center gap-2 font-wn text-wn-md font-medium">
               <RefreshCw size={16} />
               Sync Now
             </button>
@@ -120,7 +96,7 @@ export const SettingsScreen: React.FC = () => {
         {/* Preferences */}
         <motion.div variants={item}>
           <h3 className="wn-section-title">PREFERENCES</h3>
-          <div className="clay-card" style={{ marginTop: 8, marginBottom: 28, overflow: 'hidden' }}>
+          <div className="clay-card mt-2 mb-7 overflow-hidden">
             {[
               { icon: Moon, label: 'Dark Mode', toggle: true, value: settings.darkMode, key: 'darkMode' as const },
               { icon: Type, label: 'Typography', detail: settings.typography },
@@ -134,29 +110,17 @@ export const SettingsScreen: React.FC = () => {
                     updateSettings({ [pref.key]: !pref.value });
                   }
                 }}
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 16,
-                  padding: '20px',
-                  background: 'none',
-                  border: 'none',
-                  borderBottom: i < arr.length - 1 ? '1px solid var(--wn-divider)' : 'none',
-                  cursor: 'pointer',
-                  fontFamily: 'var(--wn-font)',
-                  fontSize: 'var(--wn-text-md)',
-                  color: 'var(--wn-text-primary)',
-                  textAlign: 'left',
-                }}
+                className={`w-full flex items-center gap-4 p-5 bg-transparent border-none cursor-pointer font-wn text-wn-md text-wn-text-primary text-left ${
+                  i < arr.length - 1 ? 'border-b border-wn-divider' : ''
+                }`}
               >
                 <pref.icon size={18} color="var(--wn-text-secondary)" />
-                <span style={{ flex: 1 }}>{pref.label}</span>
+                <span className="flex-1">{pref.label}</span>
                 {pref.toggle ? (
                   <div className={`clay-toggle ${pref.value ? 'clay-toggle--active' : ''}`} />
                 ) : (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    {pref.detail && <span style={{ fontSize: 'var(--wn-text-sm)', color: 'var(--wn-text-secondary)' }}>{pref.detail}</span>}
+                  <div className="flex items-center gap-1">
+                    {pref.detail && <span className="text-wn-sm text-wn-text-secondary">{pref.detail}</span>}
                     <ChevronRight size={16} color="var(--wn-text-tertiary)" />
                   </div>
                 )}
@@ -168,24 +132,13 @@ export const SettingsScreen: React.FC = () => {
         {/* Support */}
         <motion.div variants={item}>
           <h3 className="wn-section-title">SUPPORT</h3>
-          <div className="clay-card" style={{ marginTop: 8, overflow: 'hidden' }}>
-            <button style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 16,
-              padding: '20px', background: 'none', border: 'none',
-              borderBottom: '1px solid var(--wn-divider)',
-              cursor: 'pointer', fontFamily: 'var(--wn-font)',
-              fontSize: 'var(--wn-text-md)', color: 'var(--wn-text-primary)', textAlign: 'left',
-            }}>
+          <div className="clay-card mt-2 overflow-hidden">
+            <button className="w-full flex items-center gap-4 p-5 bg-transparent border-none border-b border-wn-divider cursor-pointer font-wn text-wn-md text-wn-text-primary text-left">
               <CircleHelp size={18} color="var(--wn-text-secondary)" />
-              <span style={{ flex: 1 }}>Help & FAQ</span>
+              <span className="flex-1">Help & FAQ</span>
               <ExternalLink size={14} color="var(--wn-text-tertiary)" />
             </button>
-            <button style={{
-              width: '100%', display: 'flex', alignItems: 'center', gap: 16,
-              padding: '20px', background: 'none', border: 'none',
-              cursor: 'pointer', fontFamily: 'var(--wn-font)',
-              fontSize: 'var(--wn-text-md)', color: 'var(--wn-text-danger)', textAlign: 'left',
-            }}>
+            <button className="w-full flex items-center gap-4 p-5 bg-transparent border-none cursor-pointer font-wn text-wn-md text-wn-text-danger text-left">
               <LogOut size={18} color="var(--wn-text-danger)" />
               <span>Sign Out</span>
             </button>

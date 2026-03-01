@@ -39,98 +39,32 @@ export class WiNoteErrorBoundary extends React.Component<ErrorBoundaryProps, Err
     }
 
     return (
-      <div
-        style={{
-          minHeight: '100dvh',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 32,
-          background: 'var(--wn-bg)',
-          fontFamily: 'var(--wn-font)',
-          color: 'var(--wn-text-primary)',
-          textAlign: 'center',
-        }}
-      >
+      <div className="min-h-[100dvh] flex flex-col items-center justify-center p-8 bg-wn-bg font-wn text-wn-text-primary text-center">
         {/* Icon */}
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: '50%',
-            background: 'var(--wn-card-yellow)',
-            boxShadow: 'var(--wn-shadow-card)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 24,
-            fontSize: 32,
-          }}
-        >
+        <div className="w-[72px] h-[72px] rounded-full bg-wn-card-yellow shadow-wn-card flex items-center justify-center mb-6 text-[32px]">
           ⚠️
         </div>
 
-        <h2 style={{ fontSize: 'var(--wn-text-xl)', fontWeight: 700, marginBottom: 8 }}>
+        <h2 className="text-wn-xl font-bold mb-2">
           Something went wrong
         </h2>
 
-        <p
-          style={{
-            fontSize: 'var(--wn-text-base)',
-            color: 'var(--wn-text-secondary)',
-            lineHeight: 1.6,
-            marginBottom: 24,
-            maxWidth: 300,
-          }}
-        >
+        <p className="text-wn-base text-wn-text-secondary leading-relaxed mb-6 max-w-[300px]">
           An unexpected error occurred. You can retry or go back to the home screen.
         </p>
 
         {/* Error detail (dev only) */}
         {import.meta.env.DEV && this.state.error && (
-          <div
-            style={{
-              width: '100%',
-              maxWidth: 360,
-              marginBottom: 24,
-              padding: 12,
-              borderRadius: 'var(--wn-radius-md)',
-              background: 'var(--wn-bg-light)',
-              boxShadow: 'var(--wn-shadow-inset)',
-              border: '1px solid var(--wn-border)',
-              textAlign: 'left',
-              fontSize: 'var(--wn-text-xs)',
-              color: 'var(--wn-text-danger)',
-              fontFamily: 'monospace',
-              wordBreak: 'break-word',
-              maxHeight: 120,
-              overflow: 'auto',
-            }}
-          >
+          <div className="w-full max-w-[360px] mb-6 p-3 rounded-wn-md bg-wn-bg-light shadow-wn-inset border border-wn-border text-left text-wn-xs text-wn-text-danger font-mono break-words max-h-[120px] overflow-auto">
             {this.state.error.message}
           </div>
         )}
 
         {/* Actions */}
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div className="flex gap-3">
           <button
             onClick={this.handleRetry}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              borderRadius: 'var(--wn-radius-md)',
-              background: 'var(--wn-accent-green)',
-              color: 'white',
-              border: 'none',
-              fontSize: 'var(--wn-text-base)',
-              fontWeight: 600,
-              fontFamily: 'var(--wn-font)',
-              cursor: 'pointer',
-              boxShadow: 'var(--wn-shadow-btn)',
-            }}
+            className="flex items-center gap-2 py-3 px-5 rounded-wn-md bg-wn-accent-green text-white border-none text-wn-base font-semibold font-wn cursor-pointer shadow-wn-btn"
           >
             <RefreshCw size={16} />
             Retry
@@ -138,21 +72,7 @@ export class WiNoteErrorBoundary extends React.Component<ErrorBoundaryProps, Err
 
           <button
             onClick={this.handleGoHome}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '12px 20px',
-              borderRadius: 'var(--wn-radius-md)',
-              background: 'var(--wn-bg-light)',
-              color: 'var(--wn-text-primary)',
-              border: '1px solid var(--wn-border)',
-              fontSize: 'var(--wn-text-base)',
-              fontWeight: 600,
-              fontFamily: 'var(--wn-font)',
-              cursor: 'pointer',
-              boxShadow: 'var(--wn-shadow-btn)',
-            }}
+            className="flex items-center gap-2 py-3 px-5 rounded-wn-md bg-wn-bg-light text-wn-text-primary border border-wn-border text-wn-base font-semibold font-wn cursor-pointer shadow-wn-btn"
           >
             <Home size={16} />
             Home
