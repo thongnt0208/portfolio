@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  ChevronRight, Edit, Moon, Type, Bell, Lock,
+  ChevronRight, Edit, Type, Bell, Lock,
   CircleHelp, LogOut, RefreshCw, ExternalLink,
 } from 'lucide-react';
 import { Header } from '../layout/Header';
@@ -20,6 +20,21 @@ const item = {
 
 export const SettingsScreen: React.FC = () => {
   const { user, settings, updateSettings } = useUserStore();
+  interface SettingButton {
+    icon: React.ComponentType<{ size?: number; className?: string }>;
+    label: string;
+    detail?: string;
+    toggle?: boolean;
+    value?: boolean;
+    key?: keyof typeof settings;
+  }
+  const settingButtons: SettingButton[] = [
+    // TODO: implement dark mode later
+    // { icon: Moon, label: 'Dark Mode', toggle: true, value: settings.darkMode, key: 'darkMode' as const },
+    { icon: Type, label: 'Typography', detail: settings.typography },
+    { icon: Bell, label: 'Notifications' },
+    { icon: Lock, label: 'Security' },
+  ];
 
   return (
     <motion.div
@@ -91,12 +106,7 @@ export const SettingsScreen: React.FC = () => {
         <motion.div variants={item}>
           <h3 className="wn-section-title">PREFERENCES</h3>
           <div className="clay-card mt-2 mb-7 overflow-hidden">
-            {[
-              { icon: Moon, label: 'Dark Mode', toggle: true, value: settings.darkMode, key: 'darkMode' as const },
-              { icon: Type, label: 'Typography', detail: settings.typography },
-              { icon: Bell, label: 'Notifications' },
-              { icon: Lock, label: 'Security' },
-            ].map((pref, i, arr) => (
+            {settingButtons.map((pref, i, arr) => (
               <button
                 key={pref.label}
                 onClick={() => {

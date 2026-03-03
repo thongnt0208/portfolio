@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, X, SlidersHorizontal } from 'lucide-react';
+import { ArrowLeft, X, RefreshCw } from 'lucide-react';
 import { FilterChips } from '../components/FilterChips';
 import { NoteGrid } from '../components/NoteGrid';
 import { FloatingActionButton } from '../components/FloatingActionButton';
@@ -73,14 +73,14 @@ export const SearchScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Results count + sort */}
+      {/* Results count + reset */}
       <div className="flex justify-between items-center pt-4 px-6 pb-4">
         <h1 className="text-wn-xl font-bold text-wn-text-primary font-wn leading-7">
           {filtered.length} results found
         </h1>
         <button className="flex items-center gap-1.5 bg-transparent border-none cursor-pointer text-wn-xs text-wn-text-tertiary font-wn uppercase tracking-[0.6px] font-bold">
-          <SlidersHorizontal size={12} className="text-wn-text-tertiary" />
-          Newest
+          <RefreshCw size={12} className="text-wn-text-tertiary" />
+          Reset
         </button>
       </div>
 
@@ -91,28 +91,6 @@ export const SearchScreen: React.FC = () => {
 
       {/* Results */}
       <NoteGrid notes={filtered} showBadgeForFirst={!!query} />
-
-      {/* Advanced Search upsell */}
-      {query && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-5 mx-6 p-4 rounded-wn-xl bg-wn-card-yellow shadow-wn-card-green overflow-hidden relative"
-        >
-          <h3 className="text-wn-lg font-bold mb-1.5 text-wn-orange-text font-wn leading-7">
-            Advanced Search
-          </h3>
-          <p className="text-wn-xs text-[#8C7A4A] leading-[19.5px] mb-3 font-wn">
-            Upgrade to Pro to search inside PDFs and handwritten notes.
-          </p>
-          <button
-            onClick={() => navigate('/winote/premium')}
-            className="bg-transparent border-none cursor-pointer text-wn-2xs font-bold font-wn text-wn-orange-text flex items-center gap-1 uppercase tracking-[0.5px] leading-[15px]"
-          >
-            View Plan →
-          </button>
-        </motion.div>
-      )}
 
       <FloatingActionButton />
     </motion.div>

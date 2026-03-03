@@ -21,6 +21,11 @@ export const CreateNoteScreen: React.FC = () => {
   const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
   const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
 
+  const handleDelete = () => {
+    // TODO: implement delete note
+    navigate(-1);
+  };
+
   useEffect(() => {
     textareaRef.current?.focus();
   }, []);
@@ -70,7 +75,7 @@ export const CreateNoteScreen: React.FC = () => {
           className="w-10 h-10 rounded-wn-lg bg-wn-bg shadow-wn-card-sm border-none cursor-pointer flex items-center justify-center"
           aria-label="Delete"
         >
-          <Trash2 size={18} className="text-wn-text-secondary" />
+          <Trash2 size={18} className="text-wn-text-secondary" onClick={handleDelete} />
         </button>
       </div>
 

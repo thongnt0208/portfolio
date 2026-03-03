@@ -38,11 +38,7 @@ export const Sidebar: React.FC = () => {
         className="fixed inset-0 bg-wn-overlay z-50"
       />
 
-      <motion.nav
-        initial={{ x: '-100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '-100%' }}
-        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+      <nav
         className="fixed top-0 left-0 h-[100dvh] z-[51] pointer-events-none"
       >
         <motion.div
@@ -63,7 +59,7 @@ export const Sidebar: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <p className="uppercase font-bold text-wn-base text-wn-text-secondary tracking-[0.7px] leading-5 font-wn">
-                  Welcome TO
+                  Welcome to
                 </p>
                 <h2 className="font-bold text-wn-2xl text-wn-text-primary leading-[30px] font-wn">
                   WiNote
@@ -133,7 +129,7 @@ export const Sidebar: React.FC = () => {
                         )}
                       </div>
                       {item.hasCheck && (
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-[#DCFCE7] shadow-wn-cta-inset">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-wn-bg shadow-wn-cta-inset">
                           <CheckIcon className="w-[18px] h-[18px]" />
                         </div>
                       )}
@@ -195,7 +191,7 @@ export const Sidebar: React.FC = () => {
             </div>
           </motion.div>
         </motion.div>
-      </motion.nav>
+      </nav>
     </>
   );
 };

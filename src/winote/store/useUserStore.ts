@@ -14,13 +14,13 @@ export const useUserStore = create<UserState>()(
   persist(
     (set) => ({
       user: {
-        name: 'WiNote User',
+        name: 'Unlogined WiNote User',
         isPremium: false,
-        plan: 'Pro Plan',
+        plan: 'Free Plan',
       },
       settings: {
         darkMode: false,
-        typography: 'WiNote User Typo',
+        typography: 'Unlogined WiNote User Typo',
         notifications: true,
         security: false,
         cloudSync: true,
