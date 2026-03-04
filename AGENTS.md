@@ -13,7 +13,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ## Tech Stack
 
 - **React 19** + **TypeScript** on **Vite 7** (ES modules, `"type": "module"`)
-- **Tailwind CSS** loaded via CDN in `index.html` (not PostCSS/config-based) — custom theme defined inline in `<script>` block
+- **Tailwind CSS** via PostCSS/config-based setup (`tailwind.config.js`, `postcss.config.js`, and `src/tailwind.css`), bundled by Vite (no CDN)
 - **SCSS** for component-level styles (via `sass` + Vite preprocessor)
 - **Framer Motion** for animations
 - **React Router DOM v7** for routing
@@ -24,6 +24,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ## Path Aliases
 
 Configured in both `tsconfig.json` and `vite.config.js`:
+
 - `@/*` → `./src/*`
 - `@assets/*` → `./src/assets/*`
 
@@ -32,6 +33,7 @@ Configured in both `tsconfig.json` and `vite.config.js`:
 This repo contains two distinct apps served from one SPA:
 
 ### 1. Portfolio (`/` routes)
+
 The main portfolio site for Thong Nguyen Trung. Components are lazy-loaded in `src/App.tsx`.
 
 - `src/components/` — Portfolio sections: Hero, Ambition, Expertise, LatestWork, Contact, Navbar, Footer, Sidebars
@@ -41,6 +43,7 @@ The main portfolio site for Thong Nguyen Trung. Components are lazy-loaded in `s
 - `src/data/` — Static data files; `chatContext.ts` imports `ai-context.md` as raw string for AI system prompt
 
 ### 2. WiNote (`/winote/*` routes)
+
 A note-taking app with a claymorphism design, mounted as a sub-route.
 
 - `src/winote/index.tsx` — Route definitions (Home, Search, CreateNote, NoteDetail, Settings, Premium)
@@ -55,6 +58,7 @@ A note-taking app with a claymorphism design, mounted as a sub-route.
 - `src/winote/styles/` — Clay component CSS and theme styles
 
 ### AI Chat System
+
 The portfolio includes an in-browser AI chatbot with a hybrid backend strategy:
 
 - `src/services/aiChatServiceInterface.ts` — Common `AIChatService` interface and `AIBackend` type
