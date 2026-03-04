@@ -1,0 +1,227 @@
+@import './winote-theme.css';
+
+/* ── WiNote Reset & Base ── */
+.winote-app {
+  font-family: var(--wn-font);
+  color: var(--wn-text-primary);
+  background: var(--wn-bg);
+  min-height: 100dvh;
+  max-width: var(--wn-max-width);
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  cursor: default;
+}
+
+@media (min-width: 480px) {
+  .winote-app {
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.08);
+    border-left: 1px solid var(--wn-border);
+    border-right: 1px solid var(--wn-border);
+  }
+}
+
+.winote-app *,
+.winote-app *::before,
+.winote-app *::after {
+  box-sizing: border-box;
+}
+
+/* ── Clay Card ── */
+.clay-card {
+  background: var(--wn-bg);
+  border-radius: var(--wn-radius-xl);
+  box-shadow: var(--wn-shadow-card);
+  border: none;
+}
+
+.clay-card-sm {
+  background: var(--wn-bg);
+  border-radius: var(--wn-radius-lg);
+  box-shadow: var(--wn-shadow-card-sm);
+  border: none;
+}
+
+.clay-card-green {
+  background: var(--wn-card-green);
+}
+
+.clay-card-green-light {
+  background: var(--wn-card-green-light);
+}
+
+.clay-card-yellow {
+  background: var(--wn-card-yellow);
+}
+
+.clay-card-lavender {
+  background: var(--wn-card-lavender);
+}
+
+/* ── Clay Inset ── */
+.clay-inset {
+  background: var(--wn-bg);
+  border-radius: var(--wn-radius-lg);
+  box-shadow: var(--wn-shadow-inset);
+  border: none;
+}
+
+/* ── Clay Button ── */
+.clay-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wn-space-2);
+  padding: var(--wn-space-2) var(--wn-space-4);
+  border-radius: var(--wn-radius-pill);
+  box-shadow: var(--wn-shadow-btn);
+  border: none;
+  background: var(--wn-bg);
+  color: var(--wn-text-primary);
+  font-family: var(--wn-font);
+  font-size: var(--wn-text-sm);
+  cursor: pointer;
+  transition: all 0.15s var(--wn-ease);
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clay-btn:active {
+  transform: scale(0.96);
+  box-shadow: var(--wn-shadow-inset);
+}
+
+.clay-btn--active {
+  background: var(--wn-card-green);
+  color: var(--wn-text-primary);
+  box-shadow: var(--wn-shadow-inset);
+}
+
+.clay-btn--sm {
+  padding: var(--wn-space-1) var(--wn-space-3);
+  font-size: var(--wn-text-xs);
+}
+
+/* ── Clay CTA Button ── */
+.clay-btn--cta {
+  background: var(--wn-cta-bg);
+  color: var(--wn-white);
+  box-shadow: var(--wn-shadow-btn);
+}
+
+.clay-btn--cta:active {
+  box-shadow: var(--wn-shadow-cta-inset);
+}
+
+/* ── Clay Input ── */
+.clay-input {
+  width: 100%;
+  padding: var(--wn-space-3) var(--wn-space-4);
+  border-radius: var(--wn-radius-pill);
+  box-shadow: var(--wn-shadow-inset);
+  border: none;
+  background: var(--wn-card-gray);
+  color: var(--wn-text-primary);
+  font-family: var(--wn-font);
+  font-size: var(--wn-text-base);
+  outline: none;
+  transition: box-shadow 0.2s var(--wn-ease);
+}
+
+.clay-input::placeholder {
+  color: var(--wn-text-tertiary);
+}
+
+.clay-input:focus {
+  box-shadow:
+    var(--wn-shadow-inset),
+    0 0 0 2px rgba(111, 130, 95, 0.15);
+}
+
+/* ── Floating Action Button ── */
+.clay-fab {
+  width: var(--wn-fab-size);
+  height: var(--wn-fab-size);
+  border-radius: 50%;
+  background: var(--wn-cta-bg);
+  color: var(--wn-white);
+  border: none;
+  box-shadow: var(--wn-shadow-fab);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s var(--wn-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clay-fab:active {
+  transform: scale(0.92);
+}
+
+/* ── Toggle Switch ── */
+.clay-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--wn-radius-pill);
+  background: var(--wn-card-gray);
+  box-shadow: var(--wn-shadow-inset);
+  border: none;
+  cursor: pointer;
+  transition: background 0.25s var(--wn-ease);
+  flex-shrink: 0;
+}
+
+.clay-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--wn-white);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  transition: transform 0.25s var(--wn-spring);
+}
+
+.clay-toggle--active {
+  background: var(--wn-cta-bg);
+}
+
+.clay-toggle--active::after {
+  transform: translateX(20px);
+}
+
+/* ── Badge / Pill ── */
+.clay-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--wn-space-1);
+  padding: 2px var(--wn-space-2);
+  border-radius: var(--wn-radius-sm);
+  font-size: var(--wn-text-xs);
+  color: var(--wn-text-secondary);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+/* ── Section Header ── */
+.wn-section-title {
+  font-size: var(--wn-text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wn-text-secondary);
+  padding: var(--wn-space-2) 0;
+}
+
+/* ── Scrollable Hide Scrollbar ── */
+.wn-no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.wn-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

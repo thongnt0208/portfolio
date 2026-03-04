@@ -1,0 +1,82 @@
+:root {
+  /* ── Palette ── */
+  --wn-bg: #FAF5E4;
+  --wn-bg-light: #FDFBF0;
+  --wn-card-green: #D6E4C8;
+  --wn-card-green-light: #EAF2E2;
+  --wn-card-yellow: #E6D5A7;
+  --wn-card-yellow-light: #F2ECDA;
+  --wn-card-lavender: #E2DDEE;
+  --wn-card-gray: #E5E7EB;
+  --wn-sidebar-bg: linear-gradient(180deg, #D6E4C8 38%, #E6D5A7 100%);
+  --wn-accent-green: #B4C6A6;
+  --wn-accent-green-dark: #6F825F;
+  --wn-cta-bg: #6F825F;
+  --wn-premium-gold: #C5A44E;
+  --wn-premium-card: linear-gradient(135deg, #6B7B5A 0%, #8B9B6A 100%);
+  --wn-text-primary: #4A4F46;
+  --wn-text-secondary: #7A8074;
+  --wn-text-tertiary: #A3B096;
+  --wn-text-accent: #6F825F;
+  --wn-text-danger: #EF4444;
+  --wn-text-danger-icon: #F87171;
+  --wn-border: rgba(0, 0, 0, 0.06);
+  --wn-divider: rgba(0, 0, 0, 0.04);
+  --wn-overlay: rgba(40, 40, 30, 0.4);
+  --wn-white: #FFFFFF;
+
+  /* ── Semantic aliases ── */
+  --wn-orange-text: #6D5D34;
+  --wn-orange-bg: #E6D5A7;
+
+  /* ── Shadows (Clay Effect — compound from Figma) ── */
+  --wn-shadow-card: 8px 8px 16px 0px rgba(163, 176, 150, 0.40), -8px -8px 16px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-card-sm: 5px 5px 10px 0px rgba(163, 176, 150, 0.40), -5px -5px 10px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-card-green: 6px 6px 14px 0px rgba(163, 176, 150, 0.50), -6px -6px 14px 0px rgba(255, 255, 255, 0.60);
+  --wn-shadow-inset: -4px -4px 8px rgba(255, 255, 255, 0.90) inset;
+  --wn-shadow-btn: 5px 5px 10px 0px rgba(163, 176, 150, 0.40), -5px -5px 10px 0px rgba(255, 255, 255, 0.80);
+  --wn-shadow-fab: 0px 8px 10px -6px rgba(0, 0, 0, 0.10);
+  --wn-shadow-cta-inset: -2px -2px 4px rgba(0, 0, 0, 0.05) inset;
+
+  /* ── Radii (4B: map 18→16, 28→24) ── */
+  --wn-radius-xs: 6px;
+  --wn-radius-sm: 8px;
+  --wn-radius-md: 12px;
+  --wn-radius-lg: 16px;
+  --wn-radius-xl: 24px;
+  --wn-radius-2xl: 24px;
+  --wn-radius-pill: 9999px;
+
+  /* ── Typography (5A: Inter only) ── */
+  --wn-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --wn-text-2xs: 0.5625rem;  /* 9px */
+  --wn-text-xs: 0.6875rem;   /* 11px */
+  --wn-text-sm: 0.75rem;     /* 12px */
+  --wn-text-base: 0.875rem;  /* 14px */
+  --wn-text-md: 1rem;        /* 16px */
+  --wn-text-lg: 1.125rem;    /* 18px */
+  --wn-text-xl: 1.25rem;     /* 20px */
+  --wn-text-2xl: 1.5rem;     /* 24px */
+  --wn-text-3xl: 1.875rem;   /* 30px */
+
+  /* ── Spacing ── */
+  --wn-space-1: 4px;
+  --wn-space-2: 8px;
+  --wn-space-3: 12px;
+  --wn-space-4: 16px;
+  --wn-space-5: 20px;
+  --wn-space-6: 24px;
+  --wn-space-8: 32px;
+  --wn-space-10: 40px;
+  --wn-space-12: 48px;
+
+  /* ── Layout ── */
+  --wn-max-width: 440px;
+  --wn-header-height: 120px;
+  --wn-ad-banner-height: 102px;
+  --wn-fab-size: 56px;
+
+  /* ── Transitions ── */
+  --wn-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --wn-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}

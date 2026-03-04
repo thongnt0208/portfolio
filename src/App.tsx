@@ -1,6 +1,5 @@
 import React, { lazy, Suspense, useState } from 'react';
-
-// Lazy load components
+import { Routes, Route } from 'react-router-dom';
 
 const Navbar = lazy(() => import('./components/Navbar').then(module => ({ default: module.Navbar })));
 const Sidebars = lazy(() => import('./components/Sidebars').then(module => ({ default: module.Sidebars })));
@@ -11,12 +10,13 @@ const LatestWork = lazy(() => import('./components/LatestWork').then(module => (
 const Contact = lazy(() => import('./components/Contact').then(module => ({ default: module.Contact })));
 const Footer = lazy(() => import('./components/Footer').then(module => ({ default: module.Footer })));
 
-// Chat components (not lazy loaded as they manage their own loading)
 import { ChatToggleButton } from './components/chatBot/ChatToggleButton';
 import { ChatPanel } from './components/chatBot/panel/ChatPanel';
 import { AIChatProvider } from './contexts/AIChatContext';
 
-const App: React.FC = () => {
+const WiNoteApp = lazy(() => import('./winote').then(m => ({ default: m.WiNoteApp })));
+
+const Portfolio: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
@@ -37,11 +37,21 @@ const App: React.FC = () => {
         <Footer />
       </Suspense>
 
-      {/* AI Chat Feature */}
       <ChatToggleButton onClick={() => setIsChatOpen(true)} />
       <ChatPanel isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
     </AIChatProvider>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F5F0E6' }}>Loading...</div>}>
+      <Routes>
+        <Route path="/winote/*" element={<WiNoteApp />} />
+        <Route path="/*" element={<Portfolio />} />
+      </Routes>
+    </Suspense>
   );
 };
 

@@ -1,0 +1,17 @@
+{
+  "name": "Thong's Portfolio",
+  "short_name": "Portfolio",
+  "description": "Thong Nguyen Trung - Creative Web Developer. Portfolio of web development projects and UX/UI designs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FBFAF3",
+  "theme_color": "#0A0A0A",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ]
+}
